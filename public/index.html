@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IELTS Road</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="styles.css?v=20261022e">
+</head>
+<body>
+  <section id="auth" class="auth hidden">
+    <div class="auth-brand">
+      <div class="logo-lg"><span class="mark"></span>IELTS Road</div>
+      <h2>Học mỗi ngày,<br>tiến bộ mỗi tuần.</h2>
+      <ol class="auth-steps">
+        <li><b>Xây nền</b><span>Tuần 1–4</span></li>
+        <li><b>Tăng tốc</b><span>Tuần 5–8</span></li>
+        <li><b>Về đích</b><span>Tuần 9–12</span></li>
+      </ol>
+    </div>
+    <div class="auth-panel">
+      <div class="auth-card">
+        <h1>Chào mừng bạn</h1>
+        <p class="muted hidden" id="demo-hint"></p>
+        <div class="seg">
+          <button class="seg-btn active" data-mode="login">Đăng nhập</button>
+          <button class="seg-btn" data-mode="register">Tạo tài khoản</button>
+        </div>
+        <form id="auth-form">
+          <label class="reg-only hidden">Họ tên<input name="full_name" autocomplete="name"></label>
+          <label>Tên đăng nhập<input name="username" required autocomplete="username"></label>
+          <label>Mật khẩu<input name="password" type="password" required minlength="8" autocomplete="current-password"></label>
+          <p class="error" id="auth-error"></p>
+          <button class="btn primary block" type="submit" id="auth-submit">Đăng nhập</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div id="shell" class="shell hidden">
+    <aside class="side">
+      <a class="logo" href="#/today"><span class="mark"></span>IELTS Road</a>
+      <nav id="nav"></nav>
+      <div class="side-user">
+        <span class="avatar" id="me-avatar"></span>
+        <div><b id="me-name"></b><button class="link" id="logout">Đăng xuất</button></div>
+      </div>
+    </aside>
+    <main>
+      <div class="mobile-top">
+        <a class="logo" href="#/today"><span class="mark"></span>IELTS Road</a>
+        <button class="link" id="logout-m">Đăng xuất</button>
+      </div>
+      <div id="view"></div>
+    </main>
+  </div>
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js?v=20261022d"></script>
+</body>
+</html>

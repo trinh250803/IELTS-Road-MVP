@@ -1,0 +1,74 @@
+{
+  "g_be": {
+    "title": "Động từ to be (am / is / are)",
+    "explain": "To be nghĩa là 'là / thì / ở'. Chia theo chủ ngữ: I → am; he/she/it/danh từ số ít → is; you/we/they/danh từ số nhiều → are. Phủ định thêm not (is not = isn't, are not = aren't). Câu hỏi đảo to be lên trước chủ ngữ: Are you a student?",
+    "examples": ["I am a teacher.", "She is from Hanoi.", "They aren't at home.", "Is it cold today?"],
+    "exercises": [
+      {"q": "My brother ___ 20 years old.", "options": ["am", "is", "are"], "answer": 1, "explain": "My brother = he → is."},
+      {"q": "We ___ students.", "options": ["am", "is", "are"], "answer": 2, "explain": "We → are."},
+      {"q": "___ you tired?", "options": ["Am", "Is", "Are"], "answer": 2, "explain": "Câu hỏi với you → Are."},
+      {"q": "I ___ not hungry.", "options": ["am", "is", "are"], "answer": 0, "explain": "I → am."},
+      {"q": "The books ___ on the table.", "options": ["is", "are", "am"], "answer": 1, "explain": "The books là số nhiều → are."}
+    ]
+  },
+  "g_pronouns": {
+    "title": "Đại từ nhân xưng và tính từ sở hữu",
+    "explain": "Đại từ làm chủ ngữ: I, you, he, she, it, we, they. Làm tân ngữ (sau động từ/giới từ): me, you, him, her, it, us, them. Tính từ sở hữu đứng trước danh từ: my, your, his, her, its, our, their.",
+    "examples": ["She loves him.", "This is our house.", "Give it to me.", "Their teacher is kind."],
+    "exercises": [
+      {"q": "This is Lan. ___ is my friend.", "options": ["Her", "She", "Hers"], "answer": 1, "explain": "Làm chủ ngữ → She."},
+      {"q": "I don't know ___.", "options": ["he", "his", "him"], "answer": 2, "explain": "Sau động từ dùng tân ngữ → him."},
+      {"q": "They live with ___ parents.", "options": ["they", "their", "them"], "answer": 1, "explain": "Trước danh từ dùng tính từ sở hữu → their."},
+      {"q": "Can you help ___?", "options": ["we", "our", "us"], "answer": 2, "explain": "Tân ngữ → us."},
+      {"q": "The cat is eating ___ food.", "options": ["its", "it's", "it"], "answer": 0, "explain": "Sở hữu của it → its (it's = it is)."}
+    ]
+  },
+  "g_present_simple": {
+    "title": "Thì hiện tại đơn",
+    "explain": "Dùng cho thói quen, sự thật, lịch trình. Khẳng định: I/you/we/they + V; he/she/it + V-s/es. Phủ định: don't/doesn't + V nguyên mẫu. Câu hỏi: Do/Does + S + V? Thêm -es khi động từ tận cùng bằng o, s, sh, ch, x, z (goes, watches); phụ âm + y → ies (studies).",
+    "examples": ["I drink coffee every morning.", "He works in a bank.", "She doesn't like fish.", "Do you play football?"],
+    "exercises": [
+      {"q": "She ___ to work by bus.", "options": ["go", "goes", "going"], "answer": 1, "explain": "She → goes (thêm -es sau o)."},
+      {"q": "They ___ English at school.", "options": ["study", "studies", "studys"], "answer": 0, "explain": "They → giữ nguyên study."},
+      {"q": "He ___ like coffee.", "options": ["don't", "doesn't", "isn't"], "answer": 1, "explain": "He + doesn't + V."},
+      {"q": "___ your sister live in Da Nang?", "options": ["Do", "Does", "Is"], "answer": 1, "explain": "Your sister = she → Does."},
+      {"q": "The sun ___ in the east.", "options": ["rise", "rises", "is rise"], "answer": 1, "explain": "Sự thật, chủ ngữ số ít → rises."}
+    ]
+  },
+  "g_articles": {
+    "title": "Mạo từ a / an / the",
+    "explain": "a/an dùng với danh từ đếm được số ít, nhắc lần đầu hoặc chưa xác định. an đứng trước từ bắt đầu bằng NGUYÊN ÂM (theo cách phát âm): an apple, an hour; nhưng a university (/juː/). the dùng khi người nghe đã biết vật nào, vật duy nhất (the sun), hoặc đã nhắc trước đó.",
+    "examples": ["I have a dog. The dog is very small.", "She is an engineer.", "It takes an hour.", "The moon is bright tonight."],
+    "exercises": [
+      {"q": "I saw ___ elephant at the zoo.", "options": ["a", "an", "the"], "answer": 1, "explain": "elephant bắt đầu bằng nguyên âm → an."},
+      {"q": "He goes to ___ university in Hanoi.", "options": ["a", "an", "the"], "answer": 0, "explain": "university phát âm /juː/ (phụ âm) → a."},
+      {"q": "Please close ___ door.", "options": ["a", "an", "the"], "answer": 2, "explain": "Cánh cửa cả hai người đều biết → the."},
+      {"q": "I'll be back in ___ hour.", "options": ["a", "an", "the"], "answer": 1, "explain": "hour có h câm → an."},
+      {"q": "___ Earth goes around the Sun.", "options": ["A", "An", "The"], "answer": 2, "explain": "Vật duy nhất → The."}
+    ]
+  },
+  "g_plurals": {
+    "title": "Danh từ số nhiều, đếm được và không đếm được",
+    "explain": "Số nhiều thường thêm -s/-es (books, boxes); phụ âm + y → ies (cities); một số bất quy tắc: man → men, child → children, person → people. Danh từ không đếm được (water, money, information, advice) không có số nhiều, không dùng a/an, đi với much/a little.",
+    "examples": ["two children", "three boxes", "some information", "How much money do you have?"],
+    "exercises": [
+      {"q": "There are five ___ in the class.", "options": ["child", "childs", "children"], "answer": 2, "explain": "child → children (bất quy tắc)."},
+      {"q": "Can you give me some ___?", "options": ["advice", "advices", "an advice"], "answer": 0, "explain": "advice không đếm được."},
+      {"q": "I visited many ___ last year.", "options": ["citys", "cities", "city"], "answer": 1, "explain": "phụ âm + y → ies."},
+      {"q": "How ___ water do you drink a day?", "options": ["many", "much", "a"], "answer": 1, "explain": "water không đếm được → much."},
+      {"q": "Two ___ are waiting outside.", "options": ["person", "persons", "people"], "answer": 2, "explain": "Số nhiều của person thường dùng people."}
+    ]
+  },
+  "g_there_is": {
+    "title": "There is / There are",
+    "explain": "Dùng để nói 'có' cái gì ở đâu. There is + danh từ số ít hoặc không đếm được; There are + danh từ số nhiều. Phủ định: There isn't / There aren't any. Câu hỏi: Is there…? Are there any…?",
+    "examples": ["There is a park near my house.", "There are two banks on this street.", "There isn't any milk.", "Are there any questions?"],
+    "exercises": [
+      {"q": "There ___ a cat under the table.", "options": ["is", "are", "be"], "answer": 0, "explain": "a cat số ít → is."},
+      {"q": "There ___ many people here.", "options": ["is", "are", "has"], "answer": 1, "explain": "people số nhiều → are."},
+      {"q": "There ___ some water in the bottle.", "options": ["is", "are", "have"], "answer": 0, "explain": "water không đếm được → is."},
+      {"q": "___ there any eggs in the fridge?", "options": ["Is", "Are", "Do"], "answer": 1, "explain": "eggs số nhiều → Are."},
+      {"q": "In Vietnamese 'Ở đây có một quán cà phê' → There ___ a coffee shop here.", "options": ["has", "is", "are"], "answer": 1, "explain": "Không dùng 'has' để nói 'có' tồn tại → There is."}
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "passage": "Many cities are trying to reduce traffic. Some have built new metro lines, while others charge drivers a fee to enter the city centre. Supporters say these fees cut pollution and make journeys faster. Critics, however, argue that they are unfair to people on low incomes who have no other way to get to work.",
+  "questions": [
+    {"id": "p01", "level": "A1", "q": "She ___ a doctor.", "options": ["am", "is", "are", "be"], "answer": 1},
+    {"id": "p02", "level": "A1", "q": "I ___ breakfast at 7 o'clock every day.", "options": ["have", "has", "having", "am have"], "answer": 0},
+    {"id": "p03", "level": "A1", "q": "'Ngôi nhà' trong tiếng Anh là:", "options": ["horse", "house", "hour", "home work"], "answer": 1},
+    {"id": "p04", "level": "A1", "q": "There ___ two apples on the table.", "options": ["is", "be", "are", "has"], "answer": 2},
+    {"id": "p05", "level": "A1", "q": "___ you like coffee?", "options": ["Are", "Does", "Is", "Do"], "answer": 3},
+    {"id": "p06", "level": "A2", "q": "Yesterday we ___ to the beach.", "options": ["go", "went", "gone", "goes"], "answer": 1},
+    {"id": "p07", "level": "A2", "q": "Look! It ___ outside.", "options": ["rains", "rained", "is raining", "rain"], "answer": 2},
+    {"id": "p08", "level": "A2", "q": "My brother is ___ than me.", "options": ["tall", "taller", "tallest", "more tall"], "answer": 1},
+    {"id": "p09", "level": "A2", "q": "I have lived here ___ 2020.", "options": ["for", "since", "from", "in"], "answer": 1},
+    {"id": "p10", "level": "A2", "q": "You ___ wear a helmet when you ride a motorbike.", "options": ["must", "can", "may", "would"], "answer": 0},
+    {"id": "p11", "level": "B1", "q": "If I ___ more time, I would learn to play the guitar.", "options": ["have", "had", "will have", "would have"], "answer": 1},
+    {"id": "p12", "level": "B1", "q": "The bridge ___ in 1998.", "options": ["built", "was built", "has built", "is building"], "answer": 1},
+    {"id": "p13", "level": "B1", "q": "The woman ___ lives next door is a lawyer.", "options": ["which", "whose", "who", "where"], "answer": 2},
+    {"id": "p14", "level": "B1", "q": "According to the passage, what do some cities charge drivers for?", "options": ["Parking at night", "Entering the city centre", "Using the metro", "Buying a car"], "answer": 1, "passage": true},
+    {"id": "p15", "level": "B1", "q": "'Critics' in the passage are people who:", "options": ["support the fee", "build metro lines", "disagree with the fee", "drive to work"], "answer": 2, "passage": true},
+    {"id": "p16", "level": "B2", "q": "___ the heavy rain, the match continued.", "options": ["Although", "Despite", "Because of", "However"], "answer": 1},
+    {"id": "p17", "level": "B2", "q": "If she had left earlier, she ___ the train.", "options": ["would catch", "caught", "would have caught", "had caught"], "answer": 2},
+    {"id": "p18", "level": "B2", "q": "The number of tourists rose ___ from 2 million to 5 million.", "options": ["slight", "dramatically", "dramatic", "slightly of"], "answer": 1},
+    {"id": "p19", "level": "B2", "q": "Which statement best matches the critics' view in the passage?", "options": ["Fees reduce pollution", "Fees hurt poorer workers most", "Metro lines are too expensive", "Journeys become faster"], "answer": 1, "passage": true},
+    {"id": "p20", "level": "B2", "q": "Choose the best paraphrase of 'cut pollution':", "options": ["increase pollution", "measure pollution", "reduce pollution", "explain pollution"], "answer": 2}
+  ],
+  "bands": [
+    {"min": 0, "max": 5, "level": "Pre-A1 / mất gốc", "ielts": "dưới 3.0", "start_week": 1,
+     "advice": "Bắt đầu từ tuần 1. Với người mất gốc, 6.0 trong 3 tháng là rất tham vọng: cần học đều khoảng 3 giờ/ngày; nhiều người cần thêm 2–3 tháng để đạt 6.0."},
+    {"min": 6, "max": 10, "level": "A1 – A2", "ielts": "khoảng 3.0–3.5", "start_week": 1,
+     "advice": "Bắt đầu từ tuần 1 nhưng có thể học nhanh hơn ở phần ngữ pháp đã biết; tập trung vào từ vựng và phát âm."},
+    {"min": 11, "max": 15, "level": "A2 – B1", "ielts": "khoảng 4.0–4.5", "start_week": 5,
+     "advice": "Có thể bắt đầu từ giai đoạn Tiền IELTS (tuần 5). Nên làm bài ôn tập tuần 4 trước để lấp lỗ hổng."},
+    {"min": 16, "max": 20, "level": "B1 – B2", "ielts": "khoảng 5.0+", "start_week": 9,
+     "advice": "Bắt đầu thẳng giai đoạn Luyện đề (tuần 9), dành thêm thời gian cho Writing và Speaking."}
+  ]
+}

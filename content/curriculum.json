@@ -1,0 +1,279 @@
+{
+  "version": 1,
+  "minutes_per_day": 180,
+  "note": "Lộ trình 12 tuần, mỗi tuần 6 ngày học + 1 ngày ôn tập/kiểm tra. Mục tiêu 6.0 cần học đều khoảng 3 giờ/ngày; mốc band ở mỗi giai đoạn là mục tiêu, không phải cam kết.",
+  "phases": [
+    {
+      "phase": 1,
+      "title": "Xây nền",
+      "weeks": [
+        1,
+        4
+      ],
+      "goal": "Nói và viết câu đơn đúng ngữ pháp, nắm ~1.000 từ thông dụng",
+      "milestone": "A2 · IELTS 3.5–4.0"
+    },
+    {
+      "phase": 2,
+      "title": "Tăng tốc",
+      "weeks": [
+        5,
+        8
+      ],
+      "goal": "Viết câu phức, đọc bài dài, làm quen đủ 4 kỹ năng IELTS",
+      "milestone": "B1 · IELTS 4.5–5.0"
+    },
+    {
+      "phase": 3,
+      "title": "Về đích",
+      "weeks": [
+        9,
+        12
+      ],
+      "goal": "Làm đề đúng chiến lược, viết và nói theo tiêu chí chấm",
+      "milestone": "Mục tiêu IELTS 5.5–6.0"
+    }
+  ],
+  "weeks": [
+    {
+      "week": 1,
+      "phase": 1,
+      "title": "Làm quen lại với tiếng Anh",
+      "can_do": "Giới thiệu bản thân và gia đình bằng 5–7 câu đúng ngữ pháp",
+      "vocab_theme": "Bản thân, gia đình, con số, thời gian",
+      "words_per_day": 12,
+      "focus": [
+        "g_be",
+        "g_pronouns",
+        "g_present_simple",
+        "g_articles",
+        "g_plurals",
+        "g_there_is"
+      ],
+      "listening": "Nghe bảng chữ cái, số đếm, giới thiệu bản thân (tốc độ chậm); nghe – chép lại từng câu",
+      "reading": "Đọc đoạn giới thiệu 80–120 từ, gạch chân động từ",
+      "writing": "Viết 5–7 câu về bản thân dùng cấu trúc vừa học",
+      "speaking": "Đọc to và ghi âm 36 âm IPA; tự giới thiệu 30 giây"
+    },
+    {
+      "week": 2,
+      "phase": 1,
+      "title": "Hành động hằng ngày và quá khứ",
+      "can_do": "Kể về một ngày của bạn và chuyện đã xảy ra hôm qua",
+      "vocab_theme": "Thói quen, nhà cửa, đồ ăn, mua sắm",
+      "words_per_day": 15,
+      "focus": [
+        "Hiện tại tiếp diễn",
+        "Hiện tại đơn và hiện tại tiếp diễn",
+        "Quá khứ đơn của động từ to be",
+        "Quá khứ đơn: động từ có quy tắc và bất quy tắc",
+        "Giới từ thời gian (in/on/at)",
+        "Giới từ nơi chốn"
+      ],
+      "listening": "Nghe hội thoại ngắn về thói quen; điền từ còn thiếu",
+      "reading": "Đọc email/tin nhắn ngắn, trả lời câu hỏi Wh-",
+      "writing": "Viết đoạn 60–80 từ về một ngày của bạn",
+      "speaking": "Shadowing 5 phút/ngày; kể lại cuối tuần vừa rồi"
+    },
+    {
+      "week": 3,
+      "phase": 1,
+      "title": "Kế hoạch, khả năng và so sánh",
+      "can_do": "Nói về kế hoạch, so sánh hai sự vật, hỏi và trả lời câu hỏi Wh-",
+      "vocab_theme": "Du lịch, thời tiết, công việc, học tập",
+      "words_per_day": 18,
+      "focus": [
+        "Tương lai: will và be going to",
+        "Động từ khuyết thiếu can/could",
+        "So sánh hơn và so sánh nhất",
+        "Trạng từ tần suất",
+        "Câu hỏi với từ để hỏi",
+        "Liên từ and/but/because/so"
+      ],
+      "listening": "Nghe thông báo, chỉ đường; ghi lại số, tên, giờ",
+      "reading": "Đọc bài 150 từ, trả lời đúng/sai",
+      "writing": "Viết đoạn so sánh hai thành phố/hai món đồ",
+      "speaking": "Trả lời 10 câu hỏi cá nhân, mỗi câu 2–3 câu"
+    },
+    {
+      "week": 4,
+      "phase": 1,
+      "title": "Hiện tại hoàn thành và tổng ôn nền tảng",
+      "can_do": "Kể trải nghiệm đã có, nêu ý kiến đơn giản kèm lý do",
+      "vocab_theme": "Sức khỏe, công nghệ, môi trường cơ bản",
+      "words_per_day": 20,
+      "focus": [
+        "Hiện tại hoàn thành",
+        "Hiện tại hoàn thành và quá khứ đơn",
+        "must / have to / should",
+        "V-ing và to V sau động từ",
+        "Đại từ quan hệ who/which/that (cơ bản)",
+        "Tổng ôn ngữ pháp nền tảng"
+      ],
+      "listening": "Nghe đoạn 2–3 phút, tóm tắt ý chính bằng tiếng Việt",
+      "reading": "Đọc bài 200 từ, tìm từ khóa và đoạn chứa thông tin",
+      "writing": "Viết đoạn 100 từ nêu ý kiến đơn giản (I think… because…)",
+      "speaking": "Nói 1 phút về một chủ đề quen thuộc, ghi âm và tự nghe lại"
+    },
+    {
+      "week": 5,
+      "phase": 2,
+      "title": "Câu phức và mệnh đề",
+      "can_do": "Viết câu phức với mệnh đề quan hệ, bị động và câu điều kiện",
+      "vocab_theme": "Giáo dục, gia đình – xã hội",
+      "words_per_day": 20,
+      "focus": [
+        "Quá khứ tiếp diễn",
+        "Mệnh đề quan hệ xác định",
+        "Câu bị động (hiện tại, quá khứ)",
+        "Câu điều kiện loại 0 và 1",
+        "Lượng từ (much/many/a few/a little)",
+        "Từ nối chỉ thêm ý, đối lập, kết quả"
+      ],
+      "listening": "Làm quen IELTS Listening Section 1 (điền form)",
+      "reading": "Làm quen IELTS Reading: True/False/Not Given",
+      "writing": "Viết câu phức nối hai ý; giới thiệu IELTS Writing Task 1",
+      "speaking": "Làm quen IELTS Speaking Part 1"
+    },
+    {
+      "week": 6,
+      "phase": 2,
+      "title": "Diễn đạt giả định và tường thuật",
+      "can_do": "Mô tả biểu đồ đơn giản, tường thuật lại lời người khác",
+      "vocab_theme": "Công việc, kinh tế, đô thị",
+      "words_per_day": 20,
+      "focus": [
+        "Câu điều kiện loại 2",
+        "Mệnh đề quan hệ không xác định",
+        "Câu bị động với các thì khác",
+        "Câu tường thuật",
+        "used to / be used to",
+        "So sánh số liệu (twice as…, the same as…)"
+      ],
+      "listening": "IELTS Listening Section 2 (độc thoại, bản đồ)",
+      "reading": "IELTS Reading: Matching Information",
+      "writing": "Mô tả biểu đồ đường đơn giản (Task 1)",
+      "speaking": "IELTS Speaking Part 2: lập dàn ý trong 1 phút"
+    },
+    {
+      "week": 7,
+      "phase": 2,
+      "title": "Ngôn ngữ học thuật",
+      "can_do": "Mô tả xu hướng số liệu, lập luận nguyên nhân – kết quả",
+      "vocab_theme": "Môi trường, khoa học, sức khỏe cộng đồng",
+      "words_per_day": 22,
+      "focus": [
+        "Mô tả xu hướng: rise/fall + trạng từ",
+        "Mệnh đề phân từ (V-ing/V3)",
+        "Câu điều kiện loại 3",
+        "Nhượng bộ: although/despite/however",
+        "Diễn đạt nguyên nhân – kết quả",
+        "Ngôn ngữ rào đón (tend to, it is likely that…)"
+      ],
+      "listening": "IELTS Listening Section 3 (hội thoại học thuật)",
+      "reading": "IELTS Reading: Matching Headings",
+      "writing": "Viết mở bài và một đoạn thân bài Task 2",
+      "speaking": "IELTS Speaking Part 3: mở rộng câu trả lời (lý do + ví dụ)"
+    },
+    {
+      "week": 8,
+      "phase": 2,
+      "title": "Viết đoạn văn mạch lạc",
+      "can_do": "Viết hoàn chỉnh một bài Task 2 khoảng 250 từ",
+      "vocab_theme": "Academic Word List (nhóm 1–3)",
+      "words_per_day": 22,
+      "focus": [
+        "Cấu trúc bài Task 2 (mở – thân – kết)",
+        "Paraphrase: đổi từ, đổi cấu trúc",
+        "Liên kết và từ thay thế (this, such, these…)",
+        "Cụm danh từ học thuật",
+        "Mạo từ nâng cao",
+        "Sửa lỗi ngữ pháp thường gặp của người Việt"
+      ],
+      "listening": "IELTS Listening Section 4 (bài giảng)",
+      "reading": "IELTS Reading: Sentence/Summary Completion",
+      "writing": "Viết hoàn chỉnh một bài Task 2 (250 từ)",
+      "speaking": "Thi thử Speaking Part 1–3, ghi âm"
+    },
+    {
+      "week": 9,
+      "phase": 3,
+      "title": "Chiến lược Listening & Writing Task 1",
+      "can_do": "Làm Listening đúng chiến lược, viết Task 1 mọi dạng trong 20 phút",
+      "vocab_theme": "Từ vựng mô tả số liệu",
+      "words_per_day": 20,
+      "focus": [
+        "Listening: đoán từ loại trước khi nghe, bẫy đáp án",
+        "Task 1: biểu đồ đường",
+        "Task 1: biểu đồ cột và bảng",
+        "Task 1: biểu đồ tròn và kết hợp",
+        "Task 1: quy trình",
+        "Task 1: bản đồ"
+      ],
+      "listening": "Làm 1 đề Listening đầy đủ/2 ngày, chữa lỗi",
+      "reading": "Làm 1 passage/ngày có bấm giờ (20 phút)",
+      "writing": "Viết 1 bài Task 1/ngày (150 từ, 20 phút)",
+      "speaking": "Part 1 theo chủ đề quý hiện tại"
+    },
+    {
+      "week": 10,
+      "phase": 3,
+      "title": "Chiến lược Reading & Writing Task 2",
+      "can_do": "Làm Reading trong 60 phút, viết Task 2 bốn dạng đề trong 40 phút",
+      "vocab_theme": "Chủ đề Task 2: giáo dục, công nghệ, môi trường",
+      "words_per_day": 20,
+      "focus": [
+        "Reading: skimming và scanning",
+        "Reading: TFNG / YNNG nâng cao",
+        "Task 2: Opinion (agree/disagree)",
+        "Task 2: Discussion (both views)",
+        "Task 2: Problem – Solution",
+        "Task 2: Advantages – Disadvantages"
+      ],
+      "listening": "Làm 1 đề Listening đầy đủ/2 ngày",
+      "reading": "Làm 1 đề Reading đầy đủ/2 ngày (60 phút)",
+      "writing": "Viết 1 bài Task 2/ngày (40 phút), chấm theo 4 tiêu chí",
+      "speaking": "Part 2 cue card: 2 phút/ngày"
+    },
+    {
+      "week": 11,
+      "phase": 3,
+      "title": "Speaking và tối ưu band",
+      "can_do": "Nói trôi chảy đủ 3 phần Speaking, phát âm rõ ràng",
+      "vocab_theme": "Collocation và idiom dùng được khi nói",
+      "words_per_day": 18,
+      "focus": [
+        "Speaking Part 1: trả lời tự nhiên",
+        "Speaking Part 2: kể chuyện có cấu trúc",
+        "Speaking Part 3: lập luận và so sánh",
+        "Phát âm: trọng âm, nối âm, ngữ điệu",
+        "Lexical Resource: đa dạng từ vựng",
+        "Grammatical Range: đa dạng cấu trúc"
+      ],
+      "listening": "Đề Listening + nghe lại phần sai",
+      "reading": "Đề Reading + phân tích bẫy",
+      "writing": "Viết lại bài đã chấm, sửa theo nhận xét",
+      "speaking": "Thi thử Speaking đầy đủ mỗi ngày"
+    },
+    {
+      "week": 12,
+      "phase": 3,
+      "title": "Thi thử và hoàn thiện",
+      "can_do": "Làm trọn bộ đề thi thử và quản lý thời gian như thi thật",
+      "vocab_theme": "Ôn toàn bộ flashcard",
+      "words_per_day": 10,
+      "focus": [
+        "Thi thử Listening + Reading",
+        "Thi thử Writing (Task 1 + 2)",
+        "Thi thử Speaking",
+        "Chữa lỗi theo nhóm",
+        "Thi thử toàn bài lần 2",
+        "Chiến lược phòng thi và quản lý thời gian"
+      ],
+      "listening": "Đề đầy đủ, điều kiện thi thật",
+      "reading": "Đề đầy đủ, điều kiện thi thật",
+      "writing": "Bài thi thử đầy đủ 60 phút",
+      "speaking": "Thi thử 11–14 phút"
+    }
+  ]
+}
