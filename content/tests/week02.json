@@ -1,0 +1,24 @@
+{
+  "week": 2,
+  "title": "Kiểm tra tuần 2: Hành động hằng ngày và quá khứ",
+  "time_limit_min": 20,
+  "pass_pct": 70,
+  "passage": "Hi Mai, I'm writing this message on the bus. I'm going to my aunt's house in Hue. Yesterday was a busy day. I got up at six o'clock and cleaned my room. Then I went to the supermarket with my mother. We bought rice, eggs and some vegetables. The vegetables were cheap, but the meat was very expensive, so we didn't buy any. In the afternoon, I cooked lunch for my family. I usually go to the gym on Saturday, but yesterday I was very tired, so I stayed at home. See you on Monday at school! Hoa",
+  "questions": [
+    {"id": "w02q01", "section": "grammar", "q": "Be quiet! The baby ___.", "options": ["sleeps", "is sleep", "is sleeping", "sleeping"], "answer": 2, "explain": "Hành động đang xảy ra lúc nói dùng hiện tại tiếp diễn: is + V-ing."},
+    {"id": "w02q02", "section": "grammar", "q": "My mother usually ___ to work by motorbike, but today she is walking.", "options": ["goes", "is going", "go", "went"], "answer": 0, "explain": "'usually' chỉ thói quen nên dùng hiện tại đơn; chủ ngữ số ít → goes."},
+    {"id": "w02q03", "section": "grammar", "q": "I ___ at home yesterday evening.", "options": ["am", "were", "is", "was"], "answer": 3, "explain": "'yesterday' là quá khứ; I đi với was."},
+    {"id": "w02q04", "section": "grammar", "q": "Last Sunday we ___ fish at the market.", "options": ["buyed", "bought", "buy", "buys"], "answer": 1, "explain": "buy là động từ bất quy tắc, quá khứ là bought."},
+    {"id": "w02q05", "section": "grammar", "q": "My birthday is ___ May 15th.", "options": ["on", "in", "at", "to"], "answer": 0, "explain": "Trước ngày cụ thể dùng on."},
+    {"id": "w02q06", "section": "grammar", "q": "I'm waiting for you ___ the bus stop.", "options": ["in", "on", "at", "to"], "answer": 2, "explain": "Chỉ một điểm/địa điểm cụ thể như trạm xe buýt dùng at."},
+    {"id": "w02q07", "section": "grammar", "q": "Choose the correct sentence.", "options": ["She studyed English last night.", "She did studied English last night.", "She studies English last night.", "She studied English last night."], "answer": 3, "explain": "Quá khứ của study: phụ âm + y → ied, thành studied."},
+    {"id": "w02q08", "section": "grammar", "q": "___ you at school yesterday?", "options": ["Did", "Were", "Was", "Are"], "answer": 1, "explain": "Câu hỏi quá khứ của to be với you dùng Were."},
+    {"id": "w02q09", "section": "vocab", "q": "'Tủ lạnh' trong tiếng Anh là:", "options": ["kitchen", "cooker", "fridge", "freezing"], "answer": 2, "explain": "fridge = tủ lạnh; kitchen = nhà bếp."},
+    {"id": "w02q10", "section": "vocab", "q": "I ___ my homework every evening.", "options": ["do", "make", "take", "play"], "answer": 0, "explain": "Cụm cố định: do homework (làm bài tập về nhà)."},
+    {"id": "w02q11", "section": "vocab", "q": "This shirt is on sale. It is only 50,000 dong. It is very ___.", "options": ["expensive", "delicious", "tired", "cheap"], "answer": 3, "explain": "Giảm giá, chỉ 50.000 đồng nên rất rẻ (cheap)."},
+    {"id": "w02q12", "section": "vocab", "q": "You sleep in the ___.", "options": ["kitchen", "bedroom", "bathroom", "garden"], "answer": 1, "explain": "bedroom = phòng ngủ, nơi để ngủ."},
+    {"id": "w02q13", "section": "reading", "q": "What did Hoa and her mother buy at the supermarket?", "options": ["Rice, eggs and vegetables", "Meat and rice", "Eggs and meat", "Vegetables and fish"], "answer": 0, "explain": "Bài viết: 'We bought rice, eggs and some vegetables'; họ không mua thịt."},
+    {"id": "w02q14", "section": "reading", "q": "In the message, the word 'tired' means:", "options": ["very hungry", "very happy", "needing rest", "very late"], "answer": 2, "explain": "tired = mệt, tức là cần nghỉ ngơi."},
+    {"id": "w02q15", "section": "reading", "q": "What is the message mainly about?", "options": ["Hoa's aunt in Hue", "Food prices in the supermarket", "Hoa's plans for Monday", "What Hoa did yesterday"], "answer": 3, "explain": "Phần lớn tin nhắn kể lại những việc Hoa đã làm hôm qua."}
+  ]
+}

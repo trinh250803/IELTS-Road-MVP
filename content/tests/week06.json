@@ -1,0 +1,129 @@
+{
+  "week": 6,
+  "title": "Kiểm tra tuần 6: Diễn đạt giả định và tường thuật",
+  "time_limit_min": 25,
+  "pass_pct": 70,
+  "passage": "Bayview, which lies on the coast about two hours from the capital, has changed rapidly over the past twenty years. In 2005, the city had around 600,000 residents. By 2020, its population had grown to about 1.2 million, so it was twice as large as it had been fifteen years earlier. Much of this growth came from young people who moved there to find work.\n\nTourism has been the main driver of the local economy. The number of hotel rooms in Bayview is now roughly four times as high as it was in 2010, and thousands of jobs have been created in restaurants, transport and other services. Several technology companies have also opened offices in the city, attracted by lower rents than in the capital.\n\nHowever, rapid growth has brought problems. Traffic used to be light, but the main roads are now crowded at rush hour. House prices have risen faster than salaries, so many local workers have to live far from the centre. Last month, a city planner said that new bus routes would be introduced the following year to reduce congestion.",
+  "questions": [
+    {
+      "id": "w06q01",
+      "section": "grammar",
+      "q": "If I ___ the manager, I would give everyone a longer lunch break.",
+      "options": ["am", "were", "will be", "had been"],
+      "answer": 1,
+      "explain": "Câu điều kiện loại 2 (giả định không có thật ở hiện tại): If + were, would + V."
+    },
+    {
+      "id": "w06q02",
+      "section": "grammar",
+      "q": "The factory made 10,000 cars in 2020 and 5,000 cars in 2010. Production in 2020 was ___ production in 2010.",
+      "options": ["as twice high as", "the same as", "twice as high as", "double than"],
+      "answer": 2,
+      "explain": "Cấu trúc gấp đôi: twice as + tính từ + as."
+    },
+    {
+      "id": "w06q03",
+      "section": "grammar",
+      "q": "Hanoi, ___ is the capital of Vietnam, attracts millions of workers from other provinces.",
+      "options": ["which", "that", "who", "where"],
+      "answer": 0,
+      "explain": "Mệnh đề quan hệ không xác định (có dấu phẩy) chỉ vật dùng which, không dùng that."
+    },
+    {
+      "id": "w06q04",
+      "section": "grammar",
+      "q": "Which sentence is correct?",
+      "options": ["My boss who is very strict, never arrives late.", "My boss, that is very strict, never arrives late.", "My boss, which is very strict, never arrives late.", "My boss, who is very strict, never arrives late."],
+      "answer": 3,
+      "explain": "Mệnh đề không xác định cần hai dấu phẩy và dùng who cho người, không dùng that."
+    },
+    {
+      "id": "w06q05",
+      "section": "grammar",
+      "q": "A new shopping centre ___ in the city centre at the moment.",
+      "options": ["is building", "is being built", "has built", "builds"],
+      "answer": 1,
+      "explain": "Bị động hiện tại tiếp diễn: is being + V3 (đang được xây)."
+    },
+    {
+      "id": "w06q06",
+      "section": "grammar",
+      "q": "More than 500 new jobs ___ since the factory opened.",
+      "options": ["have been created", "have created", "were creating", "are created"],
+      "answer": 0,
+      "explain": "Có since nên dùng hiện tại hoàn thành; nghĩa bị động: have been + V3."
+    },
+    {
+      "id": "w06q07",
+      "section": "grammar",
+      "q": "'I am looking for a new job,' Lan said. → Lan said that she ___ for a new job.",
+      "options": ["is looking", "has looked", "was looking", "looks"],
+      "answer": 2,
+      "explain": "Câu tường thuật lùi thì: am looking → was looking."
+    },
+    {
+      "id": "w06q08",
+      "section": "grammar",
+      "q": "I ___ working long hours, so the new schedule doesn't bother me.",
+      "options": ["used to", "am used to", "use to", "was use to"],
+      "answer": 1,
+      "explain": "Be used to + V-ing nghĩa là đã quen với việc gì."
+    },
+    {
+      "id": "w06q09",
+      "section": "vocab",
+      "q": "The government hopes to ___ unemployment by creating more jobs in rural areas.",
+      "options": ["reduce", "lower down", "decline", "fall"],
+      "answer": 0,
+      "explain": "Reduce unemployment (giảm thất nghiệp) là kết hợp đúng; decline và fall không có tân ngữ."
+    },
+    {
+      "id": "w06q10",
+      "section": "vocab",
+      "q": "Vietnam's economy has grown ___ over the past twenty years.",
+      "options": ["rapid", "rapidly", "rapidity", "more rapid"],
+      "answer": 1,
+      "explain": "Bổ nghĩa cho động từ grown cần trạng từ rapidly."
+    },
+    {
+      "id": "w06q11",
+      "section": "vocab",
+      "q": "Many young people move to big cities in search of better job ___.",
+      "options": ["occasions", "possibles", "opportunities", "works"],
+      "answer": 2,
+      "explain": "Cụm cố định: job opportunities (cơ hội việc làm)."
+    },
+    {
+      "id": "w06q12",
+      "section": "vocab",
+      "q": "Rapid ___ has caused housing shortages in many large cities.",
+      "options": ["urban", "urbanise", "urbanised", "urbanisation"],
+      "answer": 3,
+      "explain": "Sau tính từ rapid và làm chủ ngữ cần danh từ urbanisation (đô thị hóa)."
+    },
+    {
+      "id": "w06q13",
+      "section": "reading",
+      "q": "True, False or Not Given? The number of hotel rooms in Bayview has doubled since 2010.",
+      "options": ["True", "False", "Not Given"],
+      "answer": 1,
+      "explain": "Bài đọc nói số phòng khách sạn tăng gấp khoảng bốn lần, không phải gấp đôi."
+    },
+    {
+      "id": "w06q14",
+      "section": "reading",
+      "q": "True, False or Not Given? Most of the technology companies in Bayview come from abroad.",
+      "options": ["True", "False", "Not Given"],
+      "answer": 2,
+      "explain": "Bài đọc không nói các công ty công nghệ đến từ đâu."
+    },
+    {
+      "id": "w06q15",
+      "section": "reading",
+      "q": "What did the city planner say?",
+      "options": ["New bus routes would be introduced to reduce congestion.", "Bus fares would be reduced the following year.", "More roads would be built in the city centre.", "House prices would fall the following year."],
+      "answer": 0,
+      "explain": "Câu cuối bài: nhà quy hoạch nói sẽ mở tuyến xe buýt mới để giảm ùn tắc."
+    }
+  ]
+}

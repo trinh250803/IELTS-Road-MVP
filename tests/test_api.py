@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from app import content, learner, writing
+from app import content, exams, learner, writing
 
 
 @pytest.fixture(scope="module")
@@ -43,7 +43,32 @@ def test_placement_scoring():
     all_right = {q["id"]: q["answer"] for q in qs}
     r = content.score_placement(all_right)
     assert r["score"] == 20 and r["start_week"] == 9
-    assert "answer" not in content.placement_public()["questions"][0]
+    assert "answer" not in exams.public(exams.placement())[0]
+
+
+def test_weekly_test_files_valid():
+    """Every content/tests/weekNN.json present is well-formed (files are authored by hand)."""
+    files = sorted((content.CONTENT / "tests").glob("week*.json"))
+    for f in files:
+        week = int(f.stem[4:])
+        t = exams.weekly(week)
+        assert t["week"] == week and t["time_limit_min"] > 0 and 0 < t["pass_pct"] <= 100, f
+        ids = [q["id"] for q in t["questions"]]
+        assert len(ids) == 15 and len(set(ids)) == 15, f
+        for q in t["questions"]:
+            assert q["section"] in ("grammar", "vocab", "reading", "strategy"), q["id"]
+            assert len(q["options"]) in (3, 4) and 0 <= q["answer"] < len(q["options"]), q["id"]
+            assert q["explain"], q["id"]
+
+
+FAKE_WEEK = {"week": 1, "title": "Kiểm tra tuần 1", "time_limit_min": 20, "pass_pct": 70, "passage": "Text.",
+             "questions": [{"id": f"f{i}", "section": "grammar" if i < 6 else "vocab", "q": f"Q{i}", "options": ["a", "b", "c", "d"],
+                            "answer": i % 4, "explain": "vì"} for i in range(10)]}
+
+
+@pytest.fixture
+def fake_weekly(monkeypatch):
+    monkeypatch.setattr(exams, "weekly", lambda w: {**FAKE_WEEK, "week": w, "title": f"Kiểm tra tuần {w}"} if 1 <= w <= 12 else None)
 
 
 def test_demo_account(client, monkeypatch):
@@ -73,13 +98,16 @@ def test_learning_flow(client):
     # Placement with a middle score moves the start to week 5.
     qs = content.placement()["questions"]
     answers = {q["id"]: q["answer"] for q in qs[:13]}
-    r = client.post("/api/placement", headers=h, json={"answers": answers}).json()
-    assert r["start_week"] == 5
+    a = client.post("/api/exams/start", headers=h, json={"kind": "placement"}).json()
+    assert "answer" not in a["questions"][0]
+    r = client.post(f'/api/attempts/{a["id"]}/submit', headers=h, json={"answers": answers}).json()
+    assert r["result"]["start_week"] == 5 and r["score"] == 13
     assert client.get("/api/dashboard", headers=h).json()["today"]["day"] == 29
     assert client.put("/api/learner/start-week", headers=h, json={"week": 1}).json()["start_week"] == 1
 
     day1 = client.get("/api/days/1", headers=h).json()
     assert "g_be" in day1["lessons"] and len(day1["words"]) == 12
+    assert client.put("/api/days/7/tasks/weekly_test", headers=h, json={"done": True}).status_code == 400
     for t in day1["tasks"]:
         r = client.put(f'/api/days/1/tasks/{t["id"]}', headers=h, json={"done": True})
         assert r.status_code == 200
@@ -88,6 +116,49 @@ def test_learning_flow(client):
     assert dash["today"]["day"] == 2 and dash["streak"] == 1 and dash["minutes_7d"] == day1["minutes"]
     assert client.put("/api/days/1/tasks/nope", headers=h, json={"done": True}).status_code == 404
     assert client.get("/api/days/85", headers=h).status_code == 404
+
+
+def test_attempt_log(client, fake_weekly):
+    h = register(client, "an.nguyen")
+    hub = client.get("/api/exams", headers=h).json()
+    assert hub["current_week"] == 1 and hub["weeks"][0]["available"] and not hub["weeks"][1]["available"]
+    assert client.post("/api/exams/start", headers=h, json={"kind": "weekly", "week": 2}).status_code == 403
+    assert client.post("/api/exams/start", headers=h, json={"kind": "weekly", "week": 99}).status_code == 404
+
+    # 1st attempt is abandoned by starting a 2nd; 2nd fails; 3rd passes. All three stay in the log.
+    first = client.post("/api/exams/start", headers=h, json={"kind": "weekly", "week": 1}).json()
+    assert first["status"] == "in_progress" and first["remaining_s"] > 0 and "answer" not in first["questions"][0]
+    second = client.post("/api/exams/start", headers=h, json={"kind": "weekly", "week": 1}).json()
+    r = client.post(f'/api/attempts/{second["id"]}/submit', headers=h, json={"answers": {"f0": 0, "f1": 1, "f2": 3}}).json()
+    assert (r["score"], r["total"], r["pct"], r["passed"]) == (2, 10, 20, False)
+    assert r["sections"]["grammar"] == {"correct": 2, "total": 6}
+    assert r["review"][2]["given"] == 3 and r["review"][2]["correct"] is False and r["review"][2]["answer"] == 2
+    assert client.post(f'/api/attempts/{second["id"]}/submit', headers=h, json={"answers": {}}).status_code == 409
+    assert client.get("/api/days/7", headers=h).json()["done"] == []
+
+    third = client.post("/api/exams/start", headers=h, json={"kind": "weekly", "week": 1}).json()
+    all_right = {f"f{i}": i % 4 for i in range(10)}
+    r = client.post(f'/api/attempts/{third["id"]}/submit', headers=h, json={"answers": all_right}).json()
+    assert r["passed"] and r["pct"] == 100 and r["duration_s"] >= 0 and not r["overtime"]
+    assert client.get("/api/days/7", headers=h).json()["done"] == ["weekly_test"]  # passing ticks the review-day task
+
+    log = client.get("/api/attempts", headers=h).json()
+    assert [a["status"] for a in log] == ["submitted", "submitted", "abandoned"]
+    assert log[0]["id"] == third["id"] and all(a["started_at"] for a in log)
+    w1 = client.get("/api/exams", headers=h).json()["weeks"][0]
+    assert (w1["attempts"], w1["best_pct"], w1["passed"]) == (2, 100, True)
+    assert client.get(f'/api/attempts/{first["id"]}', headers=h).json()["status"] == "abandoned"
+    # Another learner cannot read this log.
+    other = register(client, "binh")
+    assert client.get(f'/api/attempts/{third["id"]}', headers=other).status_code == 404
+
+
+def test_overtime_flag(client, fake_weekly, monkeypatch):
+    h = register(client, "cuong")
+    a = client.post("/api/exams/start", headers=h, json={"kind": "weekly", "week": 1}).json()
+    monkeypatch.setattr(exams, "_elapsed_s", lambda a: 20 * 60 + exams.GRACE_S + 1)
+    r = client.post(f'/api/attempts/{a["id"]}/submit', headers=h, json={"answers": {}}).json()
+    assert r["overtime"] is True and r["score"] == 0
 
 
 def test_flashcards(client):

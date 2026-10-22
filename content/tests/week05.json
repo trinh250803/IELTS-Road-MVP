@@ -1,0 +1,129 @@
+{
+  "week": 5,
+  "title": "Kiểm tra tuần 5: Câu phức và mệnh đề",
+  "time_limit_min": 25,
+  "pass_pct": 70,
+  "passage": "In many countries, the way families support children's education has changed over the last fifty years. In the past, parents who had little schooling often left learning entirely to teachers. Today, most parents are expected to take an active role. Homework is checked at the kitchen table, and parents are invited to regular meetings at school.\n\nResearchers at a university in Canada studied 2,000 families over ten years. They found that children whose parents read with them at least three times a week achieved higher marks in reading and writing. However, the amount of money a family spent on private lessons made only a small difference. The study also showed that grandparents played an important part, especially in families where both parents worked long hours.\n\nNot everyone agrees with this trend. Some teachers worry that too much pressure from home can make students anxious. They suggest that parents should focus on encouraging curiosity rather than on test results. As a result, several schools now run free workshops which help parents support learning in a more relaxed way.",
+  "questions": [
+    {
+      "id": "w05q01",
+      "section": "grammar",
+      "q": "At 9 o'clock last night, I ___ for my English test, so I didn't hear the phone.",
+      "options": ["studied", "was studying", "study", "have studied"],
+      "answer": 1,
+      "explain": "Hành động đang diễn ra tại một thời điểm xác định trong quá khứ dùng quá khứ tiếp diễn."
+    },
+    {
+      "id": "w05q02",
+      "section": "grammar",
+      "q": "Students ___ attend every class usually get better results.",
+      "options": ["which", "whose", "who", "where"],
+      "answer": 2,
+      "explain": "Danh từ chỉ người (students) làm chủ ngữ cho mệnh đề quan hệ nên dùng who."
+    },
+    {
+      "id": "w05q03",
+      "section": "grammar",
+      "q": "This is the school ___ my father studied forty years ago.",
+      "options": ["where", "which", "who", "whose"],
+      "answer": 0,
+      "explain": "Where thay cho nơi chốn (= in which); dùng which thì phải có giới từ in."
+    },
+    {
+      "id": "w05q04",
+      "section": "grammar",
+      "q": "In Vietnam, English ___ in most primary schools from grade 3.",
+      "options": ["teaches", "is taught", "taught", "is teaching"],
+      "answer": 1,
+      "explain": "Tiếng Anh được dạy (bị động hiện tại đơn): is + V3."
+    },
+    {
+      "id": "w05q05",
+      "section": "grammar",
+      "q": "The new classrooms ___ last summer, so they are still very clean.",
+      "options": ["are built", "built", "have building", "were built"],
+      "answer": 3,
+      "explain": "Có mốc quá khứ last summer và nghĩa bị động nên dùng were + V3."
+    },
+    {
+      "id": "w05q06",
+      "section": "grammar",
+      "q": "If children ___ enough sleep, they find it hard to concentrate at school.",
+      "options": ["don't get", "won't get", "didn't get", "not get"],
+      "answer": 0,
+      "explain": "Câu điều kiện loại 0 nói sự thật chung: cả hai vế đều ở hiện tại đơn."
+    },
+    {
+      "id": "w05q07",
+      "section": "grammar",
+      "q": "We don't have ___ time before the exam, so let's revise quickly.",
+      "options": ["many", "a few", "much", "few"],
+      "answer": 2,
+      "explain": "Time là danh từ không đếm được, câu phủ định dùng much."
+    },
+    {
+      "id": "w05q08",
+      "section": "grammar",
+      "q": "The village school is very small. ___, its students achieve excellent results.",
+      "options": ["Therefore", "However", "Moreover", "As a result"],
+      "answer": 1,
+      "explain": "Hai ý đối lập (trường nhỏ nhưng kết quả tốt) nên dùng However."
+    },
+    {
+      "id": "w05q09",
+      "section": "vocab",
+      "q": "Students who ___ attention in class usually understand the lesson better.",
+      "options": ["pay", "give", "make", "take"],
+      "answer": 0,
+      "explain": "Cụm cố định: pay attention (chú ý)."
+    },
+    {
+      "id": "w05q10",
+      "section": "vocab",
+      "q": "Parents play an important role in their children's ___.",
+      "options": ["develop", "developed", "development", "developing"],
+      "answer": 2,
+      "explain": "Sau tính từ sở hữu children's cần danh từ: development (sự phát triển)."
+    },
+    {
+      "id": "w05q11",
+      "section": "vocab",
+      "q": "In ___ families, grandparents, parents and children all live together in one house.",
+      "options": ["extended", "nuclear", "single-parent", "small"],
+      "answer": 0,
+      "explain": "Extended family là gia đình nhiều thế hệ sống chung."
+    },
+    {
+      "id": "w05q12",
+      "section": "vocab",
+      "q": "In many countries, education is ___ until the age of 15, so all children must go to school.",
+      "options": ["optional", "compulsory", "private", "expensive"],
+      "answer": 1,
+      "explain": "Compulsory nghĩa là bắt buộc, khớp với ý 'must go to school'."
+    },
+    {
+      "id": "w05q13",
+      "section": "reading",
+      "q": "True, False or Not Given? Spending more money on private lessons greatly improved children's marks.",
+      "options": ["True", "False", "Not Given"],
+      "answer": 1,
+      "explain": "Bài đọc nói tiền học thêm chỉ tạo khác biệt nhỏ, trái với 'greatly improved'."
+    },
+    {
+      "id": "w05q14",
+      "section": "reading",
+      "q": "True, False or Not Given? Most of the families in the Canadian study lived in large cities.",
+      "options": ["True", "False", "Not Given"],
+      "answer": 2,
+      "explain": "Bài đọc không nói các gia đình sống ở đâu."
+    },
+    {
+      "id": "w05q15",
+      "section": "reading",
+      "q": "In the last paragraph, what does 'this trend' refer to?",
+      "options": ["teachers giving students more homework", "families paying for private lessons", "grandparents living with their grandchildren", "parents taking a more active role in their children's education"],
+      "answer": 3,
+      "explain": "Xu hướng được nói ở đoạn 1: phụ huynh tham gia tích cực vào việc học của con."
+    }
+  ]
+}

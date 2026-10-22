@@ -9,10 +9,11 @@ from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
-from . import auth, content, learner, store, writing
+from . import auth, content, exams, learner, store, writing
 from .auth import ApiError
 
 ROOT = Path(__file__).resolve().parent.parent
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 log = logging.getLogger("ielts")
 
 @asynccontextmanager
@@ -99,18 +100,31 @@ def me(user=USER):
     return auth.public_user(user)
 
 
-# ---------- Placement test ----------
-@app.get("/api/placement")
-def get_placement(user=USER):
-    return {**content.placement_public(), "last_result": learner_of(user)["placement"]}
+# ---------- Tests and attempt log ----------
+@app.get("/api/exams")
+def exam_hub(user=USER):
+    return exams.hub(learner_of(user))
 
 
-@app.post("/api/placement")
-async def submit_placement(request: Request, user=USER):
-    answers = (await body_json(request)).get("answers")
-    if not isinstance(answers, dict):
-        raise ApiError(400, "Thiếu câu trả lời")
-    return learner.save_placement(user["username"], content.score_placement(answers))
+@app.post("/api/exams/start")
+async def exam_start(request: Request, user=USER):
+    b = await body_json(request)
+    return exams.start(user["username"], b.get("kind"), b.get("week"))
+
+
+@app.get("/api/attempts")
+def list_attempts(user=USER):
+    return [exams.summary(a) for a in learner_of(user)["attempts"]]
+
+
+@app.get("/api/attempts/{attempt_id}")
+def get_attempt(attempt_id: str, user=USER):
+    return exams.get(learner_of(user), attempt_id)
+
+
+@app.post("/api/attempts/{attempt_id}/submit")
+async def submit_attempt(attempt_id: str, request: Request, user=USER):
+    return exams.submit(user["username"], attempt_id, (await body_json(request)).get("answers"))
 
 
 # ---------- Roadmap and daily plan ----------

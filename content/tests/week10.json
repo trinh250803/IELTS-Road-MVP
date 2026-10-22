@@ -1,0 +1,159 @@
+{
+  "week": 10,
+  "title": "Kiểm tra tuần 10: Chiến lược Reading & Writing Task 2",
+  "time_limit_min": 30,
+  "pass_pct": 70,
+  "passage": "The Digital Classroom: Promise and Reality\n\nOver the past two decades, governments around the world have spent large sums equipping schools with computers, tablets and high-speed internet. The assumption behind this investment was simple: if students had access to technology, their learning would improve. The evidence, however, suggests that the relationship is far more complicated.\n\nA large international study compared the performance of 15-year-olds in more than 60 countries. It found that students who used computers moderately at school achieved slightly better reading results than those who rarely used them. Yet students who used computers very frequently performed noticeably worse, even after differences in family income were taken into account. The researchers argued that technology cannot replace the deep, focused attention required for understanding complex texts.\n\nSupporters of digital learning respond that the problem lies not in the devices but in how they are used. When teachers receive proper training, they say, technology allows lessons to be tailored to individual needs. Adaptive software, for example, can identify which mathematical skills a learner has not yet mastered and provide extra practice exactly where it is needed. In several pilot schools, such programmes have narrowed the gap between stronger and weaker pupils.\n\nThere are also environmental questions. Producing and disposing of millions of devices consumes energy and creates electronic waste, much of which is shipped to developing countries. Some educators therefore propose that schools should keep devices for longer and repair rather than replace them.\n\nWhat emerges is not a simple verdict for or against technology. Instead, the key factor appears to be teacher expertise: the same tablet can be a powerful learning tool or an expensive distraction.",
+  "questions": [
+    {
+      "id": "w10q01",
+      "section": "strategy",
+      "q": "You need to find the year in which a law was passed in a long Reading passage. Which technique should you use?",
+      "options": ["Skimming the whole passage for the general idea", "Reading every word carefully from the beginning", "Scanning for numbers and dates", "Reading only the title and guessing"],
+      "answer": 2,
+      "explain": "Scanning là đọc lướt để tìm thông tin cụ thể như năm, số liệu, tên riêng. Skimming dùng để nắm ý chính."
+    },
+    {
+      "id": "w10q02",
+      "section": "strategy",
+      "q": "What is skimming mainly used for in IELTS Reading?",
+      "options": ["Getting the general idea of a passage or paragraph quickly", "Finding a specific number or name", "Checking the spelling of your answers", "Learning every new word in the passage"],
+      "answer": 0,
+      "explain": "Skimming giúp nắm nhanh ý chính của bài/đoạn, rất hữu ích cho dạng matching headings."
+    },
+    {
+      "id": "w10q03",
+      "section": "strategy",
+      "q": "Text: \"Construction of the bridge began in 2005.\" Statement: \"The bridge was completed in 2005.\" What is the correct answer?",
+      "options": ["True", "False", "Not Given"],
+      "answer": 2,
+      "explain": "Bài chỉ nói năm bắt đầu xây, không cho biết năm hoàn thành, nên là Not Given. Chỉ chọn False khi bài nói điều trái ngược."
+    },
+    {
+      "id": "w10q04",
+      "section": "strategy",
+      "q": "What is the main difference between Yes/No/Not Given and True/False/Not Given questions?",
+      "options": [
+        "Yes/No/Not Given questions only appear in the Listening test.",
+        "Yes/No/Not Given questions ask about the writer's views or claims, while True/False/Not Given ask about factual information.",
+        "Yes/No/Not Given questions never have \"Not Given\" as the answer.",
+        "There is no difference; they test exactly the same thing."
+      ],
+      "answer": 1,
+      "explain": "YNNG kiểm tra quan điểm/nhận định của tác giả, còn TFNG kiểm tra thông tin dữ kiện trong bài."
+    },
+    {
+      "id": "w10q05",
+      "section": "strategy",
+      "q": "Task 2 prompt: \"Some people believe university education should be free for everyone. To what extent do you agree or disagree?\" Which thesis statement is appropriate for this question type?",
+      "options": [
+        "This essay will discuss both views and then reach a conclusion.",
+        "I partly agree, because free tuition widens access, but I believe students from wealthy families should still contribute to the cost.",
+        "University education is a topic that many people talk about nowadays.",
+        "There are many causes of high tuition fees, and several solutions exist."
+      ],
+      "answer": 1,
+      "explain": "Dạng Opinion cần nêu rõ quan điểm (đồng ý đến mức nào) ngay ở mở bài. Các câu còn lại không nêu quan điểm hoặc sai dạng đề."
+    },
+    {
+      "id": "w10q06",
+      "section": "strategy",
+      "q": "Task 2 prompt: \"Some people think children can learn effectively at home using technology, while others believe classroom learning is essential. Discuss both views and give your own opinion.\" Which essay plan answers ALL parts of the question?",
+      "options": [
+        "Discuss only the view you agree with in both body paragraphs.",
+        "Discuss both views but avoid giving any personal opinion.",
+        "Describe problems with technology and suggest solutions.",
+        "Body 1: the first view; Body 2: the second view; state your opinion in the introduction and conclusion."
+      ],
+      "answer": 3,
+      "explain": "Dạng Discussion yêu cầu bàn cả hai quan điểm VÀ nêu ý kiến riêng. Thiếu một phần sẽ bị trừ điểm Task Response."
+    },
+    {
+      "id": "w10q07",
+      "section": "strategy",
+      "q": "Task 2 prompt: \"Plastic pollution in the oceans is increasing. What are the causes of this problem, and what measures can be taken to solve it?\" Which sentence is a suitable topic sentence for the FIRST body paragraph?",
+      "options": [
+        "One major cause of ocean plastic is poor waste management in many coastal cities.",
+        "In conclusion, plastic pollution is a serious problem.",
+        "I strongly agree that all plastic products should be banned.",
+        "On the other hand, some people prefer to use paper bags."
+      ],
+      "answer": 0,
+      "explain": "Đề hỏi nguyên nhân và giải pháp, nên thân bài 1 nên bắt đầu bằng nguyên nhân. Đề không hỏi agree/disagree."
+    },
+    {
+      "id": "w10q08",
+      "section": "strategy",
+      "q": "Task 2 prompt: \"Do the advantages of working from home outweigh the disadvantages?\" What MUST the essay include?",
+      "options": [
+        "Only a list of advantages",
+        "The causes of the rise in remote working",
+        "A clear answer about whether the advantages outweigh the disadvantages",
+        "A detailed description of your own job"
+      ],
+      "answer": 2,
+      "explain": "Câu hỏi \"outweigh\" đòi hỏi bạn so sánh và trả lời rõ lợi ích có lớn hơn bất lợi hay không."
+    },
+    {
+      "id": "w10q09",
+      "section": "vocab",
+      "q": "Choose the correct collocation: \"More and more Vietnamese students choose to ______ a degree abroad.\"",
+      "options": ["make", "carry", "raise", "pursue"],
+      "answer": 3,
+      "explain": "\"Pursue a degree\" (theo học một bằng cấp) là collocation chuẩn trong chủ đề giáo dục."
+    },
+    {
+      "id": "w10q10",
+      "section": "vocab",
+      "q": "Choose the correct verb: \"Governments should ______ stricter regulations on factories that pollute rivers.\"",
+      "options": ["impose", "commit", "arise", "deprive"],
+      "answer": 0,
+      "explain": "\"Impose regulations/restrictions\" nghĩa là áp đặt quy định, rất hay dùng trong chủ đề môi trường."
+    },
+    {
+      "id": "w10q11",
+      "section": "vocab",
+      "q": "Choose the correct word form: \"Smartphones have become an ______ part of modern life.\"",
+      "options": ["indispensably", "indispensable", "dispense", "indispensability"],
+      "answer": 1,
+      "explain": "Sau \"an\" và trước danh từ \"part\" cần tính từ: \"indispensable\" (không thể thiếu)."
+    },
+    {
+      "id": "w10q12",
+      "section": "vocab",
+      "q": "Which phrase is the best paraphrase of \"renewable energy\"?",
+      "options": ["energy produced by burning coal and oil", "energy that is saved by switching off lights", "energy from sources that are naturally replaced, such as wind and sunlight", "energy used by electric cars"],
+      "answer": 2,
+      "explain": "Năng lượng tái tạo đến từ nguồn tự nhiên được bổ sung liên tục như gió, mặt trời. Than và dầu là năng lượng hóa thạch."
+    },
+    {
+      "id": "w10q13",
+      "section": "reading",
+      "q": "True, False or Not Given? \"The international study compared students from fewer than 50 countries.\"",
+      "options": ["True", "False", "Not Given"],
+      "answer": 1,
+      "explain": "Bài viết nói nghiên cứu so sánh học sinh ở \"more than 60 countries\", trái với \"fewer than 50\": False."
+    },
+    {
+      "id": "w10q14",
+      "section": "reading",
+      "q": "True, False or Not Given? \"The adaptive software used in the pilot schools was developed by the government.\"",
+      "options": ["True", "False", "Not Given"],
+      "answer": 2,
+      "explain": "Bài không nói ai phát triển phần mềm, nên không thể xác nhận hay phủ nhận: Not Given."
+    },
+    {
+      "id": "w10q15",
+      "section": "reading",
+      "q": "Which statement best summarises the writer's main conclusion?",
+      "options": [
+        "The effectiveness of classroom technology depends largely on teachers' expertise.",
+        "Technology always improves students' reading results.",
+        "Schools should stop buying computers and tablets.",
+        "Electronic waste is the most serious problem facing schools."
+      ],
+      "answer": 0,
+      "explain": "Đoạn cuối kết luận yếu tố then chốt là chuyên môn của giáo viên (\"the key factor appears to be teacher expertise\")."
+    }
+  ]
+}

@@ -63,7 +63,7 @@ label input, label textarea, label select { margin-top: .35rem; }
 .seg-btn.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(22,27,46,.1); }
 
 /* ---------- Shell ---------- */
-.shell { display: grid; grid-template-columns: 248px 1fr; min-height: 100vh; }
+.shell { display: grid; grid-template-columns: 248px minmax(0, 1fr); min-height: 100vh; }
 .side { position: sticky; top: 0; height: 100vh; background: var(--surface); border-right: 1px solid var(--line); display: flex; flex-direction: column; padding: 22px 14px; }
 .logo { display: flex; align-items: center; gap: .55rem; font-weight: 800; font-size: 1.08rem; color: var(--text); padding: 0 10px 22px; }
 .mark { width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg, var(--ph1), var(--ph2) 55%, var(--ph3)); position: relative; flex: none; }
@@ -249,6 +249,27 @@ main { padding: 32px 36px 64px; max-width: 1080px; width: 100%; }
 .result-hero { text-align: center; padding: 30px 24px; }
 .result-hero .big { font-size: 3rem; font-weight: 800; color: var(--primary); line-height: 1.1; }
 
+/* ---------- Exams ---------- */
+.chip.bad { background: var(--bad-soft); color: var(--bad); } .chip.warn { background: var(--warn-soft); color: var(--warn); }
+.chip svg { width: 14px; height: 14px; }
+#clock { font-variant-numeric: tabular-nums; font-size: .9rem; }
+#clock.bad { background: var(--bad-soft); color: var(--bad); }
+.exam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.exam-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: .4rem; }
+.exam-card.now { border-color: var(--ph); box-shadow: 0 0 0 3px var(--ph-soft); }
+.exam-card .wnum { font-size: .76rem; font-weight: 700; color: var(--ph); text-transform: uppercase; letter-spacing: .04em; }
+.exam-card h4 { font-size: .97rem; min-height: 2.6em; }
+.exam-card .btn { margin-top: auto; }
+.exam-card span.btn { color: var(--muted); cursor: default; background: var(--surface-2); border-color: transparent; }
+.table-wrap { overflow-x: auto; }
+.log { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 640px; }
+.log th { text-align: left; color: var(--muted); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; padding: .4rem .6rem; }
+.log td { padding: .6rem; border-top: 1px solid var(--line); vertical-align: middle; }
+.log td a { font-weight: 600; }
+.sections { display: grid; gap: 10px; max-width: 420px; margin: 1.2rem auto 0; text-align: left; font-size: .9rem; }
+span.opt { cursor: default; }
+.q .chip { margin-left: .4rem; vertical-align: middle; }
+
 .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--text); color: #fff; padding: .7rem 1.1rem; border-radius: 12px;
   z-index: 50; max-width: calc(100% - 32px); font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
 
@@ -264,7 +285,7 @@ main { padding: 32px 36px 64px; max-width: 1080px; width: 100%; }
   .auth-brand { padding: 28px 20px; gap: 16px; }
   .auth-brand h2 { font-size: 1.5rem; }
   .auth-steps { display: none; }
-  .shell { grid-template-columns: 1fr; }
+  .shell { grid-template-columns: minmax(0, 1fr); }
   .side { position: fixed; z-index: 20; top: auto; bottom: 0; left: 0; right: 0; height: auto; flex-direction: row; padding: 6px 8px calc(6px + env(safe-area-inset-bottom)); border-right: 0; border-top: 1px solid var(--line); }
   .side .logo, .side-user { display: none; }
   #nav { grid-auto-flow: column; grid-auto-columns: 1fr; width: 100%; gap: 0; }

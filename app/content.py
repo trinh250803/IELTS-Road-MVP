@@ -104,12 +104,6 @@ def roadmap() -> dict:
                       {"topics": [_focus_task(f, w["phase"])["detail"] for f in w["focus"]]} for w in c["weeks"]]}
 
 
-def placement_public() -> dict:
-    p = placement()
-    return {"passage": p["passage"], "questions": [{k: q[k] for k in ("id", "level", "q", "options") } | {"passage": q.get("passage", False)}
-                                                   for q in p["questions"]]}
-
-
 def score_placement(answers: dict) -> dict:
     p = placement()
     by_level: dict[str, list[int]] = {}

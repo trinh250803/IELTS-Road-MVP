@@ -28,6 +28,8 @@ const ICON_PATHS = {
   volume: '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>',
   back: '<path d="m15 6-6 6 6 6"/>',
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  x: '<path d="M6 6l12 12M18 6 6 18"/>',
 };
 const icon = (name, cls = '') => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICON_PATHS[name] || ''}</svg>`;
 const KIND_ICON = { vocab: 'vocab', grammar: 'grammar', strategy: 'target', listening: 'listening', reading: 'reading', writing: 'writing', speaking: 'speaking', review: 'review', test: 'test' };
@@ -36,7 +38,7 @@ const hours = m => `${Math.round(m / 6) / 10}h`;
 
 const NAV = [
   ['today', 'home', 'Hôm nay'], ['roadmap', 'route', 'Lộ trình'], ['cards', 'cards', 'Từ vựng'],
-  ['writing', 'pen', 'Writing'], ['test', 'clipboard', 'Kiểm tra'],
+  ['writing', 'pen', 'Writing'], ['test', 'clipboard', 'Bài thi'],
 ];
 $('#nav').innerHTML = NAV.map(([r, i, l]) => `<a href="#/${r}" data-r="${r}">${icon(i)}<span>${l}</span></a>`).join('');
 
@@ -103,7 +105,7 @@ $('#auth-form').addEventListener('submit', async e => {
   try {
     const r = await api(`/api/auth/${mode}`, { method: 'POST', body: f });
     setToken(r.token);
-    await start(mode === 'register' ? '#/test' : null);
+    await start(mode === 'register' ? '#/exam/placement' : null);
   } catch (err) { $('#auth-error').textContent = err.message; }
 });
 async function logout() {
@@ -124,11 +126,15 @@ async function start(route) {
 }
 
 // ---------- Router ----------
-const routes = { today: renderToday, day: renderDay, roadmap: renderRoadmap, cards: renderCards, writing: renderWriting, test: renderTest };
+const routes = { today: renderToday, day: renderDay, roadmap: renderRoadmap, cards: renderCards, writing: renderWriting,
+  test: renderExamHub, exam: renderExam, attempt: renderAttempt };
+const NAV_OF = { day: 'roadmap', exam: 'test', attempt: 'test' };
 async function render() {
-  const [name, arg] = (location.hash.replace(/^#\//, '') || 'today').split('/');
+  stopTimer();
+  const [name, ...args] = (location.hash.replace(/^#\//, '') || 'today').split('/');
   const fn = routes[name] || renderToday;
-  const active = name === 'day' ? 'roadmap' : (routes[name] ? name : 'today');
+  const arg = args.join('/');
+  const active = NAV_OF[name] || (routes[name] ? name : 'today');
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('active', a.dataset.r === active));
   view.innerHTML = '<p class="muted">Đang tải…</p>';
   try { await fn(arg); } catch (err) { view.innerHTML = `<div class="card error">${esc(err.message)}</div>`; }
@@ -139,6 +145,11 @@ window.addEventListener('hashchange', render);
 // ---------- Shared pieces ----------
 function taskItem(day, t, done) {
   const isDone = done.includes(t.id);
+  // The weekly test is completed by passing it, not by ticking.
+  const action = t.id === 'weekly_test'
+    ? (isDone ? `<span class="check" title="Đã đạt">${icon('check')}</span>`
+      : `<a class="btn primary" href="#/exam/week/${Math.ceil(day / 7)}">Làm bài</a>`)
+    : `<button class="check" data-day="${day}" data-task="${t.id}" aria-pressed="${isDone}" aria-label="Đánh dấu hoàn thành">${icon('check')}</button>`;
   return `<li class="task k-${t.kind} ${isDone ? 'done' : ''}">
     <span class="kind">${icon(KIND_ICON[t.kind] || 'checkCircle')}</span>
     <div class="body">
@@ -147,14 +158,14 @@ function taskItem(day, t, done) {
       ${t.lesson_id ? `<a class="lesson" href="#/day/${day}">Học bài →</a>` : ''}
     </div>
     <span class="min">${t.minutes}′</span>
-    <button class="check" data-day="${day}" data-task="${t.id}" aria-pressed="${isDone}" aria-label="Đánh dấu hoàn thành">${icon('check')}</button>
+    ${action}
   </li>`;
 }
 function taskList(day, tasks, done) {
   return `<ul class="tasks">${tasks.map(t => taskItem(day, t, done)).join('')}</ul>`;
 }
 function bindTasks(after) {
-  view.querySelectorAll('.check').forEach(btn => btn.addEventListener('click', async () => {
+  view.querySelectorAll('button.check').forEach(btn => btn.addEventListener('click', async () => {
     const li = btn.closest('.task');
     const next = !li.classList.contains('done');
     li.classList.toggle('done', next);
@@ -419,47 +430,144 @@ async function renderWriting() {
   });
 }
 
-// ---------- Placement test ----------
+// ---------- Tests: hub, taking a test, attempt review ----------
 const LEVEL_NAME = { A1: 'Sơ cấp', A2: 'Cơ bản', B1: 'Trung cấp', B2: 'Trung cao cấp' };
-async function renderTest() {
-  const t = await api('/api/placement');
-  const answers = {};
-  const last = t.last_result;
-  let lastLevel = null;
+const SECTION_NAME = { grammar: 'Ngữ pháp', vocab: 'Từ vựng', reading: 'Đọc hiểu', strategy: 'Chiến lược', ...LEVEL_NAME };
+const STATUS = { submitted: ['Đã nộp', 'ok'], in_progress: ['Đang làm', 'primary'], abandoned: ['Bỏ dở', ''], expired: ['Không nộp', ''] };
+const mmss = s => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+const when = iso => new Date(iso).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+let timer = null;
+function stopTimer() { clearInterval(timer); timer = null; window.onbeforeunload = null; }
+
+function attemptRows(list) {
+  if (!list.length) return '<p class="muted">Chưa có lượt thi nào.</p>';
+  return `<div class="table-wrap"><table class="log">
+    <tr><th>Bắt đầu</th><th>Bài thi</th><th>Kết quả</th><th>Thời gian làm</th><th>Trạng thái</th><th></th></tr>
+    ${list.map(a => {
+      const [label, cls] = STATUS[a.status] || [a.status, ''];
+      const result = a.status === 'submitted'
+        ? `<b>${a.score}/${a.total}</b> · ${a.pct}% ${a.passed === true ? '<span class="chip ok">Đạt</span>' : a.passed === false ? '<span class="chip bad">Chưa đạt</span>' : ''}`
+        : '—';
+      return `<tr><td>${when(a.started_at)}</td><td>${esc(a.title)}</td><td>${result}</td>
+        <td>${a.duration_s != null ? mmss(a.duration_s) : '—'}${a.overtime ? ' <span class="chip warn">quá giờ</span>' : ''}</td>
+        <td><span class="chip ${cls}">${label}</span></td>
+        <td>${a.status === 'submitted' ? `<a href="#/attempt/${a.id}">Xem lại</a>` : ''}</td></tr>`;
+    }).join('')}</table></div>`;
+}
+
+async function renderExamHub() {
+  const [hub, log] = await Promise.all([api('/api/exams'), api('/api/attempts')]);
+  const p = hub.placement;
   view.innerHTML = `
-    <div class="page-head"><h1>Kiểm tra đầu vào</h1><p>20 câu từ dễ đến khó, khoảng 10–15 phút. Không biết thì bỏ qua, đừng đoán bừa, để kết quả sát nhất.</p></div>
-    ${last ? `<div class="note info" style="margin-bottom:1rem">${icon('info')}<span>Lần trước: <b>${last.score}/${last.total}</b> · ${esc(last.level)} · IELTS ${esc(last.ielts_estimate)}</span></div>` : ''}
-    <div class="test-bar"><span class="chip primary" id="answered">0/${t.questions.length} câu</span><div class="bar"><i id="tbar" style="width:0"></i></div></div>
+    <div class="page-head"><h1>Bài thi</h1><p>Mỗi tuần một bài kiểm tra; đạt từ 70% để hoàn thành tuần. Mọi lượt thi đều được lưu lại.</p></div>
     <div class="card">
-      ${t.questions.map((q, i) => {
-        const head = q.level !== lastLevel ? `<div class="level-head"><span class="chip primary">${q.level}</span><h3>${LEVEL_NAME[q.level] || ''}</h3></div>
-          ${q.level === 'B1' ? `<p class="passage" style="margin:.6rem 0">${esc(t.passage)}</p>` : ''}` : '';
-        lastLevel = q.level;
-        return `${head}<div class="q" data-id="${q.id}"><div class="qt"><span class="qn">${i + 1}</span>${q.passage ? '<i class="muted">(Đọc đoạn văn)</i> ' : ''}${esc(q.q)}</div>
+      <div class="card-head" style="margin:0"><div><h3>Kiểm tra đầu vào</h3>
+        <p class="muted small">20 câu · 20 phút · ${p ? `lần gần nhất ${p.score}/${p.total} · ${esc(p.level)} · IELTS ${esc(p.ielts_estimate)}` : 'chưa làm'} · ${hub.placement_attempts} lượt</p></div>
+        <a class="btn ${p ? '' : 'primary'}" href="#/exam/placement">${p ? 'Làm lại' : 'Làm bài'}</a></div>
+    </div>
+    <h2 style="margin:1.6rem 0 .8rem">Kiểm tra hằng tuần</h2>
+    <div class="exam-grid">${hub.weeks.map(w => {
+      const state = !w.ready ? ['Đang soạn', ''] : !w.available ? ['Chưa mở', ''] : w.passed ? [`Đạt · ${w.best_pct}%`, 'ok']
+        : w.attempts ? [`Chưa đạt · ${w.best_pct}%`, 'bad'] : ['Chưa làm', 'primary'];
+      const ph = w.week <= 4 ? 1 : w.week <= 8 ? 2 : 3;
+      return `<div class="exam-card ph${ph} ${w.week === hub.current_week ? 'now' : ''}">
+        <div class="row" style="justify-content:space-between"><span class="wnum">Tuần ${w.week}</span><span class="chip ${state[1]}">${state[0]}</span></div>
+        <h4>${esc(w.title.replace(/^Kiểm tra tuần \d+:\s*/, ''))}</h4>
+        <p class="muted small">${w.ready ? `${w.questions} câu · ${w.time_limit_min} phút · đạt ≥ ${w.pass_pct}%` : 'Nội dung đang được soạn'}${w.attempts ? ` · ${w.attempts} lượt` : ''}</p>
+        ${w.available ? `<a class="btn ${w.passed ? '' : 'primary'} block" href="#/exam/week/${w.week}">${w.attempts ? 'Làm lại' : 'Làm bài'}</a>`
+          : `<span class="btn block" aria-disabled="true">${icon('lock')} ${w.ready ? `Mở ở tuần ${w.week}` : 'Chưa có'}</span>`}
+      </div>`;
+    }).join('')}</div>
+    <h2 style="margin:1.8rem 0 .8rem">Lịch sử các lượt thi</h2>
+    <div class="card">${attemptRows(log)}</div>`;
+}
+
+async function renderExam(arg) {
+  const [kind, week] = arg.startsWith('week/') ? ['weekly', Number(arg.split('/')[1])] : ['placement', null];
+  const a = await api('/api/exams/start', { method: 'POST', body: { kind, week } });
+  const answers = {};
+  let lastSection = null;
+  const total = a.questions.length;
+  view.innerHTML = `
+    <a class="crumb" href="#/test">${icon('back')} Bài thi</a>
+    <div class="page-head"><h1>${esc(a.title)}</h1><p>${total} câu · ${Math.round(a.time_limit_s / 60)} phút${kind === 'placement' ? ' · Không biết thì bỏ qua, đừng đoán bừa.' : ''} Hết giờ bài sẽ tự nộp.</p></div>
+    <div class="test-bar"><span class="chip" id="clock">${icon('clock')} ${mmss(a.remaining_s)}</span>
+      <div class="bar"><i id="tbar" style="width:0"></i></div><span class="chip primary" id="answered">0/${total}</span></div>
+    <div class="card">
+      ${a.questions.map((q, i) => {
+        const head = q.section !== lastSection ? `<div class="level-head"><span class="chip primary">${esc(q.section.length === 2 ? q.section : SECTION_NAME[q.section] || q.section)}</span>
+          <h3>${esc(q.section.length === 2 ? LEVEL_NAME[q.section] || '' : '')}</h3></div>
+          ${q.section === (kind === 'placement' ? 'B1' : 'reading') && a.passage ? `<p class="passage" style="margin:.6rem 0">${esc(a.passage)}</p>` : ''}` : '';
+        lastSection = q.section;
+        return `${head}<div class="q" data-id="${q.id}"><div class="qt"><span class="qn">${i + 1}</span>${esc(q.q)}</div>
           <div class="opts">${q.options.map((o, j) => `<button class="opt" data-j="${j}">${esc(o)}</button>`).join('')}</div></div>`;
       }).join('')}
-      <div style="margin-top:1.2rem"><button class="btn primary" id="submit-test">Nộp bài</button></div>
-    </div>
-    <div id="test-result" style="margin-top:1rem"></div>`;
-  const total = t.questions.length;
+      <div class="row" style="margin-top:1.2rem"><button class="btn primary" id="submit-test">Nộp bài</button><span class="muted small">Câu chưa trả lời tính là sai.</span></div>
+    </div>`;
   view.querySelectorAll('.q').forEach(q => q.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
     q.querySelectorAll('.opt').forEach(x => x.classList.toggle('sel', x === b));
     answers[q.dataset.id] = Number(b.dataset.j);
     const n = Object.keys(answers).length;
-    $('#answered').textContent = `${n}/${total} câu`;
+    $('#answered').textContent = `${n}/${total}`;
     $('#tbar').style.width = `${n / total * 100}%`;
   })));
-  $('#submit-test').addEventListener('click', async () => {
-    const r = await api('/api/placement', { method: 'POST', body: { answers } });
-    roadmapCache = null;
-    $('#test-result').innerHTML = `<div class="card result-hero">
-      <p class="muted">Kết quả của bạn</p><div class="big">${r.score}/${r.total}</div>
-      <div class="row" style="justify-content:center;margin:.7rem 0"><span class="chip primary">${esc(r.level)}</span><span class="chip ok">IELTS ước tính ${esc(r.ielts_estimate)}</span></div>
-      <p class="muted small">${Object.entries(r.by_level).map(([k, v]) => `${k}: ${v.correct}/${v.total}`).join(' · ')}</p>
-      <p style="max-width:560px;margin:1rem auto">${esc(r.advice)}</p><p class="muted small">${esc(r.note)}</p>
-      <p style="margin-top:1.2rem"><a class="btn primary" href="#/today">Bắt đầu học từ tuần ${r.start_week}</a></p></div>`;
-    $('#test-result').scrollIntoView({ behavior: 'smooth' });
-  });
+  let sent = false;
+  const send = async auto => {
+    if (sent) return;
+    const left = total - Object.keys(answers).length;
+    if (!auto && left && !confirm(`Còn ${left} câu chưa trả lời. Vẫn nộp bài?`)) return;
+    sent = true;
+    stopTimer();
+    try {
+      const r = await api(`/api/attempts/${a.id}/submit`, { method: 'POST', body: { answers } });
+      roadmapCache = null;
+      if (auto) toast('Hết giờ, bài đã được nộp tự động');
+      location.hash = `#/attempt/${r.id}`;
+    } catch (err) { sent = false; toast(err.message); }
+  };
+  $('#submit-test').addEventListener('click', () => send(false));
+  const deadline = Date.now() + a.remaining_s * 1000;
+  window.onbeforeunload = () => 'Bài thi chưa nộp';
+  timer = setInterval(() => {
+    const s = Math.max(0, Math.round((deadline - Date.now()) / 1000));
+    const c = $('#clock');
+    if (c) { c.innerHTML = `${icon('clock')} ${mmss(s)}`; c.classList.toggle('bad', s <= 60); }
+    if (!s) send(true);
+  }, 1000);
+}
+
+async function renderAttempt(id) {
+  const a = await api(`/api/attempts/${id}`);
+  if (a.status !== 'submitted') {
+    view.innerHTML = `<a class="crumb" href="#/test">${icon('back')} Bài thi</a><div class="card"><p>Lượt thi này ${esc((STATUS[a.status] || [a.status])[0]).toLowerCase()}, không có kết quả.</p></div>`;
+    return;
+  }
+  const r = a.result;
+  const verdict = a.passed === true ? '<span class="chip ok">Đạt</span>' : a.passed === false ? `<span class="chip bad">Chưa đạt · cần ${a.pass_pct}%</span>` : '';
+  view.innerHTML = `
+    <a class="crumb" href="#/test">${icon('back')} Bài thi</a>
+    <div class="card result-hero">
+      <p class="muted">${esc(a.title)}</p><div class="big">${a.score}/${a.total}</div>
+      <div class="row" style="justify-content:center;margin:.7rem 0">${verdict}<span class="chip">${a.pct}%</span>
+        <span class="chip">${icon('clock')} ${mmss(a.duration_s)}${a.overtime ? ' · quá giờ' : ''}</span></div>
+      <p class="muted small">Bắt đầu ${when(a.started_at)} · nộp ${when(a.submitted_at)}</p>
+      <div class="sections">${Object.entries(a.sections).map(([k, s]) => `
+        <div><div class="row" style="justify-content:space-between"><span>${esc(SECTION_NAME[k] || k)}</span><b>${s.correct}/${s.total}</b></div>
+        <div class="bar"><i style="width:${s.correct / s.total * 100}%"></i></div></div>`).join('')}</div>
+      ${r ? `<p style="max-width:560px;margin:1rem auto"><b>${esc(r.level)}</b> · IELTS ước tính ${esc(r.ielts_estimate)}. ${esc(r.advice)}</p>
+        <p class="muted small">${esc(r.note)}</p>` : ''}
+      <div class="row" style="justify-content:center;margin-top:1rem">
+        ${r ? `<a class="btn primary" href="#/today">Bắt đầu học từ tuần ${r.start_week}</a>` : a.passed ? '<a class="btn primary" href="#/today">Tiếp tục học</a>'
+          : `<a class="btn primary" href="#/exam/week/${a.week}">Làm lại</a>`}
+      </div>
+    </div>
+    <div class="card"><div class="card-head"><h3>Xem lại từng câu</h3><span class="muted small">${a.total - a.score} câu sai</span></div>
+      ${a.passage ? `<details style="margin-bottom:.6rem"><summary class="muted small">Xem đoạn văn</summary><p class="passage" style="margin-top:.5rem">${esc(a.passage)}</p></details>` : ''}
+      ${a.review.map((q, i) => `<div class="q"><div class="qt"><span class="qn">${i + 1}</span>${esc(q.q)}
+          ${q.correct ? `<span class="chip ok">${icon('check')}</span>` : `<span class="chip bad">${icon('x')}</span>`}</div>
+        <div class="opts">${q.options.map((o, j) => `<span class="opt ${j === q.answer ? 'right' : j === q.given ? 'wrong' : ''}">${esc(o)}</span>`).join('')}</div>
+        ${q.given == null ? '<div class="explain">Bạn chưa trả lời câu này.</div>' : ''}${q.explain ? `<div class="explain">${esc(q.explain)}</div>` : ''}</div>`).join('')}
+    </div>`;
 }
 
 // ---------- Boot ----------

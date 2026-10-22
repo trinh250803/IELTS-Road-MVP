@@ -1,0 +1,129 @@
+{
+  "week": 8,
+  "title": "Kiểm tra tuần 8: Viết đoạn văn mạch lạc",
+  "time_limit_min": 25,
+  "pass_pct": 70,
+  "passage": "Over the last decade, online learning has become a significant part of higher education. Many universities now offer courses that students can access from any location, and some research suggests that this approach benefits learners who work full-time or live far from a campus.\n\nHowever, the data also show a clear challenge. Completion rates for online courses are generally lower than those for traditional classes. One major factor is motivation: without regular contact with teachers and classmates, individual students may find it difficult to keep studying. This problem appears to be most serious for younger students, who often require more guidance.\n\nTo respond to this issue, several institutions have adopted a 'blended' method, which combines online lessons with occasional face-to-face meetings. Early results from these programmes are encouraging. Students report feeling more connected, and fewer of them leave their courses before the end.\n\nNevertheless, experts argue that technology alone cannot replace good teaching. In their view, the most effective courses are those designed around the needs of learners rather than the tools available.",
+  "questions": [
+    {
+      "id": "w08q01",
+      "section": "grammar",
+      "q": "In an IELTS Writing Task 2 essay, where should you first state your main opinion clearly?",
+      "options": ["In the conclusion only", "In the introduction", "In the middle of the second body paragraph", "In the title"],
+      "answer": 1,
+      "explain": "Quan điểm chính (thesis) nên nêu rõ ngay ở mở bài, rồi nhắc lại ở kết bài."
+    },
+    {
+      "id": "w08q02",
+      "section": "grammar",
+      "q": "Choose the best paraphrase of: 'Many young people cannot find jobs.'",
+      "options": ["Young people do not want to work.", "Many jobs are given to young people.", "Unemployment affects a large number of young people.", "Young people find jobs very easily."],
+      "answer": 2,
+      "explain": "Đổi từ (cannot find jobs → unemployment) mà vẫn giữ nguyên nghĩa."
+    },
+    {
+      "id": "w08q03",
+      "section": "grammar",
+      "q": "Which sentence has the same meaning as: 'The government should spend more money on public transport.'?",
+      "options": ["More money should be spent on public transport by the government.", "The government spends a lot of money on public transport.", "Public transport should spend more money on the government.", "The government should not spend money on public transport."],
+      "answer": 0,
+      "explain": "Đổi cấu trúc sang bị động mà không đổi nghĩa là một cách paraphrase."
+    },
+    {
+      "id": "w08q04",
+      "section": "grammar",
+      "q": "Many cities have introduced bike-sharing schemes. ___ schemes have helped to reduce traffic in some areas.",
+      "options": ["This", "It", "That", "These"],
+      "answer": 3,
+      "explain": "Từ thay thế cho danh từ số nhiều schemes là These."
+    },
+    {
+      "id": "w08q05",
+      "section": "grammar",
+      "q": "Online courses are flexible. ___, they are often cheaper than traditional courses.",
+      "options": ["In addition", "In contrast", "Nevertheless", "For instance"],
+      "answer": 0,
+      "explain": "Câu sau bổ sung thêm một ưu điểm nên dùng In addition."
+    },
+    {
+      "id": "w08q06",
+      "section": "grammar",
+      "q": "There has been ___ in the number of international students.",
+      "options": ["significantly increase", "a significant increase", "a big go up", "an increasing significant"],
+      "answer": 1,
+      "explain": "Cụm danh từ học thuật đúng: a + tính từ + danh từ (a significant increase)."
+    },
+    {
+      "id": "w08q07",
+      "section": "grammar",
+      "q": "___ internet has changed the way people study and work.",
+      "options": ["(no article)", "A", "An", "The"],
+      "answer": 3,
+      "explain": "Internet là thứ duy nhất, luôn đi với mạo từ the."
+    },
+    {
+      "id": "w08q08",
+      "section": "grammar",
+      "q": "Find the error: 'Although she studied hard, but she failed the exam.'",
+      "options": ["Although", "studied", "but", "the exam"],
+      "answer": 2,
+      "explain": "Tiếng Anh không dùng although và but cùng lúc; cần bỏ but."
+    },
+    {
+      "id": "w08q09",
+      "section": "vocab",
+      "q": "Researchers need to ___ the data carefully before drawing conclusions.",
+      "options": ["analysis", "analyse", "analytical", "analyst"],
+      "answer": 1,
+      "explain": "Sau need to cần động từ nguyên mẫu: analyse."
+    },
+    {
+      "id": "w08q10",
+      "section": "vocab",
+      "q": "Regular exercise has a positive ___ on mental health.",
+      "options": ["effect", "affect", "effective", "effectively"],
+      "answer": 0,
+      "explain": "Collocation: have a positive effect on; effect là danh từ, affect là động từ."
+    },
+    {
+      "id": "w08q11",
+      "section": "vocab",
+      "q": "This method is not ___ for very young children because it requires a lot of reading.",
+      "options": ["appropriately", "appropriation", "appropriate", "appropriateness"],
+      "answer": 2,
+      "explain": "Sau be (is not) cần tính từ appropriate (phù hợp)."
+    },
+    {
+      "id": "w08q12",
+      "section": "vocab",
+      "q": "Governments should ___ new policies to protect workers' rights.",
+      "options": ["do", "put", "make up", "implement"],
+      "answer": 3,
+      "explain": "Collocation học thuật: implement a policy (thực thi chính sách)."
+    },
+    {
+      "id": "w08q13",
+      "section": "reading",
+      "q": "True, False or Not Given? Online courses usually have higher completion rates than traditional classes.",
+      "options": ["True", "False", "Not Given"],
+      "answer": 1,
+      "explain": "Bài đọc nói tỷ lệ hoàn thành khóa online thường thấp hơn lớp truyền thống."
+    },
+    {
+      "id": "w08q14",
+      "section": "reading",
+      "q": "True, False or Not Given? Blended programmes are cheaper for universities to run than fully online courses.",
+      "options": ["True", "False", "Not Given"],
+      "answer": 2,
+      "explain": "Bài đọc không đề cập đến chi phí của các chương trình."
+    },
+    {
+      "id": "w08q15",
+      "section": "reading",
+      "q": "Complete the sentence: A 'blended' method combines online lessons with ___.",
+      "options": ["occasional face-to-face meetings", "full-time work", "extra online tests", "private tutors at home"],
+      "answer": 0,
+      "explain": "Đoạn 3 nói phương pháp kết hợp bài học online với các buổi gặp trực tiếp thỉnh thoảng."
+    }
+  ]
+}

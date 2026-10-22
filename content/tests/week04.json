@@ -1,0 +1,24 @@
+{
+  "week": 4,
+  "title": "Kiểm tra tuần 4: Hiện tại hoàn thành và tổng ôn nền tảng",
+  "time_limit_min": 20,
+  "pass_pct": 70,
+  "passage": "Last year, my doctor told me that I had to change my lifestyle. I spent too much time on my phone and I didn't do any exercise. Since then, I have made some big changes. I have started walking to work every day, and I have stopped drinking soft drinks. I have also joined a club which cleans up the beach every month. The people who work with me there are very friendly. Together, we have collected thousands of plastic bottles. I think everyone should try to live a healthier life because it is good for us and for the environment. I have never felt better!",
+  "questions": [
+    {"id": "w04q01", "section": "grammar", "q": "I have never ___ sushi.", "options": ["eat", "ate", "eaten", "eating"], "answer": 2, "explain": "Hiện tại hoàn thành: have + V3; V3 của eat là eaten."},
+    {"id": "w04q02", "section": "grammar", "q": "A doctor is a person ___ helps sick people.", "options": ["who", "which", "where", "what"], "answer": 0, "explain": "Thay cho người (a person) dùng đại từ quan hệ who."},
+    {"id": "w04q03", "section": "grammar", "q": "I ___ to Phu Quoc last summer.", "options": ["have been", "went", "have gone", "go"], "answer": 1, "explain": "'last summer' là thời điểm xác định trong quá khứ nên dùng quá khứ đơn."},
+    {"id": "w04q04", "section": "grammar", "q": "There ___ many people at the party last night.", "options": ["was", "are", "is", "were"], "answer": 3, "explain": "Ôn tập: 'people' số nhiều và 'last night' là quá khứ → There were."},
+    {"id": "w04q05", "section": "grammar", "q": "You have a bad cough. You ___ see a doctor.", "options": ["should to", "must to", "have", "should"], "answer": 3, "explain": "Lời khuyên dùng should + V nguyên mẫu (không có to)."},
+    {"id": "w04q06", "section": "grammar", "q": "In Vietnam, drivers ___ stop at a red light.", "options": ["have to", "has to", "must to", "should to"], "answer": 0, "explain": "Quy định bắt buộc, chủ ngữ số nhiều 'drivers' → have to + V."},
+    {"id": "w04q07", "section": "grammar", "q": "I enjoy ___ to music in the evening.", "options": ["listen", "to listen", "listening", "listened"], "answer": 2, "explain": "Sau enjoy dùng V-ing."},
+    {"id": "w04q08", "section": "grammar", "q": "We decided ___ more trees in our garden.", "options": ["planting", "to plant", "plant", "planted"], "answer": 1, "explain": "Sau decide dùng to + V."},
+    {"id": "w04q09", "section": "vocab", "q": "'Ô nhiễm' trong tiếng Anh là:", "options": ["pollution", "population", "plastic", "protection"], "answer": 0, "explain": "pollution = ô nhiễm; population = dân số."},
+    {"id": "w04q10", "section": "vocab", "q": "To stay healthy, you should ___ exercise every day.", "options": ["make", "play", "have", "do"], "answer": 3, "explain": "Cụm cố định: do exercise (tập thể dục)."},
+    {"id": "w04q11", "section": "vocab", "q": "My phone's battery is low. I need to ___ it.", "options": ["download", "delete", "charge", "connect"], "answer": 2, "explain": "Pin yếu thì cần sạc (charge)."},
+    {"id": "w04q12", "section": "vocab", "q": "We should ___ plastic bottles instead of throwing them away.", "options": ["waste", "recycle", "pollute", "drop"], "answer": 1, "explain": "recycle = tái chế, thay vì vứt đi."},
+    {"id": "w04q13", "section": "reading", "q": "What does the writer's club do every month?", "options": ["It teaches people to swim.", "It sells soft drinks.", "It cleans up the beach.", "It helps doctors."], "answer": 2, "explain": "Bài đọc viết: 'a club which cleans up the beach every month'."},
+    {"id": "w04q14", "section": "reading", "q": "In the passage, the word 'lifestyle' means:", "options": ["the place where you live", "the way you live", "a kind of sport", "a type of job"], "answer": 1, "explain": "lifestyle = lối sống, tức là cách bạn sống hằng ngày."},
+    {"id": "w04q15", "section": "reading", "q": "What is the passage mainly about?", "options": ["How the writer has changed their life", "Why phones are bad", "The writer's doctor", "How to recycle plastic"], "answer": 0, "explain": "Bài đọc kể những thay đổi người viết đã làm để sống khỏe hơn."}
+  ]
+}

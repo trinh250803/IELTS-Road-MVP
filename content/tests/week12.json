@@ -1,0 +1,164 @@
+{
+  "week": 12,
+  "title": "Kiểm tra tuần 12: Thi thử và hoàn thiện",
+  "time_limit_min": 30,
+  "pass_pct": 70,
+  "passage": "The Testing Effect\n\nMost students prepare for examinations by rereading their notes and highlighting key sentences. These methods feel productive because the material becomes increasingly familiar. However, a growing body of psychological research suggests that familiarity is a poor guide to how much has actually been learned.\n\nIn one well-known type of experiment, participants study a short scientific text. One group then rereads the text several times, while a second group reads it once and then tries to recall as much as possible without looking. When tested five minutes later, the rereading group usually performs slightly better. Yet when the test is delayed by a week, the pattern reverses: those who practised recalling the information remember considerably more. Psychologists call this the 'testing effect'.\n\nWhy should the effort of retrieval be so beneficial? One explanation is that each act of recalling a fact strengthens the memory of it, making it easier to find again in future. Another is that testing reveals gaps in knowledge, so learners can focus their remaining study time on what they do not yet know.\n\nThe benefits increase further when practice is spaced out. Reviewing material on several separate days produces more durable memories than the same amount of study concentrated into a single session, a finding that has been repeated across many age groups and subjects.\n\nFor language learners, the implications are clear. Instead of reading word lists again and again, they should cover the meanings, try to produce the words themselves, and return to the same words after increasing intervals. Flashcard applications that schedule reviews in this way are, in effect, putting decades of memory research into practice.",
+  "questions": [
+    {
+      "id": "w12q01",
+      "section": "strategy",
+      "q": "The Academic Reading test has 3 passages in 60 minutes, with no extra time to transfer answers. Which plan is the most sensible?",
+      "options": [
+        "Spend about 20 minutes on each passage and write answers on the answer sheet as you go",
+        "Spend 40 minutes on Passage 1 because it is the easiest",
+        "Read all three passages fully twice before answering any questions",
+        "Write answers on the question paper and wait for 10 minutes of transfer time at the end"
+      ],
+      "answer": 0,
+      "explain": "Reading không có thời gian chép đáp án thêm, nên chia khoảng 20 phút/passage và ghi đáp án vào phiếu ngay."
+    },
+    {
+      "id": "w12q02",
+      "section": "strategy",
+      "q": "In the paper-based Listening test, what happens after the recording ends?",
+      "options": [
+        "You can listen to the recording a second time",
+        "The test ends immediately with no extra time",
+        "You get 10 minutes to transfer your answers to the answer sheet",
+        "You get 30 minutes to check your answers with the examiner"
+      ],
+      "answer": 2,
+      "explain": "Bài Listening thi giấy có 10 phút cuối để chép đáp án sang phiếu trả lời. Audio chỉ được nghe một lần."
+    },
+    {
+      "id": "w12q03",
+      "section": "strategy",
+      "q": "In the 60-minute Writing test, how should you divide your time?",
+      "options": [
+        "About 20 minutes on Task 1 and 40 minutes on Task 2",
+        "30 minutes on each task",
+        "40 minutes on Task 1 and 20 minutes on Task 2",
+        "10 minutes on Task 1 and 50 minutes on Task 2"
+      ],
+      "answer": 0,
+      "explain": "Task 2 dài hơn (250 từ) và chiếm nhiều điểm hơn, nên dành khoảng 40 phút; Task 1 khoảng 20 phút."
+    },
+    {
+      "id": "w12q04",
+      "section": "strategy",
+      "q": "How much does Writing Task 2 count compared with Task 1?",
+      "options": ["The same as Task 1", "About twice as much as Task 1", "About half as much as Task 1", "Task 2 is not scored"],
+      "answer": 1,
+      "explain": "Task 2 có trọng số gấp khoảng đôi Task 1, vì vậy không nên để thiếu thời gian cho Task 2."
+    },
+    {
+      "id": "w12q05",
+      "section": "strategy",
+      "q": "In Speaking Part 3, you do not understand the examiner's question. What should you do?",
+      "options": [
+        "Stay silent until the examiner asks another question",
+        "Answer a different question that you prepared earlier",
+        "Switch to Vietnamese to explain the problem",
+        "Politely ask the examiner to repeat or explain the question"
+      ],
+      "answer": 3,
+      "explain": "Bạn được phép lịch sự đề nghị giám khảo nhắc lại hoặc giải thích câu hỏi; im lặng hay trả lời lạc đề đều bị trừ điểm."
+    },
+    {
+      "id": "w12q06",
+      "section": "strategy",
+      "q": "When grouping your mistakes, which error group does this sentence belong to? \"The number of students have increased.\"",
+      "options": ["Subject–verb agreement", "Articles (a/an/the)", "Spelling", "Punctuation"],
+      "answer": 0,
+      "explain": "Chủ ngữ \"The number\" là số ít nên động từ phải là \"has\". Đây là lỗi hòa hợp chủ ngữ – động từ."
+    },
+    {
+      "id": "w12q07",
+      "section": "strategy",
+      "q": "What is the minimum number of words required for Writing Task 1?",
+      "options": ["100", "200", "150", "250"],
+      "answer": 2,
+      "explain": "Task 1 yêu cầu tối thiểu 150 từ, Task 2 tối thiểu 250 từ. Viết thiếu sẽ bị trừ điểm."
+    },
+    {
+      "id": "w12q08",
+      "section": "strategy",
+      "q": "In the Listening test, you missed the answer to Question 14 and the speakers have moved on. What should you do?",
+      "options": [
+        "Stop and wait for the recording to repeat that part",
+        "Make a quick guess later and focus immediately on the next questions",
+        "Raise your hand and ask for the recording to be replayed",
+        "Leave the rest of the section blank"
+      ],
+      "answer": 1,
+      "explain": "Audio không phát lại; hãy bỏ qua, tập trung vào câu tiếp theo và đoán sau, vì sai không bị trừ điểm."
+    },
+    {
+      "id": "w12q09",
+      "section": "vocab",
+      "q": "Choose the correct word form: \"The government should take action to reduce air ______.\"",
+      "options": ["pollution", "polluting", "polluted", "pollutes"],
+      "answer": 0,
+      "explain": "Sau \"reduce air\" cần danh từ: \"air pollution\" (ô nhiễm không khí)."
+    },
+    {
+      "id": "w12q10",
+      "section": "vocab",
+      "q": "\"Profits plummeted in 2020.\" What does \"plummeted\" mean?",
+      "options": ["rose slowly", "remained stable", "went up and down", "fell sharply"],
+      "answer": 3,
+      "explain": "\"Plummet\" nghĩa là giảm mạnh, đột ngột."
+    },
+    {
+      "id": "w12q11",
+      "section": "vocab",
+      "q": "Choose the grammatically correct verb: \"Online courses ______ students to study at their own pace.\"",
+      "options": ["enable", "make", "let", "suggest"],
+      "answer": 0,
+      "explain": "\"Enable sb to do sth\" là cấu trúc đúng. \"Make\" và \"let\" đi với động từ nguyên mẫu không \"to\"; \"suggest\" không dùng cấu trúc này."
+    },
+    {
+      "id": "w12q12",
+      "section": "vocab",
+      "q": "Which phrase is the closest paraphrase of \"a significant number of people\"?",
+      "options": ["a tiny minority of people", "a considerable number of people", "none of the people", "an exact number of people"],
+      "answer": 1,
+      "explain": "\"Significant\" và \"considerable\" đều nghĩa là đáng kể, nên đây là cặp paraphrase đúng."
+    },
+    {
+      "id": "w12q13",
+      "section": "reading",
+      "q": "True, False or Not Given? \"In the experiment, the rereading group remembered more than the recall group when tested after one week.\"",
+      "options": ["True", "False", "Not Given"],
+      "answer": 1,
+      "explain": "Sau một tuần, kết quả đảo ngược: nhóm luyện nhớ lại (recall) nhớ nhiều hơn, nên câu này là False."
+    },
+    {
+      "id": "w12q14",
+      "section": "reading",
+      "q": "Which heading best fits the fourth paragraph (beginning \"The benefits increase further\")?",
+      "options": [
+        "The advantage of spreading study over time",
+        "Why familiarity can be misleading",
+        "Two explanations for the testing effect",
+        "Advice for language learners"
+      ],
+      "answer": 0,
+      "explain": "Đoạn 4 nói việc ôn tập rải ra nhiều ngày giúp nhớ lâu hơn học dồn một buổi."
+    },
+    {
+      "id": "w12q15",
+      "section": "reading",
+      "q": "According to the passage, how does testing help learners use their remaining study time better?",
+      "options": [
+        "It makes the material feel more familiar.",
+        "It reduces the total amount of study needed to zero.",
+        "It shows learners what they do not yet know.",
+        "It allows them to stop reviewing words after one day."
+      ],
+      "answer": 2,
+      "explain": "Bài viết nói việc tự kiểm tra \"reveals gaps in knowledge\", giúp người học tập trung vào phần chưa biết."
+    }
+  ]
+}

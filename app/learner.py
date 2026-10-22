@@ -18,7 +18,7 @@ def today() -> date:
 
 
 def _blank() -> dict:
-    return {"placement": None, "start_week": 1, "done": {}, "activity": {}, "cards": {}, "essays": []}
+    return {"placement": None, "start_week": 1, "done": {}, "activity": {}, "cards": {}, "essays": [], "attempts": []}
 
 
 def get(db: dict, username: str) -> dict:
@@ -54,14 +54,6 @@ def streak(lr: dict) -> int:
     return n
 
 
-def save_placement(username: str, result: dict) -> dict:
-    def m(lr):
-        lr["placement"] = {**result, "taken_at": now_iso()}
-        lr["start_week"] = result["start_week"]
-        return lr["placement"]
-    return _save(username, m)
-
-
 def set_start_week(username: str, week) -> int:
     if not isinstance(week, int) or not 1 <= week <= content.WEEKS:
         raise ApiError(400, f"Tuần bắt đầu phải từ 1 đến {content.WEEKS}")
@@ -80,6 +72,8 @@ def set_task(username: str, day: int, task_id: str, done: bool) -> dict:
     task = next((t for t in plan["tasks"] if t["id"] == task_id), None)
     if not task:
         raise ApiError(404, "Không có nhiệm vụ này")
+    if task_id == "weekly_test":
+        raise ApiError(400, "Nhiệm vụ này tự hoàn thành khi bạn làm đạt bài kiểm tra tuần")
 
     def m(lr):
         done_ids = lr["done"].setdefault(str(day), [])

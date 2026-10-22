@@ -23,6 +23,8 @@ Mở http://localhost:8000, tạo tài khoản → làm bài kiểm tra đầu v
 |---|---|
 | Đăng ký / đăng nhập | ✅ |
 | Kiểm tra đầu vào 20 câu (A1–B2) → gợi ý tuần bắt đầu | ✅ |
+| Kiểm tra hằng tuần: 12 bài × 15 câu (ngữ pháp/chiến lược, từ vựng, đọc hiểu), có giờ, đạt ≥ 70% mới hoàn thành tuần | ✅ |
+| Nhật ký lượt thi: mọi lượt (kể cả bỏ dở) lưu giờ bắt đầu/nộp, thời lượng, từng câu trả lời, điểm theo phần, đạt/chưa đạt; ghi cả vào log máy chủ | ✅ ⚠ mất khi Render free khởi động lại |
 | Lộ trình 12 tuần × 7 ngày (6 ngày học + 1 ngày ôn/kiểm tra), ~180 phút/ngày | ✅ khung đủ 84 ngày |
 | Bài học ngữ pháp có giải thích + bài tập chấm ngay | ⏳ mới có 6 bài tuần 1 |
 | Flashcard từ vựng lặp lại ngắt quãng (SM-2), phát âm bằng trình duyệt | ⏳ mới có 72 từ tuần 1 |

@@ -1,0 +1,24 @@
+{
+  "week": 1,
+  "title": "Kiểm tra tuần 1: Làm quen lại với tiếng Anh",
+  "time_limit_min": 20,
+  "pass_pct": 70,
+  "passage": "My name is Minh and I am twenty-five years old. I live in a small house near a market in Da Nang. There are four people in my family. My father is a teacher and my mother works at a hospital. My sister is a student. She studies English at a university in the city. I have a job in a bank. I work from Monday to Friday. In the evening, we usually eat dinner together. My mother cooks very well, but my sister never cooks! On Sunday morning, we always walk in the park near our house. It is quiet and beautiful.",
+  "questions": [
+    {"id": "w01q01", "section": "grammar", "q": "Lan and her brother ___ from Can Tho.", "options": ["is", "are", "am", "be"], "answer": 1, "explain": "Chủ ngữ 'Lan and her brother' là số nhiều nên dùng are."},
+    {"id": "w01q02", "section": "grammar", "q": "Mr. Nam is our teacher. We like ___ very much.", "options": ["he", "his", "he's", "him"], "answer": 3, "explain": "Sau động từ 'like' cần đại từ tân ngữ → him."},
+    {"id": "w01q03", "section": "grammar", "q": "My father ___ TV every evening.", "options": ["watches", "watch", "watchs", "is watch"], "answer": 0, "explain": "Chủ ngữ số ít ở hiện tại đơn; động từ tận cùng -ch thêm -es → watches."},
+    {"id": "w01q04", "section": "grammar", "q": "I have a cat. ___ cat is black.", "options": ["A", "An", "The", "Some"], "answer": 2, "explain": "Con mèo đã được nhắc đến trước đó nên dùng the."},
+    {"id": "w01q05", "section": "grammar", "q": "There are two ___ on the floor.", "options": ["box", "boxs", "boxes", "boxies"], "answer": 2, "explain": "Danh từ tận cùng -x thêm -es khi ở số nhiều → boxes."},
+    {"id": "w01q06", "section": "grammar", "q": "There ___ any milk in the fridge.", "options": ["isn't", "aren't", "not", "don't"], "answer": 0, "explain": "milk là danh từ không đếm được nên dùng There isn't."},
+    {"id": "w01q07", "section": "grammar", "q": "Choose the correct sentence.", "options": ["I need some informations.", "I need an information.", "I need informations.", "I need some information."], "answer": 3, "explain": "information không đếm được: không thêm -s, không dùng an."},
+    {"id": "w01q08", "section": "grammar", "q": "This is my sister. ___ name is Hoa.", "options": ["She", "Her", "Hers", "His"], "answer": 1, "explain": "Trước danh từ 'name' cần tính từ sở hữu của she → Her."},
+    {"id": "w01q09", "section": "vocab", "q": "'Đắt' trong tiếng Anh là:", "options": ["expensive", "cheap", "price", "early"], "answer": 0, "explain": "expensive = đắt; cheap = rẻ; price = giá."},
+    {"id": "w01q10", "section": "vocab", "q": "What is your phone ___?", "options": ["name", "age", "number", "price"], "answer": 2, "explain": "'phone number' nghĩa là số điện thoại."},
+    {"id": "w01q11", "section": "vocab", "q": "My sister is not married. She is ___.", "options": ["early", "single", "quiet", "first"], "answer": 1, "explain": "Chưa kết hôn thì là single (độc thân)."},
+    {"id": "w01q12", "section": "vocab", "q": "There are seven days in a ___.", "options": ["month", "year", "morning", "week"], "answer": 3, "explain": "Một tuần (week) có bảy ngày."},
+    {"id": "w01q13", "section": "reading", "q": "Where does Minh's mother work?", "options": ["In a bank", "At a hospital", "At a school", "At a market"], "answer": 1, "explain": "Bài đọc viết: 'my mother works at a hospital'."},
+    {"id": "w01q14", "section": "reading", "q": "In the passage, the word 'quiet' means:", "options": ["not noisy", "very big", "very busy", "not clean"], "answer": 0, "explain": "quiet = yên tĩnh, tức là không ồn ào (not noisy)."},
+    {"id": "w01q15", "section": "reading", "q": "What is the passage mainly about?", "options": ["Minh's job at the bank", "A park in Da Nang", "Minh and his family", "How to cook dinner"], "answer": 2, "explain": "Cả đoạn giới thiệu Minh và các thành viên trong gia đình anh ấy."}
+  ]
+}
