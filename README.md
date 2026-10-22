@@ -21,7 +21,9 @@ Mở http://localhost:8000, tạo tài khoản → làm bài kiểm tra đầu v
 
 | Tính năng | Trạng thái |
 |---|---|
-| Đăng ký / đăng nhập | ✅ |
+| Đăng ký / đăng nhập; nhiều học viên; giao diện VI/EN | ✅ |
+| Quản trị/giáo viên (`ADMIN_ACCOUNT`): dashboard báo cáo, bảng học viên, tạo tài khoản hàng loạt, khóa/mở, đặt lại mật khẩu, mọi lượt thi, xuất CSV | ✅ |
+| Động lực: XP, cấp độ, 15 huy hiệu, mục tiêu XP/ngày, bảng xếp hạng tuần; trò chơi Ghép cặp và Nghe & chọn | ✅ |
 | Kiểm tra đầu vào 20 câu (A1–B2) → gợi ý tuần bắt đầu | ✅ |
 | Kiểm tra hằng tuần: 12 bài × 15 câu (ngữ pháp/chiến lược, từ vựng, đọc hiểu), có giờ, đạt ≥ 70% mới hoàn thành tuần | ✅ |
 | Nhật ký lượt thi: mọi lượt (kể cả bỏ dở) lưu giờ bắt đầu/nộp, thời lượng, từng câu trả lời, điểm theo phần, đạt/chưa đạt; ghi cả vào log máy chủ | ✅ ⚠ mất khi Render free khởi động lại |
@@ -43,7 +45,7 @@ Mở http://localhost:8000, tạo tài khoản → làm bài kiểm tra đầu v
 | Lộ trình theo ngày | Sinh từ định nghĩa tuần | [app/content.py](app/content.py) |
 | Tiến độ, flashcard | SM-2 | [app/learner.py](app/learner.py) |
 | Chấm Writing | Claude API, structured output | [app/writing.py](app/writing.py) |
-| Lưu trữ | File JSON (giai đoạn sau: PostgreSQL) | [app/store.py](app/store.py) |
+| Lưu trữ | PostgreSQL khi có `DATABASE_URL` (ví dụ Neon miễn phí), nếu không thì file JSON | [app/store.py](app/store.py) |
 | Giao diện | HTML/JS thuần | [public/](public/) |
 
 ## Việc cần quyết định / làm tiếp
@@ -51,4 +53,4 @@ Mở http://localhost:8000, tạo tài khoản → làm bài kiểm tra đầu v
 1. **Nguồn nội dung**: soạn tiếp bài ngữ pháp tuần 2–12 và kho từ (mục tiêu ~3.000 từ), hoặc mua/cấp phép giáo trình. Đề Listening/Reading cần bản quyền.
 2. **Speaking**: ghi âm trên trình duyệt + chấm bằng AI (cần chuyển giọng nói thành chữ).
 3. **Chi phí AI**: mỗi lần chấm Writing gọi Claude; mặc định giới hạn 5 bài/học viên/ngày (`WRITING_DAILY_LIMIT`).
-4. **Lưu trữ**: Render free xóa ổ đĩa khi khởi động lại → mất tiến độ học viên. Cần PostgreSQL trước khi cho người dùng thật.
+4. **Lưu trữ**: chưa đặt `DATABASE_URL` thì Render free xóa dữ liệu mỗi lần khởi động lại. Tạo database Neon miễn phí và dán connection string vào `DATABASE_URL` trên Render trước khi cho học viên thật vào học.

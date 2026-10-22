@@ -1,6 +1,7 @@
 {
   "week": 10,
   "title": "Kiểm tra tuần 10: Chiến lược Reading & Writing Task 2",
+  "title_en": "Week 10 test: Reading & Writing Task 2 strategies",
   "time_limit_min": 30,
   "pass_pct": 70,
   "passage": "The Digital Classroom: Promise and Reality\n\nOver the past two decades, governments around the world have spent large sums equipping schools with computers, tablets and high-speed internet. The assumption behind this investment was simple: if students had access to technology, their learning would improve. The evidence, however, suggests that the relationship is far more complicated.\n\nA large international study compared the performance of 15-year-olds in more than 60 countries. It found that students who used computers moderately at school achieved slightly better reading results than those who rarely used them. Yet students who used computers very frequently performed noticeably worse, even after differences in family income were taken into account. The researchers argued that technology cannot replace the deep, focused attention required for understanding complex texts.\n\nSupporters of digital learning respond that the problem lies not in the devices but in how they are used. When teachers receive proper training, they say, technology allows lessons to be tailored to individual needs. Adaptive software, for example, can identify which mathematical skills a learner has not yet mastered and provide extra practice exactly where it is needed. In several pilot schools, such programmes have narrowed the gap between stronger and weaker pupils.\n\nThere are also environmental questions. Producing and disposing of millions of devices consumes energy and creates electronic waste, much of which is shipped to developing countries. Some educators therefore propose that schools should keep devices for longer and repair rather than replace them.\n\nWhat emerges is not a simple verdict for or against technology. Instead, the key factor appears to be teacher expertise: the same tablet can be a powerful learning tool or an expensive distraction.",
@@ -11,7 +12,8 @@
       "q": "You need to find the year in which a law was passed in a long Reading passage. Which technique should you use?",
       "options": ["Skimming the whole passage for the general idea", "Reading every word carefully from the beginning", "Scanning for numbers and dates", "Reading only the title and guessing"],
       "answer": 2,
-      "explain": "Scanning là đọc lướt để tìm thông tin cụ thể như năm, số liệu, tên riêng. Skimming dùng để nắm ý chính."
+      "explain": "Scanning là đọc lướt để tìm thông tin cụ thể như năm, số liệu, tên riêng. Skimming dùng để nắm ý chính.",
+      "explain_en": "Scanning means reading quickly to find specific information such as years, figures or names. Skimming is for the main idea."
     },
     {
       "id": "w10q02",
@@ -19,7 +21,8 @@
       "q": "What is skimming mainly used for in IELTS Reading?",
       "options": ["Getting the general idea of a passage or paragraph quickly", "Finding a specific number or name", "Checking the spelling of your answers", "Learning every new word in the passage"],
       "answer": 0,
-      "explain": "Skimming giúp nắm nhanh ý chính của bài/đoạn, rất hữu ích cho dạng matching headings."
+      "explain": "Skimming giúp nắm nhanh ý chính của bài/đoạn, rất hữu ích cho dạng matching headings.",
+      "explain_en": "Skimming helps you quickly get the main idea of a passage or paragraph, which is very useful for matching headings."
     },
     {
       "id": "w10q03",
@@ -27,7 +30,8 @@
       "q": "Text: \"Construction of the bridge began in 2005.\" Statement: \"The bridge was completed in 2005.\" What is the correct answer?",
       "options": ["True", "False", "Not Given"],
       "answer": 2,
-      "explain": "Bài chỉ nói năm bắt đầu xây, không cho biết năm hoàn thành, nên là Not Given. Chỉ chọn False khi bài nói điều trái ngược."
+      "explain": "Bài chỉ nói năm bắt đầu xây, không cho biết năm hoàn thành, nên là Not Given. Chỉ chọn False khi bài nói điều trái ngược.",
+      "explain_en": "The text only gives the year construction began, not when it was completed, so the answer is Not Given. Choose False only when the text says the opposite."
     },
     {
       "id": "w10q04",
@@ -40,7 +44,8 @@
         "There is no difference; they test exactly the same thing."
       ],
       "answer": 1,
-      "explain": "YNNG kiểm tra quan điểm/nhận định của tác giả, còn TFNG kiểm tra thông tin dữ kiện trong bài."
+      "explain": "YNNG kiểm tra quan điểm/nhận định của tác giả, còn TFNG kiểm tra thông tin dữ kiện trong bài.",
+      "explain_en": "YNNG tests the writer's views or claims, while TFNG tests factual information in the passage."
     },
     {
       "id": "w10q05",
@@ -53,7 +58,8 @@
         "There are many causes of high tuition fees, and several solutions exist."
       ],
       "answer": 1,
-      "explain": "Dạng Opinion cần nêu rõ quan điểm (đồng ý đến mức nào) ngay ở mở bài. Các câu còn lại không nêu quan điểm hoặc sai dạng đề."
+      "explain": "Dạng Opinion cần nêu rõ quan điểm (đồng ý đến mức nào) ngay ở mở bài. Các câu còn lại không nêu quan điểm hoặc sai dạng đề.",
+      "explain_en": "An opinion essay must state your position (how far you agree) clearly in the introduction. The other options give no opinion or fit the wrong question type."
     },
     {
       "id": "w10q06",
@@ -66,7 +72,8 @@
         "Body 1: the first view; Body 2: the second view; state your opinion in the introduction and conclusion."
       ],
       "answer": 3,
-      "explain": "Dạng Discussion yêu cầu bàn cả hai quan điểm VÀ nêu ý kiến riêng. Thiếu một phần sẽ bị trừ điểm Task Response."
+      "explain": "Dạng Discussion yêu cầu bàn cả hai quan điểm VÀ nêu ý kiến riêng. Thiếu một phần sẽ bị trừ điểm Task Response.",
+      "explain_en": "A discussion essay requires you to discuss both views AND give your own opinion. Missing either part lowers your Task Response score."
     },
     {
       "id": "w10q07",
@@ -79,7 +86,8 @@
         "On the other hand, some people prefer to use paper bags."
       ],
       "answer": 0,
-      "explain": "Đề hỏi nguyên nhân và giải pháp, nên thân bài 1 nên bắt đầu bằng nguyên nhân. Đề không hỏi agree/disagree."
+      "explain": "Đề hỏi nguyên nhân và giải pháp, nên thân bài 1 nên bắt đầu bằng nguyên nhân. Đề không hỏi agree/disagree.",
+      "explain_en": "The question asks for causes and solutions, so body paragraph 1 should start with causes. It does not ask whether you agree or disagree."
     },
     {
       "id": "w10q08",
@@ -92,7 +100,8 @@
         "A detailed description of your own job"
       ],
       "answer": 2,
-      "explain": "Câu hỏi \"outweigh\" đòi hỏi bạn so sánh và trả lời rõ lợi ích có lớn hơn bất lợi hay không."
+      "explain": "Câu hỏi \"outweigh\" đòi hỏi bạn so sánh và trả lời rõ lợi ích có lớn hơn bất lợi hay không.",
+      "explain_en": "An \"outweigh\" question requires you to compare and say clearly whether the advantages are greater than the disadvantages."
     },
     {
       "id": "w10q09",
@@ -100,7 +109,8 @@
       "q": "Choose the correct collocation: \"More and more Vietnamese students choose to ______ a degree abroad.\"",
       "options": ["make", "carry", "raise", "pursue"],
       "answer": 3,
-      "explain": "\"Pursue a degree\" (theo học một bằng cấp) là collocation chuẩn trong chủ đề giáo dục."
+      "explain": "\"Pursue a degree\" (theo học một bằng cấp) là collocation chuẩn trong chủ đề giáo dục.",
+      "explain_en": "\"Pursue a degree\" (study for a degree) is a standard collocation for the topic of education."
     },
     {
       "id": "w10q10",
@@ -108,7 +118,8 @@
       "q": "Choose the correct verb: \"Governments should ______ stricter regulations on factories that pollute rivers.\"",
       "options": ["impose", "commit", "arise", "deprive"],
       "answer": 0,
-      "explain": "\"Impose regulations/restrictions\" nghĩa là áp đặt quy định, rất hay dùng trong chủ đề môi trường."
+      "explain": "\"Impose regulations/restrictions\" nghĩa là áp đặt quy định, rất hay dùng trong chủ đề môi trường.",
+      "explain_en": "\"Impose regulations/restrictions\" means to introduce rules that must be followed; it is very common in environmental topics."
     },
     {
       "id": "w10q11",
@@ -116,7 +127,8 @@
       "q": "Choose the correct word form: \"Smartphones have become an ______ part of modern life.\"",
       "options": ["indispensably", "indispensable", "dispense", "indispensability"],
       "answer": 1,
-      "explain": "Sau \"an\" và trước danh từ \"part\" cần tính từ: \"indispensable\" (không thể thiếu)."
+      "explain": "Sau \"an\" và trước danh từ \"part\" cần tính từ: \"indispensable\" (không thể thiếu).",
+      "explain_en": "After \"an\" and before the noun \"part\" we need an adjective: \"indispensable\" (essential)."
     },
     {
       "id": "w10q12",
@@ -124,7 +136,8 @@
       "q": "Which phrase is the best paraphrase of \"renewable energy\"?",
       "options": ["energy produced by burning coal and oil", "energy that is saved by switching off lights", "energy from sources that are naturally replaced, such as wind and sunlight", "energy used by electric cars"],
       "answer": 2,
-      "explain": "Năng lượng tái tạo đến từ nguồn tự nhiên được bổ sung liên tục như gió, mặt trời. Than và dầu là năng lượng hóa thạch."
+      "explain": "Năng lượng tái tạo đến từ nguồn tự nhiên được bổ sung liên tục như gió, mặt trời. Than và dầu là năng lượng hóa thạch.",
+      "explain_en": "Renewable energy comes from natural sources that are constantly replaced, such as wind and sunlight. Coal and oil are fossil fuels."
     },
     {
       "id": "w10q13",
@@ -132,7 +145,8 @@
       "q": "True, False or Not Given? \"The international study compared students from fewer than 50 countries.\"",
       "options": ["True", "False", "Not Given"],
       "answer": 1,
-      "explain": "Bài viết nói nghiên cứu so sánh học sinh ở \"more than 60 countries\", trái với \"fewer than 50\": False."
+      "explain": "Bài viết nói nghiên cứu so sánh học sinh ở \"more than 60 countries\", trái với \"fewer than 50\": False.",
+      "explain_en": "The text says the study compared students in \"more than 60 countries\", which contradicts \"fewer than 50\": False."
     },
     {
       "id": "w10q14",
@@ -140,7 +154,8 @@
       "q": "True, False or Not Given? \"The adaptive software used in the pilot schools was developed by the government.\"",
       "options": ["True", "False", "Not Given"],
       "answer": 2,
-      "explain": "Bài không nói ai phát triển phần mềm, nên không thể xác nhận hay phủ nhận: Not Given."
+      "explain": "Bài không nói ai phát triển phần mềm, nên không thể xác nhận hay phủ nhận: Not Given.",
+      "explain_en": "The text does not say who developed the software, so it can be neither confirmed nor denied: Not Given."
     },
     {
       "id": "w10q15",
@@ -153,7 +168,8 @@
         "Electronic waste is the most serious problem facing schools."
       ],
       "answer": 0,
-      "explain": "Đoạn cuối kết luận yếu tố then chốt là chuyên môn của giáo viên (\"the key factor appears to be teacher expertise\")."
+      "explain": "Đoạn cuối kết luận yếu tố then chốt là chuyên môn của giáo viên (\"the key factor appears to be teacher expertise\").",
+      "explain_en": "The last paragraph concludes that the key factor is teacher expertise (\"the key factor appears to be teacher expertise\")."
     }
   ]
 }

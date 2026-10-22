@@ -1,6 +1,7 @@
 {
   "week": 9,
   "title": "Kiểm tra tuần 9: Chiến lược Listening & Writing Task 1",
+  "title_en": "Week 9 test: Listening & Writing Task 1 strategies",
   "time_limit_min": 30,
   "pass_pct": 70,
   "passage": "Commuting Patterns in Westbridge, 2010–2020\n\nA recent report by the Westbridge transport authority examined how residents travelled to work over a ten-year period. The figures reveal a clear shift away from private cars, although the change was neither steady nor evenly distributed across the city.\n\nIn 2010, almost 60 per cent of commuters drove to work, while buses accounted for around a quarter of journeys. Cycling was a minor option, chosen by just 5 per cent of workers. Over the following decade, car use fell gradually to 48 per cent. The most dramatic change, however, was in cycling, which tripled to 15 per cent by 2020. Much of this growth occurred after 2016, when the city opened a network of protected cycle lanes linking the suburbs to the business district.\n\nBus travel followed a different pattern. Its share rose slightly in the first half of the decade, peaking at 28 per cent in 2014, before declining to 22 per cent by the end of the period. The authors suggest that rising fares and the reduction of night services may have encouraged some passengers to switch to bicycles. Walking, meanwhile, remained stable at roughly 10 per cent throughout.\n\nThe report also notes significant differences between districts. In the city centre, fewer than one in three commuters used a car by 2020, whereas in outer areas with limited public transport, driving remained the dominant choice. The authors conclude that investment in infrastructure, rather than public awareness campaigns, was the main driver of change, and they recommend extending the cycle network to the outer districts before 2030.",
@@ -11,7 +12,8 @@
       "q": "Before the Listening audio starts, you read this gap: \"The museum opens at ______ on Sundays.\" What type of answer should you predict?",
       "options": ["A time (e.g. 9.30 a.m.)", "A person's name", "An adjective describing the museum", "A verb in the past tense"],
       "answer": 0,
-      "explain": "Sau \"opens at\" và trước \"on Sundays\" thường là giờ giấc. Đoán trước loại từ giúp bạn nghe đúng thông tin cần điền."
+      "explain": "Sau \"opens at\" và trước \"on Sundays\" thường là giờ giấc. Đoán trước loại từ giúp bạn nghe đúng thông tin cần điền.",
+      "explain_en": "Between \"opens at\" and \"on Sundays\" you usually find a time. Predicting the type of answer helps you catch the right information."
     },
     {
       "id": "w09q02",
@@ -19,7 +21,8 @@
       "q": "In the Listening test you hear: \"The meeting was going to be on Tuesday, but it's now been moved to Thursday.\" Question: \"The meeting will take place on ______.\" What is the correct answer?",
       "options": ["Tuesday", "Wednesday", "Thursday", "Friday"],
       "answer": 2,
-      "explain": "\"Tuesday\" là bẫy vì thông tin đã bị thay đổi; từ \"but\" báo hiệu đáp án thật là Thursday."
+      "explain": "\"Tuesday\" là bẫy vì thông tin đã bị thay đổi; từ \"but\" báo hiệu đáp án thật là Thursday.",
+      "explain_en": "\"Tuesday\" is a distractor because the plan changed; the word \"but\" signals the real answer, Thursday."
     },
     {
       "id": "w09q03",
@@ -32,7 +35,8 @@
         "Overall, visitor numbers to all three museums increased, and Museum A remained the most popular throughout the period."
       ],
       "answer": 3,
-      "explain": "Overview nêu xu hướng chính và đặc điểm nổi bật, không đưa số liệu chi tiết. Câu B chỉ là câu mở bài (paraphrase đề), câu C là ý kiến cá nhân, không được dùng trong Task 1."
+      "explain": "Overview nêu xu hướng chính và đặc điểm nổi bật, không đưa số liệu chi tiết. Câu B chỉ là câu mở bài (paraphrase đề), câu C là ý kiến cá nhân, không được dùng trong Task 1.",
+      "explain_en": "An overview states the main trends and key features without detailed figures. B only paraphrases the task (an introduction), and C is a personal opinion, which does not belong in Task 1."
     },
     {
       "id": "w09q04",
@@ -40,7 +44,8 @@
       "q": "Monthly sales went from 100 units in January to 102 units in December. Which phrase describes this change accurately?",
       "options": ["rose dramatically", "increased slightly", "plummeted", "fluctuated wildly"],
       "answer": 1,
-      "explain": "Tăng từ 100 lên 102 là mức tăng rất nhỏ nên dùng \"increased slightly\". \"Dramatically\" là tăng mạnh, \"plummeted\" là giảm mạnh."
+      "explain": "Tăng từ 100 lên 102 là mức tăng rất nhỏ nên dùng \"increased slightly\". \"Dramatically\" là tăng mạnh, \"plummeted\" là giảm mạnh.",
+      "explain_en": "Going from 100 to 102 is a very small rise, so use \"increased slightly\". \"Dramatically\" means a big rise and \"plummeted\" means a sharp fall."
     },
     {
       "id": "w09q05",
@@ -53,7 +58,8 @@
         "The recycling rate in Country X was a third of that in Country Y."
       ],
       "answer": 2,
-      "explain": "45% gấp 3 lần 15%, nên dùng \"three times as high as\". Khi so sánh trong bảng/biểu đồ cột cần tính đúng tỉ lệ."
+      "explain": "45% gấp 3 lần 15%, nên dùng \"three times as high as\". Khi so sánh trong bảng/biểu đồ cột cần tính đúng tỉ lệ.",
+      "explain_en": "45% is three times 15%, so use \"three times as high as\". When comparing data in tables or charts, calculate the ratio correctly."
     },
     {
       "id": "w09q06",
@@ -61,7 +67,8 @@
       "q": "A pie chart shows that a family spends 26% of its budget on housing. Which phrase correctly expresses 26%?",
       "options": ["just over a quarter", "nearly a third", "roughly half", "just under a fifth"],
       "answer": 0,
-      "explain": "Một phần tư là 25%, nên 26% là \"just over a quarter\" (hơn một phần tư một chút)."
+      "explain": "Một phần tư là 25%, nên 26% là \"just over a quarter\" (hơn một phần tư một chút).",
+      "explain_en": "A quarter is 25%, so 26% is \"just over a quarter\"."
     },
     {
       "id": "w09q07",
@@ -74,7 +81,8 @@
         "The first person (e.g. \"I roast the beans.\")"
       ],
       "answer": 0,
-      "explain": "Quy trình mô tả các bước lặp lại và tập trung vào hành động, nên dùng bị động thì hiện tại đơn."
+      "explain": "Quy trình mô tả các bước lặp lại và tập trung vào hành động, nên dùng bị động thì hiện tại đơn.",
+      "explain_en": "A process describes repeated steps and focuses on the actions, so use the present simple passive."
     },
     {
       "id": "w09q08",
@@ -87,7 +95,8 @@
         "The housing estate in the north was moved to the south."
       ],
       "answer": 2,
-      "explain": "Rừng bị chặt (cleared) để nhường chỗ (make way for) cho khu nhà ở. Câu A đảo ngược thứ tự thay đổi."
+      "explain": "Rừng bị chặt (cleared) để nhường chỗ (make way for) cho khu nhà ở. Câu A đảo ngược thứ tự thay đổi.",
+      "explain_en": "The forest was cleared to make way for the housing estate. Option A reverses the direction of the change."
     },
     {
       "id": "w09q09",
@@ -95,7 +104,8 @@
       "q": "Choose the correct word form: \"There was a ______ rise in the number of tourists in 2019.\"",
       "options": ["sharply", "sharp", "sharpen", "sharpness"],
       "answer": 1,
-      "explain": "Trước danh từ \"rise\" cần tính từ: \"a sharp rise\". \"Sharply\" là trạng từ, đi với động từ (rose sharply)."
+      "explain": "Trước danh từ \"rise\" cần tính từ: \"a sharp rise\". \"Sharply\" là trạng từ, đi với động từ (rose sharply).",
+      "explain_en": "Before the noun \"rise\" we need an adjective: \"a sharp rise\". \"Sharply\" is an adverb used with verbs (rose sharply)."
     },
     {
       "id": "w09q10",
@@ -103,7 +113,8 @@
       "q": "\"Unemployment peaked at 12% in 2009.\" What does \"peaked at\" mean?",
       "options": ["fell to its lowest point at", "stayed the same at", "started at", "reached its highest point at"],
       "answer": 3,
-      "explain": "\"Peak at\" nghĩa là đạt mức cao nhất. Mức thấp nhất là \"hit a low of\" hoặc \"bottomed out at\"."
+      "explain": "\"Peak at\" nghĩa là đạt mức cao nhất. Mức thấp nhất là \"hit a low of\" hoặc \"bottomed out at\".",
+      "explain_en": "\"Peak at\" means to reach the highest point. For the lowest point, use \"hit a low of\" or \"bottomed out at\"."
     },
     {
       "id": "w09q11",
@@ -111,7 +122,8 @@
       "q": "\"The price of rice ______ between 20,000 and 25,000 dong, going up and down several times during the year.\" Choose the best verb.",
       "options": ["fluctuated", "doubled", "halved", "tripled"],
       "answer": 0,
-      "explain": "\"Fluctuate\" nghĩa là dao động, lên xuống liên tục, đúng với \"going up and down several times\"."
+      "explain": "\"Fluctuate\" nghĩa là dao động, lên xuống liên tục, đúng với \"going up and down several times\".",
+      "explain_en": "\"Fluctuate\" means to go up and down repeatedly, which matches \"going up and down several times\"."
     },
     {
       "id": "w09q12",
@@ -119,7 +131,8 @@
       "q": "The number of cars in a town fell from 200 to 100. Which verb describes this change?",
       "options": ["doubled", "halved", "tripled", "quadrupled"],
       "answer": 1,
-      "explain": "Giảm từ 200 xuống 100 là giảm một nửa: \"halved\". \"Doubled\" là tăng gấp đôi."
+      "explain": "Giảm từ 200 xuống 100 là giảm một nửa: \"halved\". \"Doubled\" là tăng gấp đôi.",
+      "explain_en": "Falling from 200 to 100 means falling by half: \"halved\". \"Doubled\" means increased twofold."
     },
     {
       "id": "w09q13",
@@ -127,7 +140,8 @@
       "q": "True, False or Not Given? \"The share of commuters travelling by bus was higher in 2020 than in 2010.\"",
       "options": ["True", "False", "Not Given"],
       "answer": 1,
-      "explain": "Năm 2010 xe buýt chiếm khoảng 25%, năm 2020 chỉ còn 22%, nên câu này mâu thuẫn với bài: False."
+      "explain": "Năm 2010 xe buýt chiếm khoảng 25%, năm 2020 chỉ còn 22%, nên câu này mâu thuẫn với bài: False.",
+      "explain_en": "Buses had about 25% in 2010 but only 22% in 2020, so the statement contradicts the passage: False."
     },
     {
       "id": "w09q14",
@@ -135,7 +149,8 @@
       "q": "Which heading best fits the third paragraph (beginning \"Bus travel followed a different pattern\")?",
       "options": ["Differences between city districts", "Why walking became more popular", "The rise and fall of bus travel", "New cycle lanes in the suburbs"],
       "answer": 2,
-      "explain": "Đoạn 3 mô tả xe buýt tăng nhẹ, đạt đỉnh năm 2014 rồi giảm. Việc đi bộ chỉ được nhắc là ổn định, không trở nên phổ biến hơn."
+      "explain": "Đoạn 3 mô tả xe buýt tăng nhẹ, đạt đỉnh năm 2014 rồi giảm. Việc đi bộ chỉ được nhắc là ổn định, không trở nên phổ biến hơn.",
+      "explain_en": "Paragraph 3 describes bus travel rising slightly, peaking in 2014 and then falling. Walking is only described as stable, not more popular."
     },
     {
       "id": "w09q15",
@@ -143,7 +158,8 @@
       "q": "According to the authors of the report, what was the main reason for the change in commuting habits?",
       "options": ["Public awareness campaigns", "Investment in infrastructure", "Rising car prices", "A fall in the number of jobs in the city centre"],
       "answer": 1,
-      "explain": "Bài viết nói rõ \"investment in infrastructure, rather than public awareness campaigns, was the main driver of change\"."
+      "explain": "Bài viết nói rõ \"investment in infrastructure, rather than public awareness campaigns, was the main driver of change\".",
+      "explain_en": "The text clearly says \"investment in infrastructure, rather than public awareness campaigns, was the main driver of change\"."
     }
   ]
 }

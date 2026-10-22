@@ -1,6 +1,7 @@
 {
   "week": 7,
   "title": "Kiểm tra tuần 7: Ngôn ngữ học thuật",
+  "title_en": "Week 7 test: Academic language",
   "time_limit_min": 25,
   "pass_pct": 70,
   "passage": "Rising temperatures are becoming a serious public health problem in many cities. Concrete and asphalt absorb heat during the day and release it at night, so urban areas are often several degrees warmer than the countryside around them. This effect, known as the 'urban heat island', tends to be most dangerous for elderly people and young children.\n\nOne city in southern Australia decided to tackle the problem by planting trees. Between 2010 and 2020, the area of the city covered by trees rose steadily from 22 to 30 per cent. On summer afternoons, street temperatures in the greenest neighbourhoods were up to 4°C lower than in areas with few trees. During the same period, the number of heat-related hospital admissions fell slightly, although researchers point out that better public warnings may also have played a role.\n\nDespite these benefits, planting trees is not a quick solution. Young trees need years of care before they provide much shade, and in dry regions they require large amounts of water. It is therefore likely that cities will need to combine trees with other measures, such as roofs painted in light colours.",
@@ -11,7 +12,8 @@
       "q": "Sales of electric cars ___ dramatically between 2018 and 2023.",
       "options": ["raised", "rose", "rised", "were risen"],
       "answer": 1,
-      "explain": "Rise (tăng, nội động từ) có quá khứ bất quy tắc là rose; raise cần tân ngữ."
+      "explain": "Rise (tăng, nội động từ) có quá khứ bất quy tắc là rose; raise cần tân ngữ.",
+      "explain_en": "Rise (to go up, intransitive) has the irregular past form rose; raise needs an object."
     },
     {
       "id": "w07q02",
@@ -19,7 +21,8 @@
       "q": "There was a ___ decline in the number of smokers over the decade.",
       "options": ["gradually", "graduate", "gradual", "gradualness"],
       "answer": 2,
-      "explain": "Trước danh từ decline cần tính từ gradual."
+      "explain": "Trước danh từ decline cần tính từ gradual.",
+      "explain_en": "Before the noun decline we need the adjective gradual."
     },
     {
       "id": "w07q03",
@@ -27,7 +30,8 @@
       "q": "___ in 1990, the research centre has published over 300 studies.",
       "options": ["Founding", "Founded", "Having founding", "To found"],
       "answer": 1,
-      "explain": "Mệnh đề phân từ bị động dùng V3: trung tâm được thành lập (founded)."
+      "explain": "Mệnh đề phân từ bị động dùng V3: trung tâm được thành lập (founded).",
+      "explain_en": "A passive participle clause uses the past participle: the centre was founded (founded)."
     },
     {
       "id": "w07q04",
@@ -35,7 +39,8 @@
       "q": "Scientists ___ the effects of plastic on fish have found worrying results.",
       "options": ["studying", "studied", "are studying", "study"],
       "answer": 0,
-      "explain": "Mệnh đề phân từ chủ động rút gọn từ 'who are studying' dùng V-ing."
+      "explain": "Mệnh đề phân từ chủ động rút gọn từ 'who are studying' dùng V-ing.",
+      "explain_en": "An active participle clause, reduced from 'who are studying', uses the -ing form."
     },
     {
       "id": "w07q05",
@@ -43,7 +48,8 @@
       "q": "If the factory ___ its waste properly, the river would not have been polluted.",
       "options": ["treated", "had treated", "has treated", "would treat"],
       "answer": 1,
-      "explain": "Câu điều kiện loại 3 (trái với quá khứ): If + had + V3."
+      "explain": "Câu điều kiện loại 3 (trái với quá khứ): If + had + V3.",
+      "explain_en": "Third conditional (contrary to the past): If + had + past participle."
     },
     {
       "id": "w07q06",
@@ -51,7 +57,8 @@
       "q": "___ the new vaccine is effective, many people are still afraid to use it.",
       "options": ["Despite", "However", "Because of", "Although"],
       "answer": 3,
-      "explain": "Theo sau là một mệnh đề và mang nghĩa nhượng bộ nên dùng Although."
+      "explain": "Theo sau là một mệnh đề và mang nghĩa nhượng bộ nên dùng Although.",
+      "explain_en": "A full clause follows and the meaning is concessive, so use Although."
     },
     {
       "id": "w07q07",
@@ -59,7 +66,8 @@
       "q": "A poor diet can ___ serious health problems such as diabetes.",
       "options": ["result from", "because of", "lead to", "cause by"],
       "answer": 2,
-      "explain": "Lead to = dẫn đến (nguyên nhân → kết quả); result from mang nghĩa ngược lại."
+      "explain": "Lead to = dẫn đến (nguyên nhân → kết quả); result from mang nghĩa ngược lại.",
+      "explain_en": "Lead to = cause something (cause → result); result from works in the opposite direction."
     },
     {
       "id": "w07q08",
@@ -67,7 +75,8 @@
       "q": "Which sentence is the most appropriately cautious for academic writing?",
       "options": ["It is likely that drinking too much coffee increases the risk of heart disease.", "Coffee definitely causes heart disease.", "Everyone who drinks coffee will get heart disease.", "Coffee always causes heart disease."],
       "answer": 0,
-      "explain": "It is likely that là ngôn ngữ rào đón, tránh khẳng định tuyệt đối."
+      "explain": "It is likely that là ngôn ngữ rào đón, tránh khẳng định tuyệt đối.",
+      "explain_en": "'It is likely that' is hedging language, which avoids absolute claims."
     },
     {
       "id": "w07q09",
@@ -75,7 +84,8 @@
       "q": "The tiger is an ___ species; only about 4,000 remain in the wild.",
       "options": ["dangerous", "endanger", "danger", "endangered"],
       "answer": 3,
-      "explain": "Endangered species là loài có nguy cơ tuyệt chủng."
+      "explain": "Endangered species là loài có nguy cơ tuyệt chủng.",
+      "explain_en": "An endangered species is one at risk of extinction."
     },
     {
       "id": "w07q10",
@@ -83,7 +93,8 @@
       "q": "Governments must take action to cut greenhouse gas ___.",
       "options": ["emissions", "emits", "emitting", "emitted"],
       "answer": 0,
-      "explain": "Cụm danh từ cố định: greenhouse gas emissions (khí thải nhà kính)."
+      "explain": "Cụm danh từ cố định: greenhouse gas emissions (khí thải nhà kính).",
+      "explain_en": "Fixed noun phrase: greenhouse gas emissions."
     },
     {
       "id": "w07q11",
@@ -91,7 +102,8 @@
       "q": "Washing your hands regularly helps to prevent the ___ of infectious diseases.",
       "options": ["expansion", "spread", "widen", "growing up"],
       "answer": 1,
-      "explain": "Collocation: the spread of disease (sự lây lan của bệnh)."
+      "explain": "Collocation: the spread of disease (sự lây lan của bệnh).",
+      "explain_en": "Collocation: the spread of disease."
     },
     {
       "id": "w07q12",
@@ -99,7 +111,8 @@
       "q": "Scientists are currently ___ research into new treatments for cancer.",
       "options": ["making", "playing", "conducting", "taking"],
       "answer": 2,
-      "explain": "Collocation học thuật: conduct research (tiến hành nghiên cứu)."
+      "explain": "Collocation học thuật: conduct research (tiến hành nghiên cứu).",
+      "explain_en": "Academic collocation: conduct research."
     },
     {
       "id": "w07q13",
@@ -107,7 +120,8 @@
       "q": "True, False or Not Given? The area of the city covered by trees more than doubled between 2010 and 2020.",
       "options": ["True", "False", "Not Given"],
       "answer": 1,
-      "explain": "Diện tích cây xanh chỉ tăng từ 22% lên 30%, không tăng hơn gấp đôi."
+      "explain": "Diện tích cây xanh chỉ tăng từ 22% lên 30%, không tăng hơn gấp đôi.",
+      "explain_en": "Tree cover only rose from 22% to 30%, which is not more than double."
     },
     {
       "id": "w07q14",
@@ -115,7 +129,8 @@
       "q": "True, False or Not Given? The tree-planting programme was paid for by private companies.",
       "options": ["True", "False", "Not Given"],
       "answer": 2,
-      "explain": "Bài đọc không nhắc đến ai chi trả cho chương trình trồng cây."
+      "explain": "Bài đọc không nhắc đến ai chi trả cho chương trình trồng cây.",
+      "explain_en": "The passage does not mention who paid for the tree-planting programme."
     },
     {
       "id": "w07q15",
@@ -123,7 +138,8 @@
       "q": "Why are researchers not completely sure that the trees caused the fall in hospital admissions?",
       "options": ["The fall in admissions was too large to explain.", "Temperatures were only measured in winter.", "Elderly people refused to go to hospital.", "Better public warnings may also have helped."],
       "answer": 3,
-      "explain": "Bài đọc nói cảnh báo công cộng tốt hơn cũng có thể đã góp phần."
+      "explain": "Bài đọc nói cảnh báo công cộng tốt hơn cũng có thể đã góp phần.",
+      "explain_en": "The passage says better public warnings may also have played a role."
     }
   ]
 }

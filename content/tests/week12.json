@@ -1,6 +1,7 @@
 {
   "week": 12,
   "title": "Kiểm tra tuần 12: Thi thử và hoàn thiện",
+  "title_en": "Week 12 test: Mock test and final polish",
   "time_limit_min": 30,
   "pass_pct": 70,
   "passage": "The Testing Effect\n\nMost students prepare for examinations by rereading their notes and highlighting key sentences. These methods feel productive because the material becomes increasingly familiar. However, a growing body of psychological research suggests that familiarity is a poor guide to how much has actually been learned.\n\nIn one well-known type of experiment, participants study a short scientific text. One group then rereads the text several times, while a second group reads it once and then tries to recall as much as possible without looking. When tested five minutes later, the rereading group usually performs slightly better. Yet when the test is delayed by a week, the pattern reverses: those who practised recalling the information remember considerably more. Psychologists call this the 'testing effect'.\n\nWhy should the effort of retrieval be so beneficial? One explanation is that each act of recalling a fact strengthens the memory of it, making it easier to find again in future. Another is that testing reveals gaps in knowledge, so learners can focus their remaining study time on what they do not yet know.\n\nThe benefits increase further when practice is spaced out. Reviewing material on several separate days produces more durable memories than the same amount of study concentrated into a single session, a finding that has been repeated across many age groups and subjects.\n\nFor language learners, the implications are clear. Instead of reading word lists again and again, they should cover the meanings, try to produce the words themselves, and return to the same words after increasing intervals. Flashcard applications that schedule reviews in this way are, in effect, putting decades of memory research into practice.",
@@ -16,7 +17,8 @@
         "Write answers on the question paper and wait for 10 minutes of transfer time at the end"
       ],
       "answer": 0,
-      "explain": "Reading không có thời gian chép đáp án thêm, nên chia khoảng 20 phút/passage và ghi đáp án vào phiếu ngay."
+      "explain": "Reading không có thời gian chép đáp án thêm, nên chia khoảng 20 phút/passage và ghi đáp án vào phiếu ngay.",
+      "explain_en": "Reading has no extra transfer time, so spend about 20 minutes per passage and write answers on the answer sheet straight away."
     },
     {
       "id": "w12q02",
@@ -29,7 +31,8 @@
         "You get 30 minutes to check your answers with the examiner"
       ],
       "answer": 2,
-      "explain": "Bài Listening thi giấy có 10 phút cuối để chép đáp án sang phiếu trả lời. Audio chỉ được nghe một lần."
+      "explain": "Bài Listening thi giấy có 10 phút cuối để chép đáp án sang phiếu trả lời. Audio chỉ được nghe một lần.",
+      "explain_en": "The paper-based Listening test gives you 10 minutes at the end to transfer answers to the answer sheet. The audio is played only once."
     },
     {
       "id": "w12q03",
@@ -42,7 +45,8 @@
         "10 minutes on Task 1 and 50 minutes on Task 2"
       ],
       "answer": 0,
-      "explain": "Task 2 dài hơn (250 từ) và chiếm nhiều điểm hơn, nên dành khoảng 40 phút; Task 1 khoảng 20 phút."
+      "explain": "Task 2 dài hơn (250 từ) và chiếm nhiều điểm hơn, nên dành khoảng 40 phút; Task 1 khoảng 20 phút.",
+      "explain_en": "Task 2 is longer (250 words) and worth more marks, so give it about 40 minutes and Task 1 about 20 minutes."
     },
     {
       "id": "w12q04",
@@ -50,7 +54,8 @@
       "q": "How much does Writing Task 2 count compared with Task 1?",
       "options": ["The same as Task 1", "About twice as much as Task 1", "About half as much as Task 1", "Task 2 is not scored"],
       "answer": 1,
-      "explain": "Task 2 có trọng số gấp khoảng đôi Task 1, vì vậy không nên để thiếu thời gian cho Task 2."
+      "explain": "Task 2 có trọng số gấp khoảng đôi Task 1, vì vậy không nên để thiếu thời gian cho Task 2.",
+      "explain_en": "Task 2 carries about twice the weight of Task 1, so don't run short of time for Task 2."
     },
     {
       "id": "w12q05",
@@ -63,7 +68,8 @@
         "Politely ask the examiner to repeat or explain the question"
       ],
       "answer": 3,
-      "explain": "Bạn được phép lịch sự đề nghị giám khảo nhắc lại hoặc giải thích câu hỏi; im lặng hay trả lời lạc đề đều bị trừ điểm."
+      "explain": "Bạn được phép lịch sự đề nghị giám khảo nhắc lại hoặc giải thích câu hỏi; im lặng hay trả lời lạc đề đều bị trừ điểm.",
+      "explain_en": "You may politely ask the examiner to repeat or explain the question; staying silent or answering off-topic loses marks."
     },
     {
       "id": "w12q06",
@@ -71,7 +77,8 @@
       "q": "When grouping your mistakes, which error group does this sentence belong to? \"The number of students have increased.\"",
       "options": ["Subject–verb agreement", "Articles (a/an/the)", "Spelling", "Punctuation"],
       "answer": 0,
-      "explain": "Chủ ngữ \"The number\" là số ít nên động từ phải là \"has\". Đây là lỗi hòa hợp chủ ngữ – động từ."
+      "explain": "Chủ ngữ \"The number\" là số ít nên động từ phải là \"has\". Đây là lỗi hòa hợp chủ ngữ – động từ.",
+      "explain_en": "The subject \"The number\" is singular, so the verb must be \"has\". This is a subject–verb agreement error."
     },
     {
       "id": "w12q07",
@@ -79,7 +86,8 @@
       "q": "What is the minimum number of words required for Writing Task 1?",
       "options": ["100", "200", "150", "250"],
       "answer": 2,
-      "explain": "Task 1 yêu cầu tối thiểu 150 từ, Task 2 tối thiểu 250 từ. Viết thiếu sẽ bị trừ điểm."
+      "explain": "Task 1 yêu cầu tối thiểu 150 từ, Task 2 tối thiểu 250 từ. Viết thiếu sẽ bị trừ điểm.",
+      "explain_en": "Task 1 requires at least 150 words and Task 2 at least 250 words. Writing too little loses marks."
     },
     {
       "id": "w12q08",
@@ -92,7 +100,8 @@
         "Leave the rest of the section blank"
       ],
       "answer": 1,
-      "explain": "Audio không phát lại; hãy bỏ qua, tập trung vào câu tiếp theo và đoán sau, vì sai không bị trừ điểm."
+      "explain": "Audio không phát lại; hãy bỏ qua, tập trung vào câu tiếp theo và đoán sau, vì sai không bị trừ điểm.",
+      "explain_en": "The audio is not replayed; move on, focus on the next questions and guess later, since wrong answers are not penalised."
     },
     {
       "id": "w12q09",
@@ -100,7 +109,8 @@
       "q": "Choose the correct word form: \"The government should take action to reduce air ______.\"",
       "options": ["pollution", "polluting", "polluted", "pollutes"],
       "answer": 0,
-      "explain": "Sau \"reduce air\" cần danh từ: \"air pollution\" (ô nhiễm không khí)."
+      "explain": "Sau \"reduce air\" cần danh từ: \"air pollution\" (ô nhiễm không khí).",
+      "explain_en": "After \"reduce air\" we need a noun: \"air pollution\"."
     },
     {
       "id": "w12q10",
@@ -108,7 +118,8 @@
       "q": "\"Profits plummeted in 2020.\" What does \"plummeted\" mean?",
       "options": ["rose slowly", "remained stable", "went up and down", "fell sharply"],
       "answer": 3,
-      "explain": "\"Plummet\" nghĩa là giảm mạnh, đột ngột."
+      "explain": "\"Plummet\" nghĩa là giảm mạnh, đột ngột.",
+      "explain_en": "\"Plummet\" means to fall sharply and suddenly."
     },
     {
       "id": "w12q11",
@@ -116,7 +127,8 @@
       "q": "Choose the grammatically correct verb: \"Online courses ______ students to study at their own pace.\"",
       "options": ["enable", "make", "let", "suggest"],
       "answer": 0,
-      "explain": "\"Enable sb to do sth\" là cấu trúc đúng. \"Make\" và \"let\" đi với động từ nguyên mẫu không \"to\"; \"suggest\" không dùng cấu trúc này."
+      "explain": "\"Enable sb to do sth\" là cấu trúc đúng. \"Make\" và \"let\" đi với động từ nguyên mẫu không \"to\"; \"suggest\" không dùng cấu trúc này.",
+      "explain_en": "\"Enable sb to do sth\" is the correct structure. \"Make\" and \"let\" take the bare infinitive (no \"to\"); \"suggest\" is not used this way."
     },
     {
       "id": "w12q12",
@@ -124,7 +136,8 @@
       "q": "Which phrase is the closest paraphrase of \"a significant number of people\"?",
       "options": ["a tiny minority of people", "a considerable number of people", "none of the people", "an exact number of people"],
       "answer": 1,
-      "explain": "\"Significant\" và \"considerable\" đều nghĩa là đáng kể, nên đây là cặp paraphrase đúng."
+      "explain": "\"Significant\" và \"considerable\" đều nghĩa là đáng kể, nên đây là cặp paraphrase đúng.",
+      "explain_en": "\"Significant\" and \"considerable\" both mean large or important, so they form a correct paraphrase pair."
     },
     {
       "id": "w12q13",
@@ -132,7 +145,8 @@
       "q": "True, False or Not Given? \"In the experiment, the rereading group remembered more than the recall group when tested after one week.\"",
       "options": ["True", "False", "Not Given"],
       "answer": 1,
-      "explain": "Sau một tuần, kết quả đảo ngược: nhóm luyện nhớ lại (recall) nhớ nhiều hơn, nên câu này là False."
+      "explain": "Sau một tuần, kết quả đảo ngược: nhóm luyện nhớ lại (recall) nhớ nhiều hơn, nên câu này là False.",
+      "explain_en": "After one week the result reversed: the recall group remembered more, so the statement is False."
     },
     {
       "id": "w12q14",
@@ -145,7 +159,8 @@
         "Advice for language learners"
       ],
       "answer": 0,
-      "explain": "Đoạn 4 nói việc ôn tập rải ra nhiều ngày giúp nhớ lâu hơn học dồn một buổi."
+      "explain": "Đoạn 4 nói việc ôn tập rải ra nhiều ngày giúp nhớ lâu hơn học dồn một buổi.",
+      "explain_en": "Paragraph 4 says spreading review over several days helps you remember longer than cramming in one session."
     },
     {
       "id": "w12q15",
@@ -158,7 +173,8 @@
         "It allows them to stop reviewing words after one day."
       ],
       "answer": 2,
-      "explain": "Bài viết nói việc tự kiểm tra \"reveals gaps in knowledge\", giúp người học tập trung vào phần chưa biết."
+      "explain": "Bài viết nói việc tự kiểm tra \"reveals gaps in knowledge\", giúp người học tập trung vào phần chưa biết.",
+      "explain_en": "The text says self-testing \"reveals gaps in knowledge\", helping learners focus on what they don't yet know."
     }
   ]
 }

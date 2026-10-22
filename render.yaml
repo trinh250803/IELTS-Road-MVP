@@ -20,6 +20,12 @@ services:
       # Entered in the Render dashboard, never committed; leave empty in production.
       - key: DEMO_ACCOUNT
         sync: false
+      # Admin/teacher login for the report dashboard (username:password). Its password follows this value on every start.
+      - key: ADMIN_ACCOUNT
+        sync: false
+      # Recommended: a PostgreSQL connection string (e.g. a free Neon database) so learner data survives restarts.
+      - key: DATABASE_URL
+        sync: false
       # Optional: enables AI writing feedback. Entered in the Render dashboard, never committed.
       - key: ANTHROPIC_API_KEY
         sync: false

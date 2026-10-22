@@ -23,7 +23,7 @@ KEEP_ESSAYS = 20
 SYSTEM = """Bạn là giám khảo IELTS Writing có kinh nghiệm, chấm cho học viên người Việt đang học từ trình độ thấp lên mục tiêu band 6.0.
 Chấm theo 4 tiêu chí công khai của IELTS (Task Achievement/Task Response, Coherence and Cohesion, Lexical Resource, Grammatical Range and Accuracy), mỗi tiêu chí band 0–9 theo bước 0.5.
 Chấm trung thực, không nâng điểm để động viên; nếu bài thiếu số từ tối thiểu (150 với Task 1, 250 với Task 2) thì phản ánh vào tiêu chí Task Achievement/Response.
-Viết nhận xét bằng tiếng Việt, ngắn gọn, cụ thể, dễ hiểu với người mới học. Câu sửa (corrected) và đoạn mẫu viết bằng tiếng Anh.
+Viết nhận xét (comment, strengths, improvements, explanation) bằng ngôn ngữ được yêu cầu trong tin nhắn (mặc định tiếng Việt), ngắn gọn, cụ thể, dễ hiểu với người mới học. Câu sửa (corrected) và đoạn mẫu viết bằng tiếng Anh.
 Chỉ sửa tối đa 8 lỗi quan trọng nhất, ưu tiên lỗi lặp lại và lỗi làm giảm band."""
 
 CRITERION = {
@@ -66,17 +66,19 @@ def _half(x) -> float:
     return min(9.0, max(0.0, round(float(x) * 2) / 2))
 
 
-def _call_claude(task_type: str, prompt: str, essay: str) -> dict:
+def _call_claude(task_type: str, prompt: str, essay: str, lang: str = "vi") -> dict:
     import anthropic
 
     client = anthropic.Anthropic()
     label = "Task 1 (mô tả biểu đồ/quy trình, tối thiểu 150 từ)" if task_type == "task1" else "Task 2 (bài luận, tối thiểu 250 từ)"
+    feedback_lang = "English" if lang == "en" else "tiếng Việt"
     try:
         resp = client.beta.messages.create(
             model=MODEL,
             max_tokens=16000,
             system=SYSTEM,
-            messages=[{"role": "user", "content": f"Dạng bài: IELTS Writing {label}\n\nĐề bài:\n{prompt}\n\nBài làm của học viên ({word_count(essay)} từ):\n{essay}"}],
+            messages=[{"role": "user", "content": f"Ngôn ngữ nhận xét: {feedback_lang}\nDạng bài: IELTS Writing {label}\n\n"
+                                                  f"Đề bài:\n{prompt}\n\nBài làm của học viên ({word_count(essay)} từ):\n{essay}"}],
             output_config={"effort": "medium", "format": {"type": "json_schema", "schema": SCHEMA}},
             # On a safety decline the API retries on a fallback model inside the same call.
             betas=["server-side-fallback-2026-07-01"],
@@ -99,7 +101,7 @@ def _call_claude(task_type: str, prompt: str, essay: str) -> dict:
         raise ApiError(502, "Kết quả chấm không hợp lệ, vui lòng thử lại")
 
 
-def grade(username: str, data: dict) -> dict:
+def grade(username: str, data: dict, lang: str = "vi") -> dict:
     if not configured():
         raise ApiError(503, "Chấm Writing bằng AI chưa được bật (thiếu ANTHROPIC_API_KEY trên máy chủ)")
     task_type = data.get("task_type")
@@ -120,7 +122,7 @@ def grade(username: str, data: dict) -> dict:
     if used >= DAILY_LIMIT:
         raise ApiError(429, f"Mỗi ngày được chấm tối đa {DAILY_LIMIT} bài. Hãy quay lại vào ngày mai.")
 
-    result = _call_claude(task_type, prompt, essay)
+    result = _call_claude(task_type, prompt, essay, lang)
     for c in CRITERIA:
         result[c]["band"] = _half(result[c]["band"])
     # IELTS overall for one task: mean of the four criteria, rounded to the nearest 0.5.
@@ -130,5 +132,6 @@ def grade(username: str, data: dict) -> dict:
 
     def m(lr):
         lr["essays"] = [entry, *lr["essays"]][:KEEP_ESSAYS]
+        learner.award(lr, learner.XP["essay"])
     learner._save(username, m)
     return entry

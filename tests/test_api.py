@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from app import content, exams, learner, writing
+from app import content, exams, game, learner, writing
 
 
 @pytest.fixture(scope="module")
@@ -10,6 +10,7 @@ def client(tmp_path_factory):
     mp.setenv("DB_PATH", str(tmp_path_factory.mktemp("db") / "db.json"))
     mp.delenv("ANTHROPIC_API_KEY", raising=False)
     mp.setenv("DEMO_ACCOUNT", "demo:DemoPass1")
+    mp.setenv("ADMIN_ACCOUNT", "boss:AdminPass1")
     from app.main import app
     with TestClient(app) as c:
         yield c
@@ -204,3 +205,127 @@ def test_writing_validation_and_rounding(client, monkeypatch):
     assert res["task_response"]["band"] == 6.0 and res["lexical_resource"]["band"] == 5.5
     assert res["overall"] == 5.5  # recomputed from criteria, not trusted from the model
     assert len(client.get("/api/writing/history", headers=h).json()) == 1
+
+
+def admin_headers(client):
+    r = client.post("/api/auth/login", json={"username": "boss", "password": "AdminPass1"})
+    assert r.status_code == 200 and r.json()["user"]["role"] == "admin"
+    return {"Authorization": f'Bearer {r.json()["token"]}'}
+
+
+def test_admin_access_and_accounts(client):
+    learner_h = register(client, "hocvien1")
+    assert client.get("/api/admin/overview", headers=learner_h).status_code == 403
+    h = admin_headers(client)
+    created = client.post("/api/admin/learners", headers=h, json={"learners": [
+        {"username": "lop10a.an", "full_name": "Nguyễn Văn An"}, {"username": "lop10a.binh", "full_name": "Trần Thị Bình", "password": "Binh12345"}]})
+    assert created.status_code == 201, created.text
+    pw = created.json()[0]["password"]
+    assert len(pw) >= 8 and created.json()[1]["password"] == "Binh12345"
+    assert client.post("/api/auth/login", json={"username": "lop10a.an", "password": pw}).status_code == 200
+    # All or nothing: a duplicate on line 2 creates nobody, and the error names the line.
+    dup = client.post("/api/admin/learners", headers=h, json={"learners": [{"username": "lop10a.cuong"}, {"username": "lop10a.an"}]})
+    assert dup.status_code == 409 and dup.json()["error"].startswith("Dòng 2")
+    assert client.post("/api/auth/login", json={"username": "lop10a.cuong", "password": "x" * 8}).status_code == 401
+    # Lock signs the learner out and blocks login; reset password issues a new one.
+    an = {"Authorization": f'Bearer {client.post("/api/auth/login", json={"username": "lop10a.an", "password": pw}).json()["token"]}'}
+    assert client.put("/api/admin/learners/lop10a.an", headers=h, json={"active": False}).json()["active"] is False
+    assert client.get("/api/auth/me", headers=an).status_code == 401
+    assert client.post("/api/auth/login", json={"username": "lop10a.an", "password": pw}).status_code == 403
+    client.put("/api/admin/learners/lop10a.an", headers=h, json={"active": True})
+    new_pw = client.post("/api/admin/learners/lop10a.an/reset-password", headers=h).json()["password"]
+    assert client.post("/api/auth/login", json={"username": "lop10a.an", "password": new_pw}).status_code == 200
+    assert client.post("/api/admin/learners/boss/reset-password", headers=h).status_code == 404  # admins are not learners
+
+
+def test_xp_badges_leaderboard_and_games(client):
+    h = register(client, "xp.player")
+    for t in content.build_day(1)["tasks"]:
+        client.put(f'/api/days/1/tasks/{t["id"]}', headers=h, json={"done": True})
+    p = client.get("/api/me/profile", headers=h).json()
+    assert p["xp"] == 5 * 10 + 20 and p["today_xp"] == 70 and p["level"] == 1
+    assert {b["id"] for b in p["badges"] if b["earned"]} == {"first_step"}
+    client.put("/api/days/1/tasks/vocab", headers=h, json={"done": False})
+    assert client.get("/api/me/profile", headers=h).json()["xp"] == 60  # un-ticking takes the task XP back, the day bonus stays
+    words = client.get("/api/games/words", headers=h).json()
+    assert len(words) >= 12
+    r = client.post("/api/games/result", headers=h, json={"game": "match", "correct": 6, "total": 6, "duration_s": 30}).json()
+    assert r["xp"] == 12 and r["best_pct"] == 100
+    assert client.post("/api/games/result", headers=h, json={"game": "chess", "correct": 1, "total": 1, "duration_s": 1}).status_code == 400
+    assert client.post("/api/games/result", headers=h, json={"game": "match", "correct": 9, "total": 6, "duration_s": 1}).status_code == 400
+    for _ in range(10):  # daily cap on game XP
+        client.post("/api/games/result", headers=h, json={"game": "listen", "correct": 10, "total": 10, "duration_s": 20})
+    assert sum(g["xp"] for g in learner.get(__import__("app.store", fromlist=["load"]).load(), "xp.player")["games"]) == game.GAME_XP_DAILY_CAP
+    lb = client.get("/api/leaderboard", headers=h).json()
+    assert lb["me"]["rank"] == 1 and lb["top"][0]["me"] and "username" not in lb["top"][0]
+
+
+def test_admin_reports_and_csv(client):
+    h = admin_headers(client)
+    ov = client.get("/api/admin/overview", headers=h).json()
+    assert ov["learners"] >= 3 and len(ov["trend"]) == 14 and len(ov["weekly"]) == 12 and ov["storage"] == "file"
+    rows = client.get("/api/admin/learners", headers=h).json()
+    xp_row = next(r for r in rows if r["username"] == "xp.player")
+    assert xp_row["xp"] > 0 and xp_row["current_day"] == 1
+    assert all(r["username"] != "boss" for r in rows)
+    d = client.get("/api/admin/learners/minh", headers=h).json()
+    assert d["attempts"] and d["placement"]["start_week"] == 5
+    assert client.get("/api/admin/learners/nobody", headers=h).status_code == 404
+    att = client.get("/api/admin/attempts", headers=h).json()
+    assert att and {"username", "full_name", "status", "started_at"} <= set(att[0])
+    r = client.get("/api/admin/export/learners.csv", headers=h)
+    assert r.status_code == 200 and r.headers["content-type"].startswith("text/csv") and "username,full_name" in r.text
+    assert "minh" in client.get("/api/admin/export/attempts.csv", headers=h).text
+    assert client.get("/api/admin/export/secrets.csv", headers=h).status_code == 404
+
+
+def test_english_error_messages(client):
+    r = client.post("/api/auth/login", headers={"X-Lang": "en"}, json={"username": "nobody", "password": "whatever1"})
+    assert r.json()["error"] == "Wrong username or password"
+    r = client.post("/api/auth/register", headers={"X-Lang": "en"}, json={"username": "abcd", "password": "short"})
+    assert r.json()["error"] == "Password must be at least 8 characters"
+    assert client.post("/api/auth/login", json={"username": "nobody", "password": "whatever1"}).json()["error"] == "Sai tên đăng nhập hoặc mật khẩu"
+
+
+def test_english_content_complete():
+    for d in (1, 7, 29, 84):
+        plan = content.build_day(d)
+        assert plan["title_en"] and plan["week_title_en"] and plan["can_do_en"]
+        assert all(t["label_en"] and t["detail_en"] for t in plan["tasks"])
+    rm = content.roadmap()
+    assert rm["note_en"] and all(p["title_en"] and p["goal_en"] for p in rm["phases"])
+    assert all(len(w["topics_en"]) == 6 and w["title_en"] for w in rm["weeks"])
+    for w in range(1, 13):
+        t = exams.weekly(w)
+        assert t["title_en"] and all(q["explain_en"] for q in t["questions"]), w
+
+
+def test_postgres_store_roundtrip(monkeypatch):
+    """The DATABASE_URL path with a fake connection: upsert on save, one SELECT then served from memory."""
+    import json as _json
+    from app import store
+    calls, row = [], {}
+
+    class FakeConn:
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+        def execute(self, sql, params=None):
+            calls.append(sql.split()[0])
+            if sql.startswith("INSERT"):
+                row["data"] = _json.loads(params[0])
+            return self
+        def fetchone(self):
+            return (row["data"],) if row else None
+
+    monkeypatch.setenv("DATABASE_URL", "postgresql://fake")
+    monkeypatch.setattr(store, "_pg", lambda: FakeConn())
+    monkeypatch.setattr(store, "_cache", None)
+    assert store.backend() == "postgres"
+    db = store.load()
+    assert db["users"] == [] and calls == ["SELECT"]
+    db["users"].append({"username": "pg.user"})
+    store.save(db)
+    assert row["data"]["users"][0]["username"] == "pg.user" and calls == ["SELECT", "INSERT"]
+    again = store.load()
+    again["users"].clear()  # callers get a copy; the cache is untouched
+    assert store.load()["users"][0]["username"] == "pg.user" and calls == ["SELECT", "INSERT"]

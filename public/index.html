@@ -7,33 +7,36 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
-  <link rel="stylesheet" href="styles.css?v=20261022g">
+  <link rel="stylesheet" href="styles.css?v=20261023c">
 </head>
 <body>
   <section id="auth" class="auth hidden">
     <div class="auth-brand">
-      <div class="logo-lg"><span class="mark"></span>IELTS Road</div>
-      <h2>Học mỗi ngày,<br>tiến bộ mỗi tuần.</h2>
+      <div class="row" style="justify-content:space-between">
+        <div class="logo-lg"><span class="mark"></span>IELTS Road</div>
+        <div class="lang-switch on-dark" data-lang-switch></div>
+      </div>
+      <h2 data-i18n-html="auth.tagline"></h2>
       <ol class="auth-steps">
-        <li><b>Xây nền</b><span>Tuần 1–4</span></li>
-        <li><b>Tăng tốc</b><span>Tuần 5–8</span></li>
-        <li><b>Về đích</b><span>Tuần 9–12</span></li>
+        <li><b data-i18n="phase.1"></b><span data-i18n="auth.weeks14"></span></li>
+        <li><b data-i18n="phase.2"></b><span data-i18n="auth.weeks58"></span></li>
+        <li><b data-i18n="phase.3"></b><span data-i18n="auth.weeks912"></span></li>
       </ol>
     </div>
     <div class="auth-panel">
       <div class="auth-card">
-        <h1>Chào mừng bạn</h1>
-        <p class="muted hidden" id="demo-hint"></p>
+        <h1 data-i18n="auth.welcome"></h1>
+        <p class="muted hidden" id="demo-hint" data-i18n="auth.demo"></p>
         <div class="seg">
-          <button class="seg-btn active" data-mode="login">Đăng nhập</button>
-          <button class="seg-btn" data-mode="register">Tạo tài khoản</button>
+          <button class="seg-btn active" data-mode="login" data-i18n="auth.login"></button>
+          <button class="seg-btn" data-mode="register" data-i18n="auth.register"></button>
         </div>
         <form id="auth-form">
-          <label class="reg-only hidden">Họ tên<input name="full_name" autocomplete="name"></label>
-          <label>Tên đăng nhập<input name="username" required autocomplete="username"></label>
-          <label>Mật khẩu<input name="password" type="password" required minlength="8" autocomplete="current-password"></label>
+          <label class="reg-only hidden"><span data-i18n="auth.fullname"></span><input name="full_name" autocomplete="name"></label>
+          <label><span data-i18n="auth.username"></span><input name="username" required autocomplete="username"></label>
+          <label><span data-i18n="auth.password"></span><input name="password" type="password" required minlength="8" autocomplete="current-password"></label>
           <p class="error" id="auth-error"></p>
-          <button class="btn primary block" type="submit" id="auth-submit">Đăng nhập</button>
+          <button class="btn primary block" type="submit" id="auth-submit" data-i18n="auth.login"></button>
         </form>
       </div>
     </div>
@@ -41,23 +44,29 @@
 
   <div id="shell" class="shell hidden">
     <aside class="side">
-      <a class="logo" href="#/today"><span class="mark"></span>IELTS Road</a>
+      <a class="logo" href="#/"><span class="mark"></span>IELTS Road</a>
       <nav id="nav"></nav>
-      <div class="side-user">
-        <span class="avatar" id="me-avatar"></span>
-        <div><b id="me-name"></b><button class="link" id="logout">Đăng xuất</button></div>
+      <div class="side-foot">
+        <a class="side-level hidden" id="side-level" href="#/me"></a>
+        <div class="lang-switch" data-lang-switch></div>
+        <div class="side-user">
+          <span class="avatar" id="me-avatar"></span>
+          <div><b id="me-name"></b><button class="link" id="logout" data-i18n="nav.logout"></button></div>
+        </div>
       </div>
     </aside>
     <main>
       <div class="mobile-top">
-        <a class="logo" href="#/today"><span class="mark"></span>IELTS Road</a>
-        <button class="link" id="logout-m">Đăng xuất</button>
+        <a class="logo" href="#/"><span class="mark"></span>IELTS Road</a>
+        <div class="row"><div class="lang-switch" data-lang-switch></div><button class="link" id="logout-m" data-i18n="nav.logout"></button></div>
       </div>
       <div id="view"></div>
     </main>
   </div>
   <div id="toast" class="toast hidden"></div>
+  <div id="tip" class="tip hidden" role="tooltip"></div>
 
-  <script src="app.js?v=20261022f"></script>
+  <script src="i18n.js?v=20261023a"></script>
+  <script src="app.js?v=20261023c"></script>
 </body>
 </html>

@@ -29,7 +29,7 @@ def weekly(week: int) -> dict | None:
 
 def placement() -> dict:
     p = content.placement()
-    return {"title": "Kiểm tra đầu vào", "time_limit_min": 20, "pass_pct": None, "passage": p["passage"],
+    return {"title": "Kiểm tra đầu vào", "title_en": "Placement test", "time_limit_min": 20, "pass_pct": None, "passage": p["passage"],
             "questions": [{**q, "section": q["level"]} for q in p["questions"]]}
 
 
@@ -41,7 +41,7 @@ def definition(kind: str, week: int | None) -> dict:
 
 
 def public(t: dict) -> list[dict]:
-    return [{k: q[k] for k in ("id", "section", "q", "options")} for q in t["questions"]]
+    return [{k: q[k] for k in ("id", "section", "q", "options")} | ({"q_en": q["q_en"]} if q.get("q_en") else {}) for q in t["questions"]]
 
 
 def current_week(lr: dict) -> int:
@@ -59,7 +59,7 @@ def _status(a: dict) -> str:
 
 
 def summary(a: dict) -> dict:
-    keys = ("id", "kind", "week", "title", "started_at", "submitted_at", "duration_s", "time_limit_s", "score", "total", "pct", "passed", "overtime")
+    keys = ("id", "kind", "week", "title", "title_en", "started_at", "submitted_at", "duration_s", "time_limit_s", "score", "total", "pct", "passed", "overtime", "xp")
     return {k: a.get(k) for k in keys} | {"status": _status(a)}
 
 
@@ -71,7 +71,7 @@ def hub(lr: dict) -> dict:
         t = weekly(w)
         done = [a for a in attempts if a["kind"] == "weekly" and a["week"] == w and a["status"] == "submitted"]
         weeks.append({
-            "week": w, "title": t["title"] if t else f"Kiểm tra tuần {w}", "ready": bool(t),
+            "week": w, "title": t["title"] if t else f"Kiểm tra tuần {w}", "title_en": (t or {}).get("title_en") or f"Week {w} test", "ready": bool(t),
             "time_limit_min": t and t["time_limit_min"], "pass_pct": t and t["pass_pct"], "questions": t and len(t["questions"]),
             "available": bool(t) and w <= cw, "attempts": len(done),
             "best_pct": max((a["pct"] for a in done), default=None), "passed": any(a["passed"] for a in done),
@@ -89,7 +89,7 @@ def start(username: str, kind: str, week) -> dict:
         for a in lr["attempts"]:
             if a["kind"] == kind and a.get("week") == (week if kind == "weekly" else None) and a["status"] == "in_progress":
                 a["status"] = "abandoned"
-        a = {"id": uuid.uuid4().hex[:12], "kind": kind, "week": week if kind == "weekly" else None, "title": t["title"],
+        a = {"id": uuid.uuid4().hex[:12], "kind": kind, "week": week if kind == "weekly" else None, "title": t["title"], "title_en": t.get("title_en"),
              "status": "in_progress", "started_at": now_iso(), "time_limit_s": t["time_limit_min"] * 60,
              "pass_pct": t["pass_pct"], "question_ids": [q["id"] for q in t["questions"]]}
         lr["attempts"] = [a, *lr["attempts"]][:MAX_ATTEMPTS]
@@ -134,16 +134,21 @@ def submit(username: str, attempt_id: str, answers) -> dict:
         elapsed = _elapsed_s(a)
         a.update(status="submitted", submitted_at=now_iso(), duration_s=elapsed, overtime=elapsed > a["time_limit_s"] + GRACE_S,
                  answers=review, sections=sections, score=score, total=len(review), pct=round(score / len(review) * 100))
+        same = [x for x in lr["attempts"] if x["kind"] == a["kind"] and x["week"] == a["week"] and x["status"] == "submitted" and x is not a]
         if a["kind"] == "placement":
             res = content.score_placement({r["id"]: r["answer"] for r in review})
             a["result"] = res
             lr["placement"] = {**res, "taken_at": a["submitted_at"]}
             lr["start_week"] = res["start_week"]
             a["passed"] = None
+            a["xp"] = 0 if same else learner.XP["placement"]
         else:
             a["passed"] = a["pct"] >= a["pass_pct"]
+            first_pass = a["passed"] and not any(x["passed"] for x in same)
+            a["xp"] = learner.XP["test_attempt"] + (learner.XP["test_pass"] if first_pass else 0)
             if a["passed"]:
                 _tick_weekly_task(lr, a["week"])
+        learner.award(lr, a["xp"])
         return a
     a = learner._save(username, m)
     log.info("exam_submit user=%s attempt=%s kind=%s week=%s score=%s/%s pct=%s passed=%s duration_s=%s overtime=%s",
@@ -159,6 +164,10 @@ def _tick_weekly_task(lr: dict, week: int) -> None:
         done.append("weekly_test")
         key = learner.today().isoformat()
         lr["activity"][key] = lr["activity"].get(key, 0) + task["minutes"]
+        learner.award(lr, learner.XP["task"])
+        if len(done) == len(content.build_day(day)["tasks"]) and day not in lr["bonus_days"]:
+            lr["bonus_days"].append(day)
+            learner.award(lr, learner.XP["day_bonus"])
 
 
 def detail(a: dict) -> dict:

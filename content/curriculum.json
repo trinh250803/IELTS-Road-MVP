@@ -2,36 +2,46 @@
   "version": 1,
   "minutes_per_day": 180,
   "note": "Lộ trình 12 tuần, mỗi tuần 6 ngày học + 1 ngày ôn tập/kiểm tra. Mục tiêu 6.0 cần học đều khoảng 3 giờ/ngày; mốc band ở mỗi giai đoạn là mục tiêu, không phải cam kết.",
+  "note_en": "A 12-week plan: each week has 6 study days + 1 day for review/testing. Reaching 6.0 requires steady study of about 3 hours a day; the band milestones for each phase are targets, not guarantees.",
   "phases": [
     {
       "phase": 1,
       "title": "Xây nền",
+      "title_en": "Foundation",
       "weeks": [
         1,
         4
       ],
       "goal": "Nói và viết câu đơn đúng ngữ pháp, nắm ~1.000 từ thông dụng",
-      "milestone": "A2 · IELTS 3.5–4.0"
+      "goal_en": "Speak and write grammatically correct simple sentences; know ~1,000 common words",
+      "milestone": "A2 · IELTS 3.5–4.0",
+      "milestone_en": "A2 · IELTS 3.5–4.0"
     },
     {
       "phase": 2,
       "title": "Tăng tốc",
+      "title_en": "Acceleration",
       "weeks": [
         5,
         8
       ],
       "goal": "Viết câu phức, đọc bài dài, làm quen đủ 4 kỹ năng IELTS",
-      "milestone": "B1 · IELTS 4.5–5.0"
+      "goal_en": "Write complex sentences, read longer texts, and get familiar with all 4 IELTS skills",
+      "milestone": "B1 · IELTS 4.5–5.0",
+      "milestone_en": "B1 · IELTS 4.5–5.0"
     },
     {
       "phase": 3,
       "title": "Về đích",
+      "title_en": "Final stretch",
       "weeks": [
         9,
         12
       ],
       "goal": "Làm đề đúng chiến lược, viết và nói theo tiêu chí chấm",
-      "milestone": "Mục tiêu IELTS 5.5–6.0"
+      "goal_en": "Tackle exam papers with the right strategies; write and speak to the marking criteria",
+      "milestone": "Mục tiêu IELTS 5.5–6.0",
+      "milestone_en": "Target IELTS 5.5–6.0"
     }
   ],
   "weeks": [
@@ -39,8 +49,11 @@
       "week": 1,
       "phase": 1,
       "title": "Làm quen lại với tiếng Anh",
+      "title_en": "Getting back into English",
       "can_do": "Giới thiệu bản thân và gia đình bằng 5–7 câu đúng ngữ pháp",
+      "can_do_en": "Introduce yourself and your family in 5–7 grammatically correct sentences",
       "vocab_theme": "Bản thân, gia đình, con số, thời gian",
+      "vocab_theme_en": "Yourself, family, numbers, time",
       "words_per_day": 12,
       "focus": [
         "g_be",
@@ -50,17 +63,32 @@
         "g_plurals",
         "g_there_is"
       ],
+      "focus_en": [
+        "The verb to be (am / is / are)",
+        "Personal pronouns and possessive adjectives",
+        "The present simple tense",
+        "Articles a / an / the",
+        "Plural nouns, countable and uncountable",
+        "There is / There are"
+      ],
       "listening": "Nghe bảng chữ cái, số đếm, giới thiệu bản thân (tốc độ chậm); nghe – chép lại từng câu",
+      "listening_en": "Listen to the alphabet, numbers and self-introductions (slow speed); listen and write down each sentence",
       "reading": "Đọc đoạn giới thiệu 80–120 từ, gạch chân động từ",
+      "reading_en": "Read an 80–120-word introduction and underline the verbs",
       "writing": "Viết 5–7 câu về bản thân dùng cấu trúc vừa học",
-      "speaking": "Đọc to và ghi âm 36 âm IPA; tự giới thiệu 30 giây"
+      "writing_en": "Write 5–7 sentences about yourself using the structures you just learned",
+      "speaking": "Đọc to và ghi âm 36 âm IPA; tự giới thiệu 30 giây",
+      "speaking_en": "Read aloud and record the 36 IPA sounds; introduce yourself for 30 seconds"
     },
     {
       "week": 2,
       "phase": 1,
       "title": "Hành động hằng ngày và quá khứ",
+      "title_en": "Daily actions and the past",
       "can_do": "Kể về một ngày của bạn và chuyện đã xảy ra hôm qua",
+      "can_do_en": "Describe your day and what happened yesterday",
       "vocab_theme": "Thói quen, nhà cửa, đồ ăn, mua sắm",
+      "vocab_theme_en": "Routines, home, food, shopping",
       "words_per_day": 15,
       "focus": [
         "Hiện tại tiếp diễn",
@@ -70,17 +98,32 @@
         "Giới từ thời gian (in/on/at)",
         "Giới từ nơi chốn"
       ],
+      "focus_en": [
+        "Present continuous",
+        "Present simple vs. present continuous",
+        "Past simple of the verb to be",
+        "Past simple: regular and irregular verbs",
+        "Prepositions of time (in/on/at)",
+        "Prepositions of place"
+      ],
       "listening": "Nghe hội thoại ngắn về thói quen; điền từ còn thiếu",
+      "listening_en": "Listen to short conversations about routines; fill in the missing words",
       "reading": "Đọc email/tin nhắn ngắn, trả lời câu hỏi Wh-",
+      "reading_en": "Read short emails/messages and answer Wh- questions",
       "writing": "Viết đoạn 60–80 từ về một ngày của bạn",
-      "speaking": "Shadowing 5 phút/ngày; kể lại cuối tuần vừa rồi"
+      "writing_en": "Write a 60–80-word paragraph about your day",
+      "speaking": "Shadowing 5 phút/ngày; kể lại cuối tuần vừa rồi",
+      "speaking_en": "Shadowing 5 minutes a day; retell what you did last weekend"
     },
     {
       "week": 3,
       "phase": 1,
       "title": "Kế hoạch, khả năng và so sánh",
+      "title_en": "Plans, ability and comparison",
       "can_do": "Nói về kế hoạch, so sánh hai sự vật, hỏi và trả lời câu hỏi Wh-",
+      "can_do_en": "Talk about plans, compare two things, and ask and answer Wh- questions",
       "vocab_theme": "Du lịch, thời tiết, công việc, học tập",
+      "vocab_theme_en": "Travel, weather, work, study",
       "words_per_day": 18,
       "focus": [
         "Tương lai: will và be going to",
@@ -90,17 +133,32 @@
         "Câu hỏi với từ để hỏi",
         "Liên từ and/but/because/so"
       ],
+      "focus_en": [
+        "Future: will and be going to",
+        "Modal verbs can/could",
+        "Comparatives and superlatives",
+        "Adverbs of frequency",
+        "Wh- questions",
+        "Conjunctions and/but/because/so"
+      ],
       "listening": "Nghe thông báo, chỉ đường; ghi lại số, tên, giờ",
+      "listening_en": "Listen to announcements and directions; note down numbers, names and times",
       "reading": "Đọc bài 150 từ, trả lời đúng/sai",
+      "reading_en": "Read a 150-word text and answer true/false questions",
       "writing": "Viết đoạn so sánh hai thành phố/hai món đồ",
-      "speaking": "Trả lời 10 câu hỏi cá nhân, mỗi câu 2–3 câu"
+      "writing_en": "Write a paragraph comparing two cities/two objects",
+      "speaking": "Trả lời 10 câu hỏi cá nhân, mỗi câu 2–3 câu",
+      "speaking_en": "Answer 10 personal questions with 2–3 sentences each"
     },
     {
       "week": 4,
       "phase": 1,
       "title": "Hiện tại hoàn thành và tổng ôn nền tảng",
+      "title_en": "Present perfect and foundation review",
       "can_do": "Kể trải nghiệm đã có, nêu ý kiến đơn giản kèm lý do",
+      "can_do_en": "Talk about past experiences and give simple opinions with reasons",
       "vocab_theme": "Sức khỏe, công nghệ, môi trường cơ bản",
+      "vocab_theme_en": "Health, technology, basic environment topics",
       "words_per_day": 20,
       "focus": [
         "Hiện tại hoàn thành",
@@ -110,17 +168,32 @@
         "Đại từ quan hệ who/which/that (cơ bản)",
         "Tổng ôn ngữ pháp nền tảng"
       ],
+      "focus_en": [
+        "Present perfect",
+        "Present perfect vs. past simple",
+        "must / have to / should",
+        "V-ing and to + V after verbs",
+        "Relative pronouns who/which/that (basic)",
+        "Foundation grammar review"
+      ],
       "listening": "Nghe đoạn 2–3 phút, tóm tắt ý chính bằng tiếng Việt",
+      "listening_en": "Listen to a 2–3-minute recording and summarise the main ideas in Vietnamese",
       "reading": "Đọc bài 200 từ, tìm từ khóa và đoạn chứa thông tin",
+      "reading_en": "Read a 200-word text; find keywords and the paragraph containing the information",
       "writing": "Viết đoạn 100 từ nêu ý kiến đơn giản (I think… because…)",
-      "speaking": "Nói 1 phút về một chủ đề quen thuộc, ghi âm và tự nghe lại"
+      "writing_en": "Write a 100-word paragraph giving a simple opinion (I think… because…)",
+      "speaking": "Nói 1 phút về một chủ đề quen thuộc, ghi âm và tự nghe lại",
+      "speaking_en": "Speak for 1 minute on a familiar topic; record yourself and listen back"
     },
     {
       "week": 5,
       "phase": 2,
       "title": "Câu phức và mệnh đề",
+      "title_en": "Complex sentences and clauses",
       "can_do": "Viết câu phức với mệnh đề quan hệ, bị động và câu điều kiện",
+      "can_do_en": "Write complex sentences using relative clauses, the passive and conditionals",
       "vocab_theme": "Giáo dục, gia đình – xã hội",
+      "vocab_theme_en": "Education, family and society",
       "words_per_day": 20,
       "focus": [
         "Quá khứ tiếp diễn",
@@ -130,17 +203,32 @@
         "Lượng từ (much/many/a few/a little)",
         "Từ nối chỉ thêm ý, đối lập, kết quả"
       ],
+      "focus_en": [
+        "Past continuous",
+        "Defining relative clauses",
+        "The passive (present, past)",
+        "Zero and first conditionals",
+        "Quantifiers (much/many/a few/a little)",
+        "Linking words for addition, contrast and result"
+      ],
       "listening": "Làm quen IELTS Listening Section 1 (điền form)",
+      "listening_en": "Get to know IELTS Listening Section 1 (form completion)",
       "reading": "Làm quen IELTS Reading: True/False/Not Given",
+      "reading_en": "Get to know IELTS Reading: True/False/Not Given",
       "writing": "Viết câu phức nối hai ý; giới thiệu IELTS Writing Task 1",
-      "speaking": "Làm quen IELTS Speaking Part 1"
+      "writing_en": "Write complex sentences linking two ideas; introduction to IELTS Writing Task 1",
+      "speaking": "Làm quen IELTS Speaking Part 1",
+      "speaking_en": "Get to know IELTS Speaking Part 1"
     },
     {
       "week": 6,
       "phase": 2,
       "title": "Diễn đạt giả định và tường thuật",
+      "title_en": "Hypotheticals and reported speech",
       "can_do": "Mô tả biểu đồ đơn giản, tường thuật lại lời người khác",
+      "can_do_en": "Describe a simple chart and report what other people said",
       "vocab_theme": "Công việc, kinh tế, đô thị",
+      "vocab_theme_en": "Work, economy, cities",
       "words_per_day": 20,
       "focus": [
         "Câu điều kiện loại 2",
@@ -150,17 +238,32 @@
         "used to / be used to",
         "So sánh số liệu (twice as…, the same as…)"
       ],
+      "focus_en": [
+        "Second conditional",
+        "Non-defining relative clauses",
+        "The passive in other tenses",
+        "Reported speech",
+        "used to / be used to",
+        "Comparing figures (twice as…, the same as…)"
+      ],
       "listening": "IELTS Listening Section 2 (độc thoại, bản đồ)",
+      "listening_en": "IELTS Listening Section 2 (monologue, maps)",
       "reading": "IELTS Reading: Matching Information",
+      "reading_en": "IELTS Reading: Matching Information",
       "writing": "Mô tả biểu đồ đường đơn giản (Task 1)",
-      "speaking": "IELTS Speaking Part 2: lập dàn ý trong 1 phút"
+      "writing_en": "Describe a simple line graph (Task 1)",
+      "speaking": "IELTS Speaking Part 2: lập dàn ý trong 1 phút",
+      "speaking_en": "IELTS Speaking Part 2: make notes in 1 minute"
     },
     {
       "week": 7,
       "phase": 2,
       "title": "Ngôn ngữ học thuật",
+      "title_en": "Academic language",
       "can_do": "Mô tả xu hướng số liệu, lập luận nguyên nhân – kết quả",
+      "can_do_en": "Describe trends in data and argue cause and effect",
       "vocab_theme": "Môi trường, khoa học, sức khỏe cộng đồng",
+      "vocab_theme_en": "Environment, science, public health",
       "words_per_day": 22,
       "focus": [
         "Mô tả xu hướng: rise/fall + trạng từ",
@@ -170,17 +273,32 @@
         "Diễn đạt nguyên nhân – kết quả",
         "Ngôn ngữ rào đón (tend to, it is likely that…)"
       ],
+      "focus_en": [
+        "Describing trends: rise/fall + adverbs",
+        "Participle clauses (V-ing/V3)",
+        "Third conditional",
+        "Concession: although/despite/however",
+        "Expressing cause and effect",
+        "Hedging language (tend to, it is likely that…)"
+      ],
       "listening": "IELTS Listening Section 3 (hội thoại học thuật)",
+      "listening_en": "IELTS Listening Section 3 (academic conversation)",
       "reading": "IELTS Reading: Matching Headings",
+      "reading_en": "IELTS Reading: Matching Headings",
       "writing": "Viết mở bài và một đoạn thân bài Task 2",
-      "speaking": "IELTS Speaking Part 3: mở rộng câu trả lời (lý do + ví dụ)"
+      "writing_en": "Write an introduction and one body paragraph for Task 2",
+      "speaking": "IELTS Speaking Part 3: mở rộng câu trả lời (lý do + ví dụ)",
+      "speaking_en": "IELTS Speaking Part 3: extend your answers (reason + example)"
     },
     {
       "week": 8,
       "phase": 2,
       "title": "Viết đoạn văn mạch lạc",
+      "title_en": "Writing coherent paragraphs",
       "can_do": "Viết hoàn chỉnh một bài Task 2 khoảng 250 từ",
+      "can_do_en": "Write a complete Task 2 essay of about 250 words",
       "vocab_theme": "Academic Word List (nhóm 1–3)",
+      "vocab_theme_en": "Academic Word List (sublists 1–3)",
       "words_per_day": 22,
       "focus": [
         "Cấu trúc bài Task 2 (mở – thân – kết)",
@@ -190,17 +308,32 @@
         "Mạo từ nâng cao",
         "Sửa lỗi ngữ pháp thường gặp của người Việt"
       ],
+      "focus_en": [
+        "Task 2 essay structure (introduction – body – conclusion)",
+        "Paraphrasing: changing words and structures",
+        "Cohesion and reference words (this, such, these…)",
+        "Academic noun phrases",
+        "Advanced articles",
+        "Fixing common grammar mistakes made by Vietnamese learners"
+      ],
       "listening": "IELTS Listening Section 4 (bài giảng)",
+      "listening_en": "IELTS Listening Section 4 (lecture)",
       "reading": "IELTS Reading: Sentence/Summary Completion",
+      "reading_en": "IELTS Reading: Sentence/Summary Completion",
       "writing": "Viết hoàn chỉnh một bài Task 2 (250 từ)",
-      "speaking": "Thi thử Speaking Part 1–3, ghi âm"
+      "writing_en": "Write a complete Task 2 essay (250 words)",
+      "speaking": "Thi thử Speaking Part 1–3, ghi âm",
+      "speaking_en": "Mock Speaking test Parts 1–3, recorded"
     },
     {
       "week": 9,
       "phase": 3,
       "title": "Chiến lược Listening & Writing Task 1",
+      "title_en": "Listening & Writing Task 1 strategies",
       "can_do": "Làm Listening đúng chiến lược, viết Task 1 mọi dạng trong 20 phút",
+      "can_do_en": "Do Listening with the right strategies and write any type of Task 1 in 20 minutes",
       "vocab_theme": "Từ vựng mô tả số liệu",
+      "vocab_theme_en": "Vocabulary for describing data",
       "words_per_day": 20,
       "focus": [
         "Listening: đoán từ loại trước khi nghe, bẫy đáp án",
@@ -210,17 +343,32 @@
         "Task 1: quy trình",
         "Task 1: bản đồ"
       ],
+      "focus_en": [
+        "Listening: predict the word type before listening; answer traps",
+        "Task 1: line graphs",
+        "Task 1: bar charts and tables",
+        "Task 1: pie charts and mixed charts",
+        "Task 1: processes",
+        "Task 1: maps"
+      ],
       "listening": "Làm 1 đề Listening đầy đủ/2 ngày, chữa lỗi",
+      "listening_en": "Do 1 full Listening test every 2 days and review your mistakes",
       "reading": "Làm 1 passage/ngày có bấm giờ (20 phút)",
+      "reading_en": "Do 1 timed passage a day (20 minutes)",
       "writing": "Viết 1 bài Task 1/ngày (150 từ, 20 phút)",
-      "speaking": "Part 1 theo chủ đề quý hiện tại"
+      "writing_en": "Write 1 Task 1 a day (150 words, 20 minutes)",
+      "speaking": "Part 1 theo chủ đề quý hiện tại",
+      "speaking_en": "Part 1 on the current quarter's topics"
     },
     {
       "week": 10,
       "phase": 3,
       "title": "Chiến lược Reading & Writing Task 2",
+      "title_en": "Reading & Writing Task 2 strategies",
       "can_do": "Làm Reading trong 60 phút, viết Task 2 bốn dạng đề trong 40 phút",
+      "can_do_en": "Complete Reading in 60 minutes and write all four Task 2 essay types in 40 minutes",
       "vocab_theme": "Chủ đề Task 2: giáo dục, công nghệ, môi trường",
+      "vocab_theme_en": "Task 2 topics: education, technology, environment",
       "words_per_day": 20,
       "focus": [
         "Reading: skimming và scanning",
@@ -230,17 +378,32 @@
         "Task 2: Problem – Solution",
         "Task 2: Advantages – Disadvantages"
       ],
+      "focus_en": [
+        "Reading: skimming and scanning",
+        "Reading: advanced TFNG / YNNG",
+        "Task 2: Opinion (agree/disagree)",
+        "Task 2: Discussion (both views)",
+        "Task 2: Problem – Solution",
+        "Task 2: Advantages – Disadvantages"
+      ],
       "listening": "Làm 1 đề Listening đầy đủ/2 ngày",
+      "listening_en": "Do 1 full Listening test every 2 days",
       "reading": "Làm 1 đề Reading đầy đủ/2 ngày (60 phút)",
+      "reading_en": "Do 1 full Reading test every 2 days (60 minutes)",
       "writing": "Viết 1 bài Task 2/ngày (40 phút), chấm theo 4 tiêu chí",
-      "speaking": "Part 2 cue card: 2 phút/ngày"
+      "writing_en": "Write 1 Task 2 a day (40 minutes) and mark it against the 4 criteria",
+      "speaking": "Part 2 cue card: 2 phút/ngày",
+      "speaking_en": "Part 2 cue cards: 2 minutes a day"
     },
     {
       "week": 11,
       "phase": 3,
       "title": "Speaking và tối ưu band",
+      "title_en": "Speaking and maximising your band",
       "can_do": "Nói trôi chảy đủ 3 phần Speaking, phát âm rõ ràng",
+      "can_do_en": "Speak fluently across all 3 parts of Speaking with clear pronunciation",
       "vocab_theme": "Collocation và idiom dùng được khi nói",
+      "vocab_theme_en": "Collocations and idioms you can use when speaking",
       "words_per_day": 18,
       "focus": [
         "Speaking Part 1: trả lời tự nhiên",
@@ -250,17 +413,32 @@
         "Lexical Resource: đa dạng từ vựng",
         "Grammatical Range: đa dạng cấu trúc"
       ],
+      "focus_en": [
+        "Speaking Part 1: answering naturally",
+        "Speaking Part 2: structured storytelling",
+        "Speaking Part 3: arguing and comparing",
+        "Pronunciation: word stress, linking, intonation",
+        "Lexical Resource: vocabulary range",
+        "Grammatical Range: variety of structures"
+      ],
       "listening": "Đề Listening + nghe lại phần sai",
+      "listening_en": "Listening test + re-listen to the parts you got wrong",
       "reading": "Đề Reading + phân tích bẫy",
+      "reading_en": "Reading test + analyse the traps",
       "writing": "Viết lại bài đã chấm, sửa theo nhận xét",
-      "speaking": "Thi thử Speaking đầy đủ mỗi ngày"
+      "writing_en": "Rewrite marked essays based on the feedback",
+      "speaking": "Thi thử Speaking đầy đủ mỗi ngày",
+      "speaking_en": "A full mock Speaking test every day"
     },
     {
       "week": 12,
       "phase": 3,
       "title": "Thi thử và hoàn thiện",
+      "title_en": "Mock tests and final polish",
       "can_do": "Làm trọn bộ đề thi thử và quản lý thời gian như thi thật",
+      "can_do_en": "Complete a full mock test and manage your time as in the real exam",
       "vocab_theme": "Ôn toàn bộ flashcard",
+      "vocab_theme_en": "Review all flashcards",
       "words_per_day": 10,
       "focus": [
         "Thi thử Listening + Reading",
@@ -270,10 +448,22 @@
         "Thi thử toàn bài lần 2",
         "Chiến lược phòng thi và quản lý thời gian"
       ],
+      "focus_en": [
+        "Mock Listening + Reading",
+        "Mock Writing (Task 1 + 2)",
+        "Mock Speaking",
+        "Fixing mistakes by category",
+        "Second full mock test",
+        "Exam-room strategies and time management"
+      ],
       "listening": "Đề đầy đủ, điều kiện thi thật",
+      "listening_en": "Full test under real exam conditions",
       "reading": "Đề đầy đủ, điều kiện thi thật",
+      "reading_en": "Full test under real exam conditions",
       "writing": "Bài thi thử đầy đủ 60 phút",
-      "speaking": "Thi thử 11–14 phút"
+      "writing_en": "A full 60-minute mock test",
+      "speaking": "Thi thử 11–14 phút",
+      "speaking_en": "An 11–14-minute mock test"
     }
   ]
 }

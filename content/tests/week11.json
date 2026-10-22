@@ -1,6 +1,7 @@
 {
   "week": 11,
   "title": "Kiểm tra tuần 11: Speaking và tối ưu band",
+  "title_en": "Week 11 test: Speaking and band optimisation",
   "time_limit_min": 30,
   "pass_pct": 70,
   "passage": "Intelligibility over Accent\n\nFor many years, language learners were encouraged to imitate the accent of a native speaker as closely as possible. Recordings of British or American voices were treated as the model, and any difference from that model was considered an error. In recent decades, however, many linguists have questioned this approach.\n\nThe central argument is that the goal of speaking a second language is to be understood, not to sound like someone from London or New York. Research on conversations between non-native speakers, for example, has identified the pronunciation features that most strongly affect whether international listeners can follow a speaker. These include the clear pronunciation of most consonant sounds, the difference between long and short vowels, and the placement of stress on the most important word in a phrase. By contrast, some features that teachers often spend hours on, such as the 'th' sounds in 'think' and 'this', caused relatively few misunderstandings.\n\nThis shift has practical consequences for learners. Rather than trying to remove every trace of their first language, students can concentrate on the features that matter most. Learners from Vietnam, for instance, often omit final consonants, so that 'rice', 'right' and 'ride' may sound identical. Correcting this single habit may improve intelligibility more than months of work on intonation patterns.\n\nNot everyone accepts this view. Some teachers argue that learners themselves often want to sound native-like and that lowering the target may limit their progress. Nevertheless, major international speaking tests now assess pronunciation according to how easily a candidate can be understood, rather than how closely they resemble any particular accent.",
@@ -16,7 +17,8 @@
         "I don't know."
       ],
       "answer": 1,
-      "explain": "Part 1 nên trả lời tự nhiên, trực tiếp rồi thêm lý do hoặc ví dụ ngắn. Trả lời một từ hoặc như đọc bài học thuộc đều bị đánh giá thấp."
+      "explain": "Part 1 nên trả lời tự nhiên, trực tiếp rồi thêm lý do hoặc ví dụ ngắn. Trả lời một từ hoặc như đọc bài học thuộc đều bị đánh giá thấp.",
+      "explain_en": "In Part 1, answer naturally and directly, then add a short reason or example. One-word answers or memorised speeches score poorly."
     },
     {
       "id": "w11q02",
@@ -24,7 +26,8 @@
       "q": "How long should a typical answer in Speaking Part 1 be?",
       "options": ["About 2–3 sentences", "One word", "About 2 minutes", "About 5 minutes"],
       "answer": 0,
-      "explain": "Part 1 có nhiều câu hỏi ngắn, mỗi câu trả lời khoảng 2–3 câu là phù hợp. Nói 2 phút là dành cho Part 2."
+      "explain": "Part 1 có nhiều câu hỏi ngắn, mỗi câu trả lời khoảng 2–3 câu là phù hợp. Nói 2 phút là dành cho Part 2.",
+      "explain_en": "Part 1 has many short questions, so about 2–3 sentences per answer is right. Speaking for 2 minutes is for Part 2."
     },
     {
       "id": "w11q03",
@@ -37,7 +40,8 @@
         "Ask the examiner for a different topic"
       ],
       "answer": 2,
-      "explain": "Một phút không đủ viết cả bài; ghi từ khóa cho từng gợi ý giúp bạn nói đủ ý và mạch lạc trong 2 phút."
+      "explain": "Một phút không đủ viết cả bài; ghi từ khóa cho từng gợi ý giúp bạn nói đủ ý và mạch lạc trong 2 phút.",
+      "explain_en": "One minute is not enough to write a full answer; noting key words for each prompt helps you cover every point and speak coherently for 2 minutes."
     },
     {
       "id": "w11q04",
@@ -50,7 +54,8 @@
         "Give a list of adjectives about travelling in general"
       ],
       "answer": 0,
-      "explain": "Kể chuyện theo trình tự bối cảnh → diễn biến → cảm nhận giúp bài nói mạch lạc và đủ thời lượng 2 phút."
+      "explain": "Kể chuyện theo trình tự bối cảnh → diễn biến → cảm nhận giúp bài nói mạch lạc và đủ thời lượng 2 phút.",
+      "explain_en": "Telling the story in the order setting → events → feelings keeps your talk coherent and long enough for 2 minutes."
     },
     {
       "id": "w11q05",
@@ -63,7 +68,8 @@
         "Definitely, mainly because flights have become much cheaper. Budget airlines now offer low-cost tickets, whereas twenty years ago flying was a luxury for most families."
       ],
       "answer": 3,
-      "explain": "Part 3 cần trả lời rõ, giải thích lý do và so sánh (whereas...). Kể trải nghiệm cá nhân đơn thuần chưa đủ để lập luận."
+      "explain": "Part 3 cần trả lời rõ, giải thích lý do và so sánh (whereas...). Kể trải nghiệm cá nhân đơn thuần chưa đủ để lập luận.",
+      "explain_en": "Part 3 needs a clear answer with a reason and a comparison (whereas...). A personal story alone is not enough to build an argument."
     },
     {
       "id": "w11q06",
@@ -71,7 +77,8 @@
       "q": "Pronunciation: which word is stressed on the SECOND syllable?",
       "options": ["photograph", "photography", "photographic", "telephone"],
       "answer": 1,
-      "explain": "pho-TO-gra-phy nhấn âm 2; PHO-to-graph và TE-le-phone nhấn âm 1; pho-to-GRA-phic nhấn âm 3."
+      "explain": "pho-TO-gra-phy nhấn âm 2; PHO-to-graph và TE-le-phone nhấn âm 1; pho-to-GRA-phic nhấn âm 3.",
+      "explain_en": "pho-TO-gra-phy is stressed on syllable 2; PHO-to-graph and TE-le-phone on syllable 1; pho-to-GRA-phic on syllable 3."
     },
     {
       "id": "w11q07",
@@ -79,7 +86,8 @@
       "q": "Lexical Resource: you have already said \"very good\" twice about a meal. Which word is a more precise alternative?",
       "options": ["delicious", "goodly", "very very good", "nice good"],
       "answer": 0,
-      "explain": "\"Delicious\" chính xác và tự nhiên khi khen món ăn, giúp tăng điểm từ vựng. Các phương án còn lại sai hoặc lặp từ."
+      "explain": "\"Delicious\" chính xác và tự nhiên khi khen món ăn, giúp tăng điểm từ vựng. Các phương án còn lại sai hoặc lặp từ.",
+      "explain_en": "\"Delicious\" is precise and natural for praising food, which boosts your vocabulary score. The other options are wrong or repetitive."
     },
     {
       "id": "w11q08",
@@ -92,7 +100,8 @@
         "Music. Guitar. Fun."
       ],
       "answer": 2,
-      "explain": "Câu dùng \"Although\" có mệnh đề phụ, là câu phức. Câu B chỉ là câu ghép nối bằng \"and\"."
+      "explain": "Câu dùng \"Although\" có mệnh đề phụ, là câu phức. Câu B chỉ là câu ghép nối bằng \"and\".",
+      "explain_en": "The sentence with \"Although\" has a subordinate clause, so it is a complex sentence. Option B is only a compound sentence joined by \"and\"."
     },
     {
       "id": "w11q09",
@@ -100,7 +109,8 @@
       "q": "Choose the natural collocation: \"I've been ______ busy at work lately.\"",
       "options": ["strongly", "heavily", "deeply", "incredibly"],
       "answer": 3,
-      "explain": "\"Incredibly busy\" là cách nói tự nhiên. Không dùng \"strongly/heavily/deeply busy\"."
+      "explain": "\"Incredibly busy\" là cách nói tự nhiên. Không dùng \"strongly/heavily/deeply busy\".",
+      "explain_en": "\"Incredibly busy\" is the natural expression. We don't say \"strongly/heavily/deeply busy\"."
     },
     {
       "id": "w11q10",
@@ -108,7 +118,8 @@
       "q": "\"I only eat fast food once in a blue moon.\" What does \"once in a blue moon\" mean?",
       "options": ["very often", "very rarely", "only at night", "only when I'm sad"],
       "answer": 1,
-      "explain": "\"Once in a blue moon\" nghĩa là hiếm khi, rất ít khi."
+      "explain": "\"Once in a blue moon\" nghĩa là hiếm khi, rất ít khi.",
+      "explain_en": "\"Once in a blue moon\" means very rarely."
     },
     {
       "id": "w11q11",
@@ -116,7 +127,8 @@
       "q": "Choose the correct collocation: \"I have ______ a lot of progress with my English this year.\"",
       "options": ["made", "done", "taken", "got"],
       "answer": 0,
-      "explain": "Collocation đúng là \"make progress\" (tiến bộ)."
+      "explain": "Collocation đúng là \"make progress\" (tiến bộ).",
+      "explain_en": "The correct collocation is \"make progress\"."
     },
     {
       "id": "w11q12",
@@ -124,7 +136,8 @@
       "q": "\"A new phone costs an arm and a leg these days.\" What does \"cost an arm and a leg\" mean?",
       "options": ["be dangerous", "be painful to use", "be very expensive", "be very cheap"],
       "answer": 2,
-      "explain": "\"Cost an arm and a leg\" là thành ngữ nghĩa là rất đắt."
+      "explain": "\"Cost an arm and a leg\" là thành ngữ nghĩa là rất đắt.",
+      "explain_en": "\"Cost an arm and a leg\" is an idiom meaning very expensive."
     },
     {
       "id": "w11q13",
@@ -132,7 +145,8 @@
       "q": "True, False or Not Given? \"According to the passage, all teachers now agree that learners do not need native-like pronunciation.\"",
       "options": ["True", "False", "Not Given"],
       "answer": 1,
-      "explain": "Đoạn cuối nói \"Not everyone accepts this view\" và một số giáo viên phản đối, nên câu này sai: False."
+      "explain": "Đoạn cuối nói \"Not everyone accepts this view\" và một số giáo viên phản đối, nên câu này sai: False.",
+      "explain_en": "The last paragraph says \"Not everyone accepts this view\" and some teachers disagree, so the statement is False."
     },
     {
       "id": "w11q14",
@@ -145,7 +159,8 @@
         "Practical advice: focus on the features that matter most"
       ],
       "answer": 3,
-      "explain": "Đoạn 3 khuyên người học tập trung vào những đặc điểm phát âm quan trọng nhất, ví dụ âm cuối."
+      "explain": "Đoạn 3 khuyên người học tập trung vào những đặc điểm phát âm quan trọng nhất, ví dụ âm cuối.",
+      "explain_en": "Paragraph 3 advises learners to focus on the most important pronunciation features, such as final sounds."
     },
     {
       "id": "w11q15",
@@ -158,7 +173,8 @@
         "To illustrate the difference between long and short vowels"
       ],
       "answer": 0,
-      "explain": "Ba từ này chỉ khác nhau ở âm cuối; nếu bỏ âm cuối, chúng nghe giống hệt nhau."
+      "explain": "Ba từ này chỉ khác nhau ở âm cuối; nếu bỏ âm cuối, chúng nghe giống hệt nhau.",
+      "explain_en": "These three words differ only in their final sound; if you drop it, they sound exactly the same."
     }
   ]
 }

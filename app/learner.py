@@ -17,8 +17,18 @@ def today() -> date:
     return datetime.now(VN).date()
 
 
+XP = {"task": 10, "day_bonus": 20, "card": 2, "placement": 20, "test_attempt": 10, "test_pass": 100, "essay": 30}
+
+
 def _blank() -> dict:
-    return {"placement": None, "start_week": 1, "done": {}, "activity": {}, "cards": {}, "essays": [], "attempts": []}
+    return {"placement": None, "start_week": 1, "done": {}, "activity": {}, "cards": {}, "essays": [], "attempts": [],
+            "xp_days": {}, "bonus_days": [], "games": []}
+
+
+def award(lr: dict, points: int) -> None:
+    """Add XP to today's total (negative to take back XP of an un-ticked task)."""
+    key = today().isoformat()
+    lr["xp_days"][key] = max(0, lr["xp_days"].get(key, 0) + points)
 
 
 def get(db: dict, username: str) -> dict:
@@ -81,13 +91,19 @@ def set_task(username: str, day: int, task_id: str, done: bool) -> dict:
         if done and task_id not in done_ids:
             done_ids.append(task_id)
             lr["activity"][key] = lr["activity"].get(key, 0) + task["minutes"]
+            award(lr, XP["task"])
         elif not done and task_id in done_ids:
             done_ids.remove(task_id)
+            award(lr, -XP["task"])
             if key in lr["activity"]:
                 lr["activity"][key] = max(0, lr["activity"][key] - task["minutes"])
                 if not lr["activity"][key]:
                     del lr["activity"][key]
-        return {"day": day, "done": done_ids, "complete": len(done_ids) == len(plan["tasks"])}
+        complete = len(done_ids) == len(plan["tasks"])
+        if complete and day not in lr["bonus_days"]:
+            lr["bonus_days"].append(day)
+            award(lr, XP["day_bonus"])
+        return {"day": day, "done": done_ids, "complete": complete}
     return _save(username, m)
 
 
@@ -159,5 +175,6 @@ def review(username: str, word_id: str, grade: str) -> dict:
 
     def m(lr):
         lr["cards"][word_id] = schedule(lr["cards"].get(word_id), grade)
+        award(lr, XP["card"])
         return lr["cards"][word_id]
     return _save(username, m)
