@@ -9,7 +9,7 @@ from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
-from . import auth, content, exams, game, learner, reports, store, writing
+from . import auth, content, exams, game, learner, reminders, reports, store, writing
 from .auth import ApiError
 from .i18n import lang_of, translate
 
@@ -176,6 +176,11 @@ def vocab_words(user=USER):
     return [{**w, "card": lr["cards"].get(w["id"])} for w in learner.unlocked_words(lr)]
 
 
+@app.get("/api/vocab/stats")
+def vocab_stats(user=USER):
+    return learner.memory_stats(learner_of(user))
+
+
 @app.post("/api/vocab/review")
 async def vocab_review(request: Request, user=USER):
     b = await body_json(request)
@@ -218,6 +223,39 @@ def game_words(user=USER):
 @app.post("/api/games/result")
 async def game_result(request: Request, user=USER):
     return game.record_game(user["username"], await body_json(request))
+
+
+# ---------- Reminders and push notifications ----------
+@app.get("/api/reminders")
+def get_reminders(user=USER):
+    return reminders.status(learner_of(user))
+
+
+@app.put("/api/reminders")
+async def put_reminders(request: Request, user=USER):
+    return reminders.update(user["username"], await body_json(request), lang_of(request))
+
+
+@app.post("/api/push/subscribe")
+async def push_subscribe(request: Request, user=USER):
+    return reminders.subscribe(user["username"], await body_json(request))
+
+
+@app.post("/api/push/unsubscribe")
+async def push_unsubscribe(request: Request, user=USER):
+    return reminders.unsubscribe(user["username"], (await body_json(request)).get("endpoint"))
+
+
+@app.post("/api/push/test")
+async def push_test(request: Request, user=USER):
+    return await run_in_threadpool(reminders.send_test, user["username"], lang_of(request))
+
+
+@app.api_route("/api/reminders/run", methods=["GET", "POST"])
+async def reminders_run(request: Request, key: str | None = None):
+    """For an external cron (e.g. cron-job.org, every 10–15 min): `?key=CRON_SECRET` or header `X-Cron-Key`."""
+    reminders.check_key(request.headers.get("x-cron-key") or key)
+    return await run_in_threadpool(reminders.run)
 
 
 # ---------- Admin: learners and reports ----------

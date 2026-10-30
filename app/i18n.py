@@ -43,6 +43,11 @@ _EN = [
     (r"Trò chơi không hợp lệ", "Invalid game"),
     (r"Danh sách trống", "The list is empty"),
     (r"Dòng (\d+): (.*)", r"Line \1: \2"),
+    (r"Giờ nhắc phải có dạng HH:MM", "Reminder time must be HH:MM"),
+    (r"Đăng ký thông báo không hợp lệ", "Invalid notification subscription"),
+    (r"Thiết bị này chưa bật thông báo", "Notifications are not enabled on this device"),
+    (r"Chưa cấu hình CRON_SECRET trên máy chủ", "CRON_SECRET is not configured on the server"),
+    (r"Sai khóa cron", "Wrong cron key"),
     (r"Không tìm thấy", "Not found"),
     (r"Lỗi máy chủ", "Server error"),
 ]

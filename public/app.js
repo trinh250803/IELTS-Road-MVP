@@ -75,6 +75,7 @@ const ICON_PATHS = {
   download: '<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   shuffle: '<path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>',
+  bell: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
 };
 const icon = (name, cls = '') => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICON_PATHS[name] || ''}</svg>`;
 const KIND_ICON = { vocab: 'vocab', grammar: 'grammar', strategy: 'target', listening: 'listening', reading: 'reading', writing: 'writing', speaking: 'speaking', review: 'review', test: 'test' };
@@ -127,21 +128,109 @@ function csvDownload(rows, filename) {
   a.click();
 }
 
-function toast(msg, kind = '') {
+function toast(msg, kind = '', ms = 2600) {
   const el = $('#toast');
   el.textContent = msg;
   el.className = `toast ${kind}`;
   clearTimeout(toast.timer);
-  toast.timer = setTimeout(() => el.classList.add('hidden'), 2600);
+  toast.timer = setTimeout(() => el.classList.add('hidden'), ms);
 }
 const xpToast = n => n > 0 && toast(`+${n} XP`, 'xp');
 
-function speak(text) {
-  if (!('speechSynthesis' in window)) return toast(t('err.tts'));
+// auto = spoken without a tap (card flip, new round): stay silent instead of warning when there is no voice
+function speak(text, auto = false) {
+  if (!('speechSynthesis' in window)) return auto ? null : toast(t('err.tts'));
   const u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-GB';
   speechSynthesis.cancel();
   speechSynthesis.speak(u);
+}
+
+// ---------- Motion: page entrance, count-up numbers, confetti (all off under prefers-reduced-motion) ----------
+const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+let enterTimer = null;
+function enter() {
+  [...view.children].forEach((c, i) => c.style.setProperty('--i', Math.min(i, 8)));
+  view.classList.remove('enter');
+  void view.offsetWidth;  // restart the animation
+  view.classList.add('enter');
+  clearTimeout(enterTimer);
+  enterTimer = setTimeout(() => view.classList.remove('enter'), 1200);
+  countUp(view);
+}
+// Animate the first plain integer in each [data-count] element from 0 (skips "1.234"-style numbers).
+function countUp(root) {
+  if (reduceMotion()) return;
+  root.querySelectorAll('[data-count]').forEach(el => {
+    const text = el.textContent, m = text.match(/\d+/);
+    if (!m || m[0] === '0' || /^[.,]\d/.test(text.slice(m.index + m[0].length))) return;
+    const end = Number(m[0]), t0 = performance.now();
+    const step = now => {
+      const k = Math.min(1, (now - t0) / 700);
+      el.textContent = text.slice(0, m.index) + Math.round(end * (1 - (1 - k) ** 3)) + text.slice(m.index + m[0].length);
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
+}
+function confetti(n = 90) {
+  sfx.win();
+  if (reduceMotion()) return;
+  const colors = ['#4f46e5', '#0d9488', '#e8590c', '#f59f00', '#db2777', '#7c3aed'];
+  const box = document.createElement('div');
+  box.className = 'confetti';
+  box.innerHTML = Array.from({ length: n }, () => `<i style="left:${Math.random() * 100}%;background:${colors[Math.floor(Math.random() * colors.length)]};
+    --dx:${Math.round((Math.random() - 0.5) * 240)}px;--r:${Math.round(Math.random() * 900 - 450)}deg;
+    animation-delay:${(Math.random() * 0.35).toFixed(2)}s;animation-duration:${(1.8 + Math.random() * 1.4).toFixed(2)}s"></i>`).join('');
+  document.body.appendChild(box);
+  setTimeout(() => box.remove(), 4000);
+}
+// ---------- Sound effects: synthesised with Web Audio (no audio files), on unless turned off in settings ----------
+const SOUND_KEY = 'ielts_sound';
+const soundOn = () => stored(SOUND_KEY) !== 'off';
+const sfx = (() => {
+  let ctx = null;
+  const audio = () => {
+    const A = window.AudioContext || window.webkitAudioContext;
+    if (!A) return null;
+    ctx = ctx || new A();
+    if (ctx.state === 'suspended') ctx.resume().catch(() => {});
+    return ctx;
+  };
+  // notes: [frequency Hz, start s, length s, wave, volume]
+  const play = (notes, force) => {
+    if (!soundOn() && !force) return;
+    const c = audio();
+    if (!c) return;
+    const t0 = c.currentTime + 0.02;
+    notes.forEach(([f, at, len, type = 'sine', vol = 0.16]) => {
+      const o = c.createOscillator(), g = c.createGain();
+      o.type = type;
+      o.frequency.setValueAtTime(f, t0 + at);
+      g.gain.setValueAtTime(0.0001, t0 + at);
+      g.gain.exponentialRampToValueAtTime(vol, t0 + at + 0.015);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + at + len);
+      o.connect(g).connect(c.destination);
+      o.start(t0 + at);
+      o.stop(t0 + at + len + 0.05);
+    });
+  };
+  return {
+    right: () => play([[880, 0, 0.12], [1318, 0.08, 0.25]]),
+    wrong: () => play([[233, 0, 0.16, 'triangle', 0.2], [185, 0.11, 0.26, 'triangle', 0.2]]),
+    tick: () => play([[660, 0, 0.09, 'sine', 0.12], [990, 0.06, 0.15, 'sine', 0.1]]),
+    flip: () => play([[420, 0, 0.07, 'triangle', 0.07], [620, 0.03, 0.07, 'triangle', 0.05]]),
+    win: () => play([[523, 0, 0.16], [659, 0.1, 0.16], [784, 0.2, 0.16], [1047, 0.3, 0.45]]),
+    chime: force => play([[988, 0, 0.6, 'sine', 0.2], [1319, 0.2, 0.9, 'sine', 0.16], [1976, 0.2, 0.5, 'sine', 0.04]], force),
+  };
+})();
+
+// One page-level keyboard handler at a time; cleared on every route change.
+let onKey = null;
+function setKeys(fn) {
+  if (onKey) document.removeEventListener('keydown', onKey);
+  onKey = fn;
+  if (fn) document.addEventListener('keydown', fn);
 }
 
 // ---------- Auth ----------
@@ -182,6 +271,8 @@ $('#auth-form').addEventListener('submit', async e => {
   } catch (err) { $('#auth-error').textContent = err.message; }
 });
 async function logout() {
+  clearInterval(remindTimer);
+  await disablePush().catch(() => {});  // this device stops receiving the signed-out learner's reminders
   await api('/api/auth/logout', { method: 'POST' }).catch(() => {});
   setToken(null);
   location.hash = '';
@@ -198,6 +289,7 @@ async function start(route) {
   $('#shell').classList.remove('hidden');
   applyStatic();
   buildNav();
+  initReminders();
   if (route && location.hash !== route) location.hash = route; else render();
 }
 
@@ -211,6 +303,7 @@ async function render() {
   stopTimer();
   stopGame();
   hideTip();
+  setKeys(null);
   const parts = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
   const isAdmin = me && me.role === 'admin';
   let name = parts[0] || (isAdmin ? 'admin' : 'today');
@@ -221,6 +314,7 @@ async function render() {
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('active', a.dataset.r === active));
   view.innerHTML = `<p class="muted">${t('loading')}</p>`;
   try { await ROUTES[name](rest.map(decodeURIComponent).join('/')); } catch (err) { view.innerHTML = `<div class="card error">${esc(err.message)}</div>`; }
+  enter();
   window.scrollTo(0, 0);
   if (!isAdmin) refreshLevel();
 }
@@ -234,6 +328,121 @@ async function refreshLevel(p) {
     el.innerHTML = `<div class="row" style="justify-content:space-between"><b>${t('lvl.level', p.level)}</b><span class="muted small">${num(p.xp)} XP</span></div>
       <div class="bar"><i style="width:${p.pct}%"></i></div>`;
   } catch { /* sidebar only */ }
+}
+
+// ---------- Reminders: Web Push (arrives with the browser closed) + an in-tab fallback with a chime ----------
+/* The server sends at most one push per day at the learner's time when an external cron calls
+   /api/reminders/run. Without push on this device (or without the cron), an open tab reminds instead. */
+const REMINDED_KEY = 'ielts_reminded';
+let remind = null;  // server settings: {enabled, time, devices, vapid_public_key, auto}
+let remindTimer = null;
+const pushSupported = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
+const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const standalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+const b64u = s => Uint8Array.from(atob(s.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((4 - s.length % 4) % 4)), c => c.charCodeAt(0));
+const localDate = () => new Date().toLocaleDateString('sv-SE');
+const hhmm = () => new Date().toTimeString().slice(0, 5);
+const notifyPerm = () => ('Notification' in window ? Notification.permission : 'unsupported');
+
+async function pushSubscription() {
+  if (!pushSupported()) return null;
+  const reg = await navigator.serviceWorker.getRegistration();
+  return reg ? reg.pushManager.getSubscription() : null;
+}
+async function enablePush() {
+  if (!pushSupported()) throw new Error(t(isIOS() && !standalone() ? 'rem.ios' : 'rem.unsupported'));
+  if (await Notification.requestPermission() !== 'granted') throw new Error(t('rem.denied'));
+  const reg = await navigator.serviceWorker.register('/sw.js');
+  await navigator.serviceWorker.ready;
+  const old = await reg.pushManager.getSubscription();
+  if (old) await old.unsubscribe();  // it may belong to an older server key
+  const sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64u(remind.vapid_public_key) });
+  remind = await api('/api/push/subscribe', { method: 'POST', body: sub.toJSON() });
+}
+async function disablePush() {
+  const sub = await pushSubscription();
+  if (!sub) return;
+  await api('/api/push/unsubscribe', { method: 'POST', body: { endpoint: sub.endpoint } }).catch(() => {});
+  await sub.unsubscribe();
+}
+async function initReminders() {
+  clearInterval(remindTimer);
+  remind = null;
+  if (!me || me.role === 'admin') return;
+  remind = await api('/api/reminders').catch(() => null);
+  if (pushSupported()) navigator.serviceWorker.register('/sw.js').catch(() => {});
+  // Re-send this device's subscription: free hosting can lose server data on restart.
+  const sub = await pushSubscription().catch(() => null);
+  if (sub && remind) remind = await api('/api/push/subscribe', { method: 'POST', body: sub.toJSON() }).catch(() => remind);
+  remindTimer = setInterval(checkTabReminder, 30000);
+  checkTabReminder();
+}
+async function checkTabReminder() {
+  const mark = `${me && me.username}:${localDate()}`;
+  if (!remind || !remind.enabled || hhmm() < remind.time || stored(REMINDED_KEY) === mark) return;
+  // With push on this device and the server cron running, the push is the reminder; don't double up.
+  if (remind.auto && notifyPerm() === 'granted' && await pushSubscription().catch(() => null)) return;
+  store(REMINDED_KEY, mark);
+  const d = await api('/api/dashboard').catch(() => null);
+  if (!d) return;
+  const left = d.today.tasks.length - d.today.done.length;
+  const msg = d.cards_due ? t('rem.tabCards', d.cards_due) : left ? t('rem.tabTasks', left) : null;
+  if (!msg) return;
+  sfx.chime(true);
+  toast(`🔔 ${msg}`, 'remind', 10000);
+  if (document.hidden && notifyPerm() === 'granted') {
+    const opts = { body: msg, icon: '/icon-192.png', tag: 'ielts-reminder', data: { url: d.cards_due ? '/#/cards' : '/#/today' } };
+    const reg = pushSupported() ? await navigator.serviceWorker.getRegistration() : null;
+    if (reg) reg.showNotification(t('rem.tabTitle'), opts); else new Notification(t('rem.tabTitle'), opts);
+  }
+}
+async function reminderCard(box) {
+  remind = remind || await api('/api/reminders');
+  const r = remind;
+  const perm = notifyPerm();
+  const deviceOn = perm === 'granted' && !!(await pushSubscription().catch(() => null));
+  const problem = !pushSupported() ? t(isIOS() && !standalone() ? 'rem.ios' : 'rem.unsupported') : perm === 'denied' ? t('rem.denied') : '';
+  // Each row: title left, control right (same line, always), description underneath, optional actions last.
+  box.innerHTML = `
+    <div class="card-head tight"><h3 class="row">${icon('bell')} ${t('rem.title')}</h3></div>
+    <p class="muted small card-sub">${t('rem.sub')}</p>
+    <div class="set-row"><b>${t('rem.daily')}</b>
+      <div class="ctl"><input type="time" id="rem-time" value="${esc(r.time)}" ${r.enabled ? '' : 'disabled'}>
+        <label class="switch" aria-label="${t('rem.daily')}"><input type="checkbox" id="rem-on" ${r.enabled ? 'checked' : ''}><i></i></label></div>
+      <span class="desc">${t('rem.dailySub')}</span></div>
+    <div class="set-row"><b>${t('rem.device')}</b>
+      <div class="ctl"><span class="chip ${deviceOn ? 'ok' : ''}">${t(deviceOn ? 'rem.on' : 'rem.off')}</span></div>
+      <span class="desc">${t(deviceOn ? (r.auto ? 'rem.deviceOn' : 'rem.deviceOnTab') : 'rem.deviceOff')}</span>
+      ${problem ? `<span class="desc warn-text">${problem}</span>` : ''}
+      <div class="actions">${deviceOn ? `<button class="btn" id="push-test">${t('rem.test')}</button><button class="btn" id="push-off">${t('rem.disable')}</button>`
+        : `<button class="btn primary" id="push-on" ${problem ? 'disabled' : ''}>${icon('bell')} ${t('rem.enable')}</button>`}</div></div>
+    <div class="set-row"><b>${t('rem.sound')}</b>
+      <div class="ctl"><button class="btn icon-btn" id="snd-try" aria-label="${t('rem.try')}" title="${t('rem.try')}">${icon('volume')}</button>
+        <label class="switch" aria-label="${t('rem.sound')}"><input type="checkbox" id="snd" ${soundOn() ? 'checked' : ''}><i></i></label></div>
+      <span class="desc">${t('rem.soundSub')}</span></div>`;
+  const save = async () => {
+    try {
+      remind = await api('/api/reminders', { method: 'PUT', body: { enabled: $('#rem-on').checked, time: $('#rem-time').value || '20:00' } });
+      $('#rem-time').disabled = !remind.enabled;
+      toast(t('rem.saved'));
+    } catch (err) { toast(err.message); }
+  };
+  $('#rem-on').addEventListener('change', save);
+  $('#rem-time').addEventListener('change', save);
+  $('#snd').addEventListener('change', e => { store(SOUND_KEY, e.target.checked ? null : 'off'); sfx.tick(); });
+  $('#snd-try').addEventListener('click', () => sfx.chime(true));
+  const act = (id, fn) => { const b = $(id); if (b) b.addEventListener('click', async () => {
+    b.disabled = true;
+    try { await fn(); } catch (err) { toast(err.message, '', 6000); }
+    reminderCard(box);
+  }); };
+  act('#push-on', async () => {
+    await enablePush();
+    if (!remind.enabled) remind = await api('/api/reminders', { method: 'PUT', body: { enabled: true, time: remind.time } });
+    toast(t('rem.enabled'), 'xp');
+  });
+  act('#push-off', disablePush);
+  act('#push-test', async () => { await api('/api/push/test', { method: 'POST' }); toast(t('rem.testSent')); });
 }
 
 // ---------- Shared pieces ----------
@@ -261,10 +470,11 @@ function bindTasks(after) {
     const li = btn.closest('.task');
     const next = !li.classList.contains('done');
     li.classList.toggle('done', next);
+    li.classList.add('just');
     try {
       const r = await api(`/api/days/${btn.dataset.day}/tasks/${btn.dataset.task}`, { method: 'PUT', body: { done: next } });
       btn.setAttribute('aria-pressed', next);
-      if (r.complete && next) toast(t('task.dayDone'), 'xp'); else if (next) xpToast(10);
+      if (r.complete && next) { toast(t('task.dayDone'), 'xp'); confetti(); } else if (next) { xpToast(10); sfx.tick(); }
       refreshLevel();
       after && after(r);
     } catch (err) { li.classList.toggle('done', !next); toast(err.message); }
@@ -273,17 +483,25 @@ function bindTasks(after) {
 function journey(phases, current) {
   return `<div class="journey">${phases.map(p => `
     <div class="jstep ph${p.phase} ${p.phase === current ? 'now' : p.phase < current ? 'past' : ''}">
-      <b>${p.phase}. ${esc(L(p, 'title'))}</b>${t('weeks.range', p.weeks[0], p.weeks[1])}</div>`).join('')}</div>`;
+      <b><span class="jn">${p.phase}. </span>${esc(L(p, 'title'))}</b><span class="jw">${t('weeks.range', p.weeks[0], p.weeks[1])}</span></div>`).join('')}</div>`;
 }
+// The arc sweeps in from empty on first paint (CSS ringIn uses --c); setRing() then moves it with a transition.
 function ring(pct, label, sub, size = 120, color = 'var(--primary)') {
   const r = size / 2 - 8, c = 2 * Math.PI * r;
   return `<div class="ring" style="width:${size}px;height:${size}px"><svg viewBox="0 0 ${size} ${size}" style="width:${size}px;height:${size}px">
     <circle class="bg" cx="${size / 2}" cy="${size / 2}" r="${r}"/>
-    <circle class="fg" cx="${size / 2}" cy="${size / 2}" r="${r}" stroke="${color}" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - Math.min(pct, 100) / 100)}"/></svg>
-    <div class="ring-label"><b>${label}</b><span>${sub}</span></div></div>`;
+    <circle class="fg" cx="${size / 2}" cy="${size / 2}" r="${r}" stroke="${color}" stroke-dasharray="${c}" data-c="${c}"
+      style="--c:${c};stroke-dashoffset:${c * (1 - Math.min(pct, 100) / 100)}"/></svg>
+    <div class="ring-label"><b data-count>${label}</b><span>${sub}</span></div></div>`;
 }
-const stat = (ic, color, soft, value, label) =>
-  `<div class="stat"><span class="ic" style="background:${soft};color:${color}">${icon(ic)}</span><div><b>${value}</b><span>${label}</span></div></div>`;
+function setRing(box, pct, label) {
+  const fg = box.querySelector('.fg');
+  fg.style.animation = 'none';
+  fg.style.strokeDashoffset = fg.dataset.c * (1 - Math.min(pct, 100) / 100);
+  box.querySelector('.ring-label b').textContent = label;
+}
+const stat = (ic, color, soft, value, label, href) =>
+  `<${href ? `a href="${href}"` : 'div'} class="stat"><span class="ic" style="background:${soft};color:${color}">${icon(ic)}</span><div><b data-count>${value}</b><span>${label}</span></div></${href ? 'a' : 'div'}>`;
 
 // ---------- Today ----------
 let roadmapCache = null;
@@ -299,15 +517,16 @@ async function renderToday() {
   refreshLevel(p);
   view.innerHTML = `
     <div class="page-head"><h1>${t(h < 11 ? 'today.morning' : h < 18 ? 'today.afternoon' : 'today.evening')}${first ? `, ${esc(first)}` : ''}</h1>
-      <p>${t('today.sub', td.week, dayLabel(td.day_of_week), esc(L(d.phase, 'title')))}</p></div>
+      <p>${t('today.sub', td.week, dayLabel(td.day_of_week), esc(L(d.phase, 'title')))}</p>
+      ${remind && !remind.enabled ? `<a class="set-remind" href="#/me">${icon('bell')} ${t('rem.setLink')}</a>` : ''}</div>
     ${d.placement ? '' : `<div class="note info">${icon('info')}<div>${t('today.noPlacement')} <a href="#/exam/placement"><b>${t('today.takeNow')}</b></a></div></div>`}
     <div class="stats">
       ${stat('flame', '#e8590c', '#fff0e6', d.streak, t('stat.streak'))}
       ${stat('zap', '#b45309', '#fff4e0', `${p.today_xp}/${p.daily_goal}`, t('stat.todayXp'))}
-      ${stat('cards', '#7c3aed', '#f3edff', d.cards_due, t('stat.cards'))}
-      ${stat('route', '#4f46e5', '#eef0ff', `${d.progress_pct}%`, t('stat.progress', d.days_finished, d.days_total))}
+      ${stat('cards', '#7c3aed', '#f3edff', d.cards_due, t('stat.cards'), '#/cards')}
+      ${stat('route', '#4f46e5', '#eef0ff', `${d.progress_pct}%`, t('stat.progress', d.days_finished, d.days_total), '#/roadmap')}
     </div>
-    <div class="card">
+    <div class="card hero-card ph${td.phase}">
       <div class="hero">
         <div id="ring">${ring(doneMin() / td.minutes * 100, doneMin(), t('today.ofMin', td.minutes))}</div>
         <div>
@@ -318,6 +537,9 @@ async function renderToday() {
         </div>
       </div>
     </div>
+    ${d.cards_due ? `<a class="nudge" href="#/cards"><span class="nudge-ic">${icon('cards')}</span>
+      <div><b>${t('today.cardsNudge', d.cards_due)}</b><span>${t('today.cardsNudgeSub')}</span></div>
+      <span class="btn primary">${t('today.reviewNow')}</span></a>` : ''}
     <div class="card">
       <div class="card-head"><h3>${t('today.tasks')}</h3><a class="btn" href="#/day/${td.day}">${icon('grammar')} ${t('today.openLesson')}</a></div>
       ${taskList(td.day, td.tasks, td.done)}
@@ -329,8 +551,8 @@ async function renderToday() {
     </div>`;
   bindTasks(r => {
     td.done = r.done;
-    $('#ring').innerHTML = ring(doneMin() / td.minutes * 100, doneMin(), t('today.ofMin', td.minutes));
-    if (r.complete) setTimeout(renderToday, 900);
+    setRing($('#ring'), doneMin() / td.minutes * 100, doneMin());
+    if (r.complete) setTimeout(() => renderToday().then(enter), 1400);
   });
 }
 
@@ -353,7 +575,8 @@ async function renderDay(n) {
       <h2>${esc(L(l, 'title'))}</h2>
       <p class="lesson-explain" style="margin-top:.6rem">${esc(L(l, 'explain'))}</p>
       <div class="examples">${l.examples.map(x => `<div>${esc(x)}</div>`).join('')}</div>
-      <div class="card-head" style="margin:1.2rem 0 0"><h3>${t('day.exercises')}</h3><span class="score"></span></div>
+      <div class="card-head" style="margin:1.2rem 0 0"><h3>${t('day.exercises')}</h3>
+        <div class="row"><span class="score"></span><button class="btn retry hidden">${icon('review')} <span></span></button></div></div>
       <div class="ex-list">${l.exercises.map(exercise).join('')}</div></div>`).join('')}
     ${!lessons.length && d.day_of_week !== 7 ? `<div class="card"><div class="note info">${icon('info')}<span>${t('day.soon')}</span></div></div>` : ''}
     ${d.words.length ? `<div class="card"><div class="card-head"><h3>${t('day.words', d.words.length)}</h3><a class="btn" href="#/cards">${icon('cards')} ${t('day.studyCards')}</a></div>
@@ -362,21 +585,45 @@ async function renderDay(n) {
         <div class="ipa">${esc(w.ipa)} · ${esc(w.pos)}</div><div class="vi">${esc(w.vi)}</div><div class="ex">${esc(w.example)}</div></div>`).join('')}</div></div>` : ''}`;
   bindTasks();
   view.querySelectorAll('[data-say]').forEach(b => b.addEventListener('click', () => speak(b.dataset.say)));
+  // Wrong answers can be retried with the options reshuffled: recalling again after feedback is what makes it stick.
   view.querySelectorAll('.ex-list').forEach(list => {
-    const score = list.parentElement.querySelector('.score');
-    let right = 0, answered = 0;
-    list.querySelectorAll('.q').forEach(q => q.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
+    const card = list.parentElement;
+    const score = card.querySelector('.score');
+    const retry = card.querySelector('.retry');
+    const qs = [...list.querySelectorAll('.q')];
+    const update = () => {
+      const answered = qs.filter(q => q.dataset.done).length;
+      const wrong = qs.filter(q => q.dataset.done === 'wrong').length;
+      const finished = answered === qs.length;
+      score.textContent = finished && !wrong ? t('day.allRight') : answered ? t('day.score', answered - wrong, answered) : '';
+      retry.classList.toggle('hidden', !finished || !wrong);
+      retry.querySelector('span').textContent = t('day.retry', wrong);
+      if (finished && !wrong) confetti(50);
+    };
+    qs.forEach(q => q.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
       if (q.dataset.done) return;
-      q.dataset.done = 1;
       const ok = Number(q.dataset.answer);
-      q.querySelectorAll('.opt').forEach((x, j) => {
-        if (j === ok) x.classList.add('right');
+      q.dataset.done = Number(b.dataset.j) === ok ? 'right' : 'wrong';
+      sfx[q.dataset.done]();
+      q.querySelectorAll('.opt').forEach(x => {
+        if (Number(x.dataset.j) === ok) x.classList.add('right');
         else if (x === b) x.classList.add('wrong');
       });
       q.querySelector('.explain').classList.remove('hidden');
-      answered++; right += Number(b.dataset.j) === ok;
-      score.textContent = t('day.score', right, answered);
+      update();
     })));
+    retry.addEventListener('click', () => {
+      const again = qs.filter(q => q.dataset.done === 'wrong');
+      again.forEach(q => {
+        delete q.dataset.done;
+        q.classList.add('retrying');
+        const opts = q.querySelector('.opts');
+        shuffle([...opts.children]).forEach(x => { x.classList.remove('right', 'wrong'); opts.appendChild(x); });
+        q.querySelector('.explain').classList.add('hidden');
+      });
+      update();
+      again[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
   });
 }
 
@@ -400,12 +647,12 @@ async function renderRoadmap() {
       <div class="card-head"><h3>${t('rm.formula')}</h3><span class="chip primary">${t('min', r.minutes_per_day)}</span></div>
       <div class="formula">${r.daily_formula.map(f => `
         <div class="fblock k-${f.kind}">${icon(KIND_ICON[f.kind])}<b>${esc(L(f, 'label'))}</b><span>${t('min', f.minutes)}</span></div>`).join('')}</div>
-      <div class="card-head" style="margin:1.3rem 0 0"><h3>${t('rm.rhythm')}</h3><span class="muted small">${t('rm.rhythmSub')}</span></div>
-      <div class="rhythm">${[1, 2, 3, 4, 5, 6].map(i => `<div>${t('day.n', i)}</div>`).join('')}<div class="rev">${t('day.review')}</div></div>
+      <div class="card-head tight" style="margin-top:1.3rem"><h3>${t('rm.rhythm')}</h3></div><p class="muted small" style="margin:0">${t('rm.rhythmSub')}</p>
+      <div class="rhythm">${[1, 2, 3, 4, 5, 6].map(i => `<div title="${t('day.n', i)}">${i}</div>`).join('')}<div class="rev" title="${t('day.review')}">${icon('review')}</div></div>
     </div>
     <div class="card" style="margin-top:1rem">
-      <div class="card-head" style="margin:0"><div><h3>${t('rm.start')}</h3><p class="muted small">${t('rm.startSub')}</p></div>
-        <select id="start-week" style="max-width:320px">${r.weeks.map(w => `<option value="${w.week}" ${w.week === r.start_week ? 'selected' : ''}>${t('week.n', w.week)}: ${esc(L(w, 'title'))}</option>`).join('')}</select></div>
+      <h3>${t('rm.start')}</h3><p class="muted small card-sub">${t('rm.startSub')}</p>
+        <select id="start-week">${r.weeks.map(w => `<option value="${w.week}" ${w.week === r.start_week ? 'selected' : ''}>${t('week.n', w.week)}: ${esc(L(w, 'title'))}</option>`).join('')}</select>
     </div>
     ${r.phases.map(p => `
       <div class="phase-title ph${p.phase}"><span class="dot"></span><h2>${t('rm.phase', p.phase)}: ${esc(L(p, 'title'))}</h2><span>${t('weeks.range', p.weeks[0], p.weeks[1])}</span></div>
@@ -419,7 +666,7 @@ async function renderRoadmap() {
           </summary>
           <div class="week-body">
             <ol class="topics">${(LANG === 'en' ? w.topics_en : w.topics).map(x => `<li>${esc(x)}</li>`).join('')}<li class="rev">${t('rm.reviewTest')}</li></ol>
-            <div class="week-meta"><span class="chip k-vocab" style="background:var(--k-soft);color:var(--k)">${icon('vocab')} ${t('rm.words', w.words_per_day)} · ${esc(L(w, 'vocab_theme'))}</span></div>
+            <div class="week-meta k-vocab">${icon('vocab')}<span>${t('rm.words', w.words_per_day)} · ${esc(L(w, 'vocab_theme'))}</span></div>
           </div>
         </details>`).join('')}</div>`).join('')}
     <p class="muted small" style="margin-top:1.5rem">${esc(L(r, 'note'))}</p>`;
@@ -434,7 +681,7 @@ async function renderRoadmap() {
 
 // ---------- Practice hub ----------
 async function renderPractice() {
-  const [queue, p] = await Promise.all([api('/api/vocab/queue'), api('/api/me/profile')]);
+  const [queue, p, mem] = await Promise.all([api('/api/vocab/queue'), api('/api/me/profile'), api('/api/vocab/stats')]);
   view.innerHTML = `
     <div class="page-head"><h1>${t('nav.practice')}</h1><p>${t('pr.sub')}</p></div>
     <div class="goal-card card">
@@ -450,50 +697,121 @@ async function renderPractice() {
         <span class="chip">${t('pr.xpPer', 2)}</span></a>
       <a class="play-card k-writing" href="#/writing"><span class="kind">${icon('pen')}</span><h3>${t('nav.writing')}</h3><p>${t('pr.writingSub')}</p>
         <span class="chip">+30 XP</span></a>
-    </div>`;
+    </div>
+    <div style="margin-top:1rem">${memoryPanel(mem)}</div>`;
+  bindTips(view);
+}
+
+// ---------- Memory panel: words per memory stage + 7-day review forecast ----------
+const STAGES = ['new', 'learning', 'young', 'mature'];
+const STAGE_COLOR = { new: '#c9cede', learning: '#e8590c', young: '#4f46e5', mature: '#0f9d6b' };
+function memoryPanel(s) {
+  const day = d => new Date(d).toLocaleDateString(locale(), { weekday: 'short' });
+  const max = Math.max(1, ...s.forecast.map(f => f.due));
+  return `<div class="card memory"><div class="card-head tight"><h3>${t('mem.title')}</h3>
+      <span class="chip ok">${icon('checkCircle')} ${t('mem.matureOf', s.stages.mature, s.total)}</span></div>
+    <p class="muted small card-sub">${t('mem.sub')}</p>
+    <div class="stack-bar">${STAGES.filter(k => s.stages[k]).map(k =>
+      `<i style="flex:${s.stages[k]};background:${STAGE_COLOR[k]}" data-tip="<b>${t(`mem.${k}`)}</b><br>${s.stages[k]}"></i>`).join('')}</div>
+    <div class="legend stages">${STAGES.map(k => `<span><i style="background:${STAGE_COLOR[k]}"></i>${t(`mem.${k}`)} <b>${s.stages[k]}</b></span>`).join('')}</div>
+    <div class="muted small sub-title">${t('mem.forecast')}</div>
+    <div class="forecast">${s.forecast.map((f, i) => `<div class="fc ${i ? '' : 'now'}"
+        data-tip="<b>${new Date(f.date).toLocaleDateString(locale(), { weekday: 'long', day: '2-digit', month: '2-digit' })}</b><br>${t('mem.dueN', f.due)}">
+      <b>${f.due}</b><span class="col"><i style="height:${f.due / max * 100}%"></i></span><span class="lbl">${i ? day(f.date) : t('mem.today')}</span></div>`).join('')}</div>
+  </div>`;
 }
 
 // ---------- Flashcards ----------
+/* A 3D card: front asks, back answers. Words already reviewed twice are sometimes asked in reverse
+   (Vietnamese + a gapped example → recall the English), which trains active recall, not just recognition.
+   Grade buttons show the next interval from the server's preview. Keys: Space/Enter flips, 1–4 grade. */
+const GRADE_KEYS = ['again', 'hard', 'good', 'easy'];
+const AGAIN_PREVIEW = { again: 0, hard: 1, good: 1, easy: 1 };  // a lapsed card restarts at reps 0
+const ivl = d => (d <= 0 ? t('iv.now') : d >= 30 ? t('iv.months', Math.round(d / 30)) : t('iv.days', d));
+function markWord(sentence, word, blank) {
+  const m = sentence.match(new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\w*`, 'i'));
+  if (!m) return blank ? '' : esc(sentence);
+  const hit = blank ? '<span class="blank">______</span>' : `<mark>${esc(m[0])}</mark>`;
+  return esc(sentence.slice(0, m.index)) + hit + esc(sentence.slice(m.index + m[0].length));
+}
 async function renderCards() {
   const queue = await api('/api/vocab/queue');
   const total = queue.length;
-  let shown = false;
-  const draw = () => {
-    if (!queue.length) {
-      view.innerHTML = `<div class="flash-wrap"><div class="card result-hero">${icon('checkCircle')}
+  let reviewed = 0, recalled = 0;
+  const done = async () => {
+    const mem = await api('/api/vocab/stats').catch(() => null);
+    view.innerHTML = `<div class="flash-wrap"><div class="card result-hero"><span class="done-ic">${icon('checkCircle')}</span>
         <h2 style="margin:.5rem 0">${t('cards.done')}</h2><p class="muted">${t('cards.doneSub')}</p>
-        <div class="row" style="justify-content:center;margin-top:1rem"><a class="btn primary" href="#/game/match">${t('game.match')}</a><a class="btn" href="#/today">${t('cards.home')}</a></div></div></div>`;
-      return;
-    }
-    const w = queue[0];
-    const doneCount = total - queue.length;
-    view.innerHTML = `<div class="flash-wrap">
-      <a class="crumb" href="#/practice">${icon('back')} ${t('nav.practice')}</a>
-      <div class="page-head"><h1>${t('pr.cards')}</h1><p>${t('cards.sub')}</p></div>
-      <div class="flash-top"><span>${t('cards.count', doneCount, total)}</span><span class="chip ${w.card ? '' : 'primary'}">${t(w.card ? 'cards.review' : 'cards.new')}</span></div>
-      <div class="bar" style="margin-bottom:12px"><i style="width:${doneCount / total * 100}%"></i></div>
-      <div class="card flash" id="flip">
-        <div class="word">${esc(w.word)} <button class="speak" id="say" aria-label="${t('listen')}">${icon('volume')}</button></div>
-        <div class="ipa">${esc(w.ipa)} · ${esc(w.pos)}</div>
-        ${shown ? `<div class="meaning">${esc(w.vi)}</div><div class="ex">${esc(w.example)}</div>` : `<div class="tap">${t('cards.tap')}</div>`}
-      </div>
-      ${shown ? `<div class="grades">
-        <button class="grade again" data-g="again">${t('g.again')}<small>${t('g.againSub')}</small></button>
-        <button class="grade hard" data-g="hard">${t('g.hard')}<small>${t('g.hardSub')}</small></button>
-        <button class="grade good" data-g="good">${t('g.good')}<small>${t('g.goodSub')}</small></button>
-        <button class="grade easy" data-g="easy">${t('g.easy')}<small>${t('g.easySub')}</small></button></div>` : ''}
-    </div>`;
-    $('#say').addEventListener('click', e => { e.stopPropagation(); speak(w.word); });
-    if (!shown) $('#flip').addEventListener('click', () => { shown = true; draw(); });
-    view.querySelectorAll('[data-g]').forEach(b => b.addEventListener('click', async () => {
-      const card = await api('/api/vocab/review', { method: 'POST', body: { word_id: w.id, grade: b.dataset.g } }).catch(err => toast(err.message));
-      if (!card) return;
-      queue.shift();
-      if (b.dataset.g === 'again') queue.push({ ...w, card });  // see it again in this session
-      shown = false;
-      draw();
-    }));
+        ${reviewed ? `<p style="margin-top:.6rem"><span class="chip ok">${t('cards.session', reviewed, Math.round(recalled / reviewed * 100))}</span></p>` : ''}
+        <div class="row" style="justify-content:center;margin-top:1rem"><a class="btn primary" href="#/game/match">${t('game.match')}</a><a class="btn" href="#/today">${t('cards.home')}</a></div></div>
+      ${mem ? `<div style="margin-top:1rem">${memoryPanel(mem)}</div>` : ''}</div>`;
+    bindTips(view);
+    enter();
+    if (reviewed) confetti();
   };
+  if (!total) return done();
+  view.innerHTML = `<div class="flash-wrap">
+    <a class="crumb" href="#/practice">${icon('back')} ${t('nav.practice')}</a>
+    <div class="page-head"><h1>${t('pr.cards')}</h1><p>${t('cards.sub')}</p></div>
+    <div class="flash-top"><span id="fc-count"></span><span class="chip" id="fc-kind"></span></div>
+    <div class="bar" style="margin-bottom:14px"><i id="fc-bar" style="width:0"></i></div>
+    <div id="fc"></div>
+    <p class="muted small keys">${t('cards.keys')}</p>
+  </div>`;
+  let w, flipped, busy;
+  const flip = () => {
+    if (flipped) return;
+    flipped = true;
+    $('#flip').classList.add('flipped');
+    sfx.flip();
+    $('#grades').classList.add('show');
+    speak(w.word, true);
+  };
+  const grade = async g => {
+    if (!flipped || busy) return;
+    busy = true;
+    const card = await api('/api/vocab/review', { method: 'POST', body: { word_id: w.id, grade: g } }).catch(err => toast(err.message));
+    busy = false;
+    if (!card) return;
+    reviewed++;
+    recalled += g !== 'again';
+    if (g !== 'again') sfx.tick();
+    queue.shift();
+    if (g === 'again') queue.push({ ...w, card, preview: AGAIN_PREVIEW });  // see it again in this session
+    $('#flip').classList.add(g === 'again' ? 'out-again' : 'out');
+    setTimeout(draw, 220);
+  };
+  const draw = () => {
+    if (!queue.length) return done();
+    w = queue[0];
+    flipped = false;
+    const reverse = !!w.card && w.card.reps >= 2 && Math.random() < 0.5;
+    const doneCount = total - queue.length;
+    $('#fc-count').textContent = t('cards.count', doneCount, total);
+    $('#fc-kind').textContent = t(reverse ? 'cards.reverse' : w.card ? 'cards.review' : 'cards.new');
+    $('#fc-kind').className = `chip ${reverse ? 'warn' : w.card ? '' : 'primary'}`;
+    $('#fc-bar').style.width = `${Math.min(100, doneCount / total * 100)}%`;
+    const say = `<button class="speak" data-say aria-label="${t('listen')}">${icon('volume')}</button>`;
+    const front = reverse
+      ? `<div class="meaning">${esc(w.vi)}</div><div class="ex">${markWord(w.example, w.word, true)}</div><div class="tap">${t('cards.tapRev')}</div>`
+      : `<div class="word">${esc(w.word)} ${say}</div><div class="ipa">${esc(w.ipa)} · ${esc(w.pos)}</div><div class="tap">${t('cards.tap')}</div>`;
+    const back = `<div class="word sm">${esc(w.word)} ${say}</div><div class="ipa">${esc(w.ipa)} · ${esc(w.pos)}</div>
+      <div class="meaning">${esc(w.vi)}</div><div class="ex">${markWord(w.example, w.word, false)}</div>`;
+    $('#fc').innerHTML = `
+      <div class="flip" id="flip" tabindex="0" role="button" aria-label="${t('cards.tap')}">
+        <div class="inner"><div class="face front">${front}</div><div class="face back">${back}</div></div></div>
+      <div class="grades" id="grades">${GRADE_KEYS.map((g, i) =>
+        `<button class="grade ${g}" data-g="${g}"><kbd>${i + 1}</kbd>${t(`g.${g}`)}<small>${w.preview ? ivl(w.preview[g]) : t(`g.${g}Sub`)}</small></button>`).join('')}</div>`;
+    $('#flip').addEventListener('click', e => { if (!e.target.closest('[data-say]')) flip(); });
+    $('#fc').querySelectorAll('[data-say]').forEach(b => b.addEventListener('click', () => speak(w.word)));
+    $('#fc').querySelectorAll('[data-g]').forEach(b => b.addEventListener('click', () => grade(b.dataset.g)));
+    $('#flip').focus({ preventScroll: true });
+  };
+  setKeys(e => {
+    if (e.target.matches('input, textarea, select') || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); }
+    else if (GRADE_KEYS[Number(e.key) - 1]) grade(GRADE_KEYS[Number(e.key) - 1]);
+  });
   draw();
 }
 
@@ -512,7 +830,7 @@ async function finishGame(game, correct, total, startedAt) {
     <div class="card result-hero game-over">
       <div class="stars">${[1, 2, 3].map(i => `<span class="${i <= stars ? 'on' : ''}">${icon('star')}</span>`).join('')}</div>
       <h2>${t(stars === 3 ? 'game.perfect' : stars === 2 ? 'game.great' : 'game.keep')}</h2>
-      <div class="big">${correct}/${total}</div>
+      <div class="big" data-count>${correct}/${total}</div>
       <div class="row" style="justify-content:center;margin:.6rem 0">
         <span class="chip">${icon('clock')} ${mmss(duration_s)}</span>
         ${r ? `<span class="chip xp">+${r.xp} XP</span><span class="chip">${t('game.best', r.best_pct)}</span>` : ''}
@@ -522,6 +840,8 @@ async function finishGame(game, correct, total, startedAt) {
         <button class="btn primary" id="again">${icon('review')} ${t('game.again')}</button><a class="btn" href="#/practice">${t('game.other')}</a></div>
     </div>`;
   $('#again').addEventListener('click', render);
+  enter();
+  if (stars === 3) confetti();
   if (r) { xpToast(r.xp); refreshLevel(); }
 }
 
@@ -565,12 +885,14 @@ function playMatch(words) {
     a.classList.remove('sel');
     if (a.dataset.id === b.dataset.id) {
       [a, b].forEach(x => x.classList.add('ok'));
+      sfx.right();
       matched++;
       if (!missed.has(a.dataset.id)) firstTry++;
       score();
       if (matched === PAIRS) setTimeout(() => finishGame('match', firstTry, PAIRS, startedAt), 500);
     } else {
       missed.add(a.dataset.id); missed.add(b.dataset.id);
+      sfx.wrong();
       [a, b].forEach(x => { x.classList.add('bad'); setTimeout(() => x.classList.remove('bad'), 450); });
     }
   }));
@@ -596,13 +918,14 @@ function playListen(words) {
     $('#g-score').textContent = `${correct}/${rounds.length}`;
     $('#g-bar').style.width = `${i / rounds.length * 100}%`;
     $('#play').addEventListener('click', () => speak(w.word));
-    setTimeout(() => speak(w.word), 250);
+    setTimeout(() => speak(w.word, true), 250);
     let answered = false;
     view.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
       if (answered) return;
       answered = true;
       const ok = b.dataset.id === w.id;
       correct += ok;
+      sfx[ok ? 'right' : 'wrong']();
       view.querySelectorAll('.opt').forEach(x => { if (x.dataset.id === w.id) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); });
       $('#reveal').innerHTML = `<b>${esc(w.word)}</b> ${esc(w.ipa)} — ${esc(w.vi)}`;
       $('#reveal').classList.remove('hidden');
@@ -625,7 +948,7 @@ async function renderMe() {
     <div class="page-head"><h1>${t('nav.me')}</h1><p>${t('me.sub')}</p></div>
     <div class="me-grid">
       <div class="card level-card">
-        <div class="lvl-badge">${p.level}</div>
+        <div class="lvl-badge" data-count>${p.level}</div>
         <div style="flex:1"><h2>${t('lvl.level', p.level)}</h2>
           <p class="muted small">${t('me.toNext', num(p.next_level - p.xp), p.level + 1)}</p>
           <div class="bar thick"><i style="width:${p.pct}%"></i></div>
@@ -644,10 +967,12 @@ async function renderMe() {
           <span class="bi">${icon(b.earned ? BADGE_ICON[b.id] : 'lock')}</span><b>${t(`badge.${b.id}`)}</b><span>${t(`badge.${b.id}.d`)}</span></div>`).join('')}</div></div>
       <div class="card"><div class="card-head"><h3>${t('me.leaderboard')}</h3><span class="muted small">${t('me.lbSub')}</span></div>
         <ol class="leaderboard">${lb.top.map(r => `<li class="${r.me ? 'me' : ''}"><span class="rank r${r.rank}">${r.rank}</span>
-          <span class="nm">${esc(r.name)}${r.me ? ` <span class="chip primary">${t('me.you')}</span>` : ''}</span><span class="muted small">${t('lvl.short', r.level)}</span><b>${num(r.week_xp)} XP</b></li>`).join('')}</ol>
+          <span class="nm"><span class="one">${esc(r.name)}</span>${r.me ? `<span class="chip primary">${t('me.you')}</span>` : ''}</span><span class="muted small">${t('lvl.short', r.level)}</span><b>${num(r.week_xp)} XP</b></li>`).join('')}</ol>
         ${lb.me && lb.me.rank > lb.top.length ? `<ol class="leaderboard" start="${lb.me.rank}"><li class="me"><span class="rank">${lb.me.rank}</span><span class="nm">${esc(lb.me.name)}</span><span class="muted small">${t('lvl.short', lb.me.level)}</span><b>${num(lb.me.week_xp)} XP</b></li></ol>` : ''}
         <p class="muted small" style="margin-top:.8rem">${t('me.xpHow')}</p></div>
-    </div>`;
+    </div>
+    <div class="card reminders" id="reminders" style="margin-top:1rem"></div>`;
+  await reminderCard($('#reminders'));
 }
 
 // ---------- Writing ----------
@@ -707,7 +1032,7 @@ function stopTimer() { clearInterval(timer); timer = null; window.onbeforeunload
 
 function attemptRows(list, withLearner = false) {
   if (!list.length) return `<p class="muted">${t('ex.none')}</p>`;
-  return `<div class="table-wrap"><table class="log">
+  return `<div class="table-wrap"><table class="log ${withLearner ? '' : 'att'}">
     <tr><th>${t('ex.started')}</th>${withLearner ? `<th>${t('ad.learner')}</th>` : ''}<th>${t('ex.test')}</th><th>${t('ex.result')}</th><th>${t('ex.duration')}</th><th>${t('ex.status')}</th>${withLearner ? '' : '<th></th>'}</tr>
     ${list.map(a => {
       const [label, cls] = STATUS[a.status] || [a.status, ''];
@@ -729,9 +1054,9 @@ async function renderExamHub() {
   view.innerHTML = `
     <div class="page-head"><h1>${t('nav.test')}</h1><p>${t('ex.sub')}</p></div>
     <div class="card">
-      <div class="card-head" style="margin:0"><div><h3>${t('ex.placement')}</h3>
-        <p class="muted small">${t('ex.placementMeta')} · ${p ? t('ex.lastResult', p.score, p.total, esc(L(p, 'level')), esc(L(p, 'ielts_estimate'))) : t('ex.notTaken')} · ${t('ex.attempts', hub.placement_attempts)}</p></div>
+      <div class="card-head tight"><h3>${t('ex.placement')}</h3>
         <a class="btn ${p ? '' : 'primary'}" href="#/exam/placement">${t(p ? 'ex.retake' : 'exam.take')}</a></div>
+        <p class="muted small card-sub" style="margin:0">${t('ex.placementMeta')} · ${p ? t('ex.lastResult', p.score, p.total, esc(L(p, 'level')), esc(L(p, 'ielts_estimate'))) : t('ex.notTaken')} · ${t('ex.attempts', hub.placement_attempts)}</p>
     </div>
     <h2 style="margin:1.6rem 0 .8rem">${t('ex.weekly')}</h2>
     <div class="exam-grid">${hub.weeks.map(w => {
@@ -790,6 +1115,7 @@ async function renderExam(arg) {
     try {
       const r = await api(`/api/attempts/${a.id}/submit`, { method: 'POST', body: { answers } });
       roadmapCache = null;
+      celebrate = r.passed === true;
       if (auto) toast(t('ex.autoSubmitted'));
       else xpToast(r.xp);
       location.hash = `#/attempt/${r.id}`;
@@ -806,8 +1132,10 @@ async function renderExam(arg) {
   }, 1000);
 }
 
+let celebrate = false;  // set when a test was just passed, so the result page opens with confetti
 async function renderAttempt(id) {
   const a = await api(`/api/attempts/${id}`);
+  if (celebrate) { celebrate = false; setTimeout(confetti, 300); }
   if (a.status !== 'submitted') {
     view.innerHTML = `<a class="crumb" href="#/test">${icon('back')} ${t('nav.test')}</a><div class="card"><p>${t('ex.noResult', t((STATUS[a.status] || [a.status])[0]))}</p></div>`;
     return;
@@ -817,7 +1145,7 @@ async function renderAttempt(id) {
   view.innerHTML = `
     <a class="crumb" href="#/test">${icon('back')} ${t('nav.test')}</a>
     <div class="card result-hero">
-      <p class="muted">${esc(L(a, 'title'))}</p><div class="big">${a.score}/${a.total}</div>
+      <p class="muted">${esc(L(a, 'title'))}</p><div class="big" data-count>${a.score}/${a.total}</div>
       <div class="row" style="justify-content:center;margin:.7rem 0">${verdict}<span class="chip">${a.pct}%</span>
         <span class="chip">${icon('clock')} ${mmss(a.duration_s)}${a.overtime ? ` · ${t('ex.overtime')}` : ''}</span>${a.xp ? `<span class="chip xp">+${a.xp} XP</span>` : ''}</div>
       <p class="muted small">${t('ex.times', when(a.started_at), when(a.submitted_at))}</p>

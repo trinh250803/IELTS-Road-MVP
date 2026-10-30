@@ -141,7 +141,35 @@ def review_queue(lr: dict, limit_new: int = NEW_CARDS_PER_QUEUE) -> list[dict]:
         elif card["due"] <= t:
             due.append({**w, "card": card})
     due.sort(key=lambda x: x["card"]["due"])
-    return due + new[:limit_new]
+    # Days until the next review for each button, shown on the grade buttons.
+    return [{**w, "preview": {g: round(schedule(w["card"], g)["interval"]) for g in GRADES}} for w in due + new[:limit_new]]
+
+
+STAGES = ("new", "learning", "young", "mature")
+
+
+def stage(card: dict | None) -> str:
+    """Memory stage of a word: never seen, interval < 3 days, < 21 days, or 21+ days (long-term)."""
+    if not card:
+        return "new"
+    return "learning" if card["interval"] < 3 else "young" if card["interval"] < 21 else "mature"
+
+
+def memory_stats(lr: dict, days: int = 7) -> dict:
+    """Words per memory stage and how many reviews fall due on each of the next `days` days (overdue counts today)."""
+    words = unlocked_words(lr)
+    counts = dict.fromkeys(STAGES, 0)
+    for w in words:
+        counts[stage(lr["cards"].get(w["id"]))] += 1
+    start = today()
+    forecast = [{"date": (start + timedelta(days=i)).isoformat(), "due": 0} for i in range(days)]
+    for w in words:
+        card = lr["cards"].get(w["id"])
+        if card:
+            i = max(0, (date.fromisoformat(card["due"]) - start).days)
+            if i < days:
+                forecast[i]["due"] += 1
+    return {"stages": counts, "total": len(words), "forecast": forecast}
 
 
 def schedule(card: dict | None, grade: str) -> dict:

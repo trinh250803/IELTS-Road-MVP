@@ -29,3 +29,10 @@ services:
       # Optional: enables AI writing feedback. Entered in the Render dashboard, never committed.
       - key: ANTHROPIC_API_KEY
         sync: false
+      # Push study reminders: an external free cron (e.g. cron-job.org) calls
+      # GET /api/reminders/run?key=<CRON_SECRET> every 10–15 minutes. Copy the generated value from the dashboard.
+      - key: CRON_SECRET
+        generateValue: true
+      # Contact sent with push messages (mailto: or https://).
+      - key: VAPID_SUBJECT
+        sync: false

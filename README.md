@@ -29,12 +29,30 @@ Mở http://localhost:8000, tạo tài khoản → làm bài kiểm tra đầu v
 | Nhật ký lượt thi: mọi lượt (kể cả bỏ dở) lưu giờ bắt đầu/nộp, thời lượng, từng câu trả lời, điểm theo phần, đạt/chưa đạt; ghi cả vào log máy chủ | ✅ ⚠ mất khi Render free khởi động lại |
 | Lộ trình 12 tuần × 7 ngày (6 ngày học + 1 ngày ôn/kiểm tra), ~180 phút/ngày | ✅ khung đủ 84 ngày |
 | Bài học ngữ pháp có giải thích + bài tập chấm ngay | ⏳ mới có 6 bài tuần 1 |
-| Flashcard từ vựng lặp lại ngắt quãng (SM-2), phát âm bằng trình duyệt | ⏳ mới có 72 từ tuần 1 |
+| Flashcard từ vựng lặp lại ngắt quãng (SM-2), phát âm bằng trình duyệt; thẻ lật 3D, nút chấm hiện ngày ôn kế tiếp, thẻ đảo chiều (Việt → Anh, điền chỗ trống) cho từ đã quen, phím tắt | ⏳ mới có 72 từ tuần 1 |
+| Trí nhớ từ vựng: số từ theo giai đoạn (chưa học / đang học / đang nhớ / nhớ lâu 21+ ngày) và dự báo lượt ôn 7 ngày; nhắc ôn trên trang Hôm nay | ✅ |
+| Bài tập ngữ pháp: làm lại câu sai với đáp án xáo trộn | ✅ |
+| Âm thanh hiệu ứng (đúng/sai, lật thẻ, hoàn thành), tổng hợp bằng Web Audio, bật/tắt được | ✅ |
+| Nhắc học hằng ngày theo giờ học viên chọn: thông báo đẩy kể cả khi đã đóng trình duyệt; khi app đang mở thì có chuông + thông báo. Chỉ nhắc khi còn thẻ cần ôn/nhiệm vụ chưa xong, tối đa 1 lần/ngày | ✅ cần `CRON_SECRET` + cron ngoài (xem dưới) |
+| Cài như app (PWA): biểu tượng, "Thêm vào màn hình chính" | ✅ |
+| Giao diện động: hiệu ứng vào trang, số đếm lên, vòng/thanh tiến độ chạy, pháo giấy khi hoàn thành (tắt khi hệ điều hành bật giảm chuyển động) | ✅ |
 | Theo dõi tiến độ: chuỗi ngày học, số giờ 7 ngày, % lộ trình | ✅ |
 | Chấm Writing Task 1/2 bằng AI (Claude) theo 4 tiêu chí IELTS | ✅ cần `ANTHROPIC_API_KEY` |
 | Luyện Listening / Reading có audio và đề | ❌ chưa có — hiện chỉ là nhiệm vụ mô tả |
 | Luyện Speaking (ghi âm, chấm) | ❌ |
 | Thanh toán, quản trị nội dung | ❌ |
+
+## Bật nhắc học bằng thông báo đẩy (miễn phí)
+
+1. Trên Render, `CRON_SECRET` được tự sinh (Environment → xem giá trị). Chạy local thì đặt trong `.env`.
+2. Tạo tài khoản miễn phí ở [cron-job.org](https://cron-job.org), thêm job gọi
+   `https://<tên-miền>/api/reminders/run?key=<CRON_SECRET>` **mỗi 10 phút**. Gọi đều như vậy cũng giữ máy chủ Render free không ngủ (dùng ~744/750 giờ miễn phí mỗi tháng nếu chỉ có một dịch vụ).
+3. Học viên vào *Thành tích → Nhắc nhở & âm thanh*, bấm **Bật thông báo**, chọn giờ.
+
+Lưu ý:
+- iPhone/iPad (iOS 16.4+) chỉ nhận thông báo khi đã *Chia sẻ → Thêm vào MH chính* và mở app từ biểu tượng đó.
+- Âm thanh của thông báo đẩy là âm mặc định của máy (trình duyệt không cho dùng âm riêng); chuông riêng chỉ phát khi app đang mở.
+- Khóa VAPID được tự sinh và lưu cùng dữ liệu. Chưa đặt `DATABASE_URL` thì khóa và đăng ký thông báo mất khi Render khởi động lại. Khi học viên mở lại app, thiết bị sẽ tự đăng ký lại; nếu khóa đã đổi thì học viên phải bấm Bật thông báo lần nữa.
 
 ## Kiến trúc
 

@@ -166,13 +166,22 @@ def test_flashcards(client):
     h = register(client, "hoa")
     q = client.get("/api/vocab/queue", headers=h).json()
     assert len(q) == 12 and all(w["card"] is None for w in q)  # day 1 words only
-    card = client.post("/api/vocab/review", headers=h, json={"word_id": q[0]["id"], "grade": "good"}).json()
+    assert q[0]["preview"] == {"again": 0, "hard": 1, "good": 1, "easy": 1}
+    card =client.post("/api/vocab/review", headers=h, json={"word_id": q[0]["id"], "grade": "good"}).json()
     assert card["interval"] == 1 and card["due"] > learner.today().isoformat()
     again = client.post("/api/vocab/review", headers=h, json={"word_id": q[1]["id"], "grade": "again"}).json()
     assert again["due"] == learner.today().isoformat()
     ids = [w["id"] for w in client.get("/api/vocab/queue", headers=h).json()]
     assert q[0]["id"] not in ids and q[1]["id"] in ids
     assert client.post("/api/vocab/review", headers=h, json={"word_id": q[0]["id"], "grade": "meh"}).status_code == 400
+    s = client.get("/api/vocab/stats", headers=h).json()
+    assert s["total"] == 12 and s["stages"] == {"new": 10, "learning": 2, "young": 0, "mature": 0}
+    assert len(s["forecast"]) == 7 and s["forecast"][0]["due"] == 1 and s["forecast"][1]["due"] == 1
+
+
+def test_memory_stage():
+    assert learner.stage(None) == "new"
+    assert [learner.stage({"interval": i}) for i in (0, 3, 21)] == ["learning", "young", "mature"]
 
 
 def test_sm2_intervals_grow():
@@ -329,3 +338,38 @@ def test_postgres_store_roundtrip(monkeypatch):
     again = store.load()
     again["users"].clear()  # callers get a copy; the cache is untouched
     assert store.load()["users"][0]["username"] == "pg.user" and calls == ["SELECT", "INSERT"]
+
+
+def test_reminders_and_push(client, monkeypatch):
+    from app import reminders
+    h = register(client, "nhac")
+    s = client.get("/api/reminders", headers=h).json()
+    assert s["enabled"] is False and s["devices"] == 0 and len(s["vapid_public_key"]) == 87  # 65-byte P-256 point
+    assert client.put("/api/reminders", headers=h, json={"enabled": True, "time": "25:00"}).status_code == 400
+    assert client.put("/api/reminders", headers=h, json={"enabled": True, "time": "00:00"}).json()["enabled"] is True
+    sub = {"endpoint": "https://push.example/abc", "keys": {"p256dh": "k", "auth": "a"}}
+    assert client.post("/api/push/subscribe", headers=h, json={"endpoint": "http://x"}).status_code == 400
+    assert client.post("/api/push/subscribe", headers=h, json=sub).json()["devices"] == 1
+    assert client.post("/api/push/subscribe", headers=h, json=sub).json()["devices"] == 1  # same device once
+
+    sent = []
+    monkeypatch.setattr(reminders, "_push", lambda s, data: sent.append((s["endpoint"], data)) or 201)
+    assert client.post("/api/push/test", headers=h).json()["sent"] == 1
+
+    monkeypatch.delenv("CRON_SECRET", raising=False)
+    assert client.post("/api/reminders/run").status_code == 503
+    monkeypatch.setenv("CRON_SECRET", "s3cret")
+    assert client.post("/api/reminders/run?key=nope").status_code == 403
+    sent.clear()
+    r = client.post("/api/reminders/run", headers={"X-Cron-Key": "s3cret"}).json()
+    assert r["sent"] == 1 and sent[0][1]["url"] == "/#/today"  # nothing studied yet: today's tasks come first
+    assert client.get("/api/reminders/run?key=s3cret").json()["sent"] == 0  # once per day
+
+    # The device moves to whoever subscribes on it last; an expired subscription (410) is dropped.
+    h2 = register(client, "nhac2")
+    client.post("/api/push/subscribe", headers=h2, json=sub)
+    assert client.get("/api/reminders", headers=h).json()["devices"] == 0
+    monkeypatch.setattr(reminders, "_push", lambda s, data: 410)
+    assert client.post("/api/push/test", headers=h2).json()["sent"] == 0
+    assert client.get("/api/reminders", headers=h2).json()["devices"] == 0
+    assert client.post("/api/push/test", headers=h2).status_code == 400
