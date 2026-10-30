@@ -62,6 +62,7 @@ const ICON_PATHS = {
   checkCircle: '<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
   volume: '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>',
   back: '<path d="m15 6-6 6 6 6"/>',
+  fwd: '<path d="m9 6 6 6-6 6"/>',
   info: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/>',
   lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
   x: '<path d="M6 6l12 12M18 6 6 18"/>',
@@ -722,11 +723,11 @@ function memoryPanel(s) {
 }
 
 // ---------- Flashcards ----------
-/* A 3D card: front asks, back answers. Words already reviewed twice are sometimes asked in reverse
-   (Vietnamese + a gapped example → recall the English), which trains active recall, not just recognition.
-   Grade buttons show the next interval from the server's preview. Keys: Space/Enter flips, 1–4 grade. */
-const GRADE_KEYS = ['again', 'hard', 'good', 'easy'];
-const AGAIN_PREVIEW = { again: 0, hard: 1, good: 1, easy: 1 };  // a lapsed card restarts at reps 0
+/* One tap flips the card (front asks, back answers), then a swipe grades it: left = "Khó nhớ", right = "Dễ nhớ".
+   Two outcomes only — swipe right maps to SM-2 "good", swipe left to "again" (comes back this session + soon).
+   Words reviewed twice are sometimes asked in reverse (Vietnamese + a gapped example → recall the English).
+   Buttons under the card do the same for those who prefer tapping; ←/→ grade on a keyboard. */
+const SWIPE_PX = 80;  // drag past this to commit
 const ivl = d => (d <= 0 ? t('iv.now') : d >= 30 ? t('iv.months', Math.round(d / 30)) : t('iv.days', d));
 function markWord(sentence, word, blank) {
   const m = sentence.match(new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\w*`, 'i'));
@@ -752,39 +753,48 @@ async function renderCards() {
   if (!total) return done();
   view.innerHTML = `<div class="flash-wrap">
     <a class="crumb" href="#/practice">${icon('back')} ${t('nav.practice')}</a>
-    <div class="page-head"><h1>${t('pr.cards')}</h1><p>${t('cards.sub')}</p></div>
+    <div class="page-head"><h1>${t('pr.cards')}</h1></div>
     <div class="flash-top"><span id="fc-count"></span><span class="chip" id="fc-kind"></span></div>
     <div class="bar" style="margin-bottom:14px"><i id="fc-bar" style="width:0"></i></div>
     <div id="fc"></div>
     <p class="muted small keys">${t('cards.keys')}</p>
   </div>`;
-  let w, flipped, busy;
+  let w, flipped, busy, el, down = null, moved = false;
+  const setDrag = (dx, animate) => {
+    el.style.transition = animate ? 'transform .25s var(--ease)' : 'none';
+    el.style.transform = `translateX(${dx}px) rotate(${dx / 22}deg)`;
+    el.querySelector('.swipe-tag.yes').style.opacity = Math.max(0, Math.min(1, dx / SWIPE_PX));
+    el.querySelector('.swipe-tag.no').style.opacity = Math.max(0, Math.min(1, -dx / SWIPE_PX));
+  };
   const flip = () => {
     if (flipped) return;
     flipped = true;
-    $('#flip').classList.add('flipped');
+    el.classList.add('flipped');
     sfx.flip();
     $('#grades').classList.add('show');
     speak(w.word, true);
   };
-  const grade = async g => {
+  // g: 'good' (dễ nhớ) or 'again' (khó nhớ); dir: +1 right, -1 left
+  const grade = async (g, dir) => {
     if (!flipped || busy) return;
     busy = true;
+    el.style.transition = 'transform .24s ease-in, opacity .24s';
+    el.style.transform = `translateX(${dir * 480}px) rotate(${dir * 18}deg)`;
+    el.style.opacity = '0';
+    g === 'again' ? sfx.wrong() : sfx.tick();
     const card = await api('/api/vocab/review', { method: 'POST', body: { word_id: w.id, grade: g } }).catch(err => toast(err.message));
     busy = false;
-    if (!card) return;
+    if (!card) return draw();  // error: put the same card back
     reviewed++;
-    recalled += g !== 'again';
-    if (g !== 'again') sfx.tick();
+    recalled += g === 'good';
     queue.shift();
-    if (g === 'again') queue.push({ ...w, card, preview: AGAIN_PREVIEW });  // see it again in this session
-    $('#flip').classList.add(g === 'again' ? 'out-again' : 'out');
-    setTimeout(draw, 220);
+    if (g === 'again') queue.push({ ...w, card, preview: { again: 0, good: 1 } });  // lapsed: see it again this session
+    setTimeout(draw, 140);
   };
   const draw = () => {
     if (!queue.length) return done();
     w = queue[0];
-    flipped = false;
+    flipped = false; down = null; moved = false;
     const reverse = !!w.card && w.card.reps >= 2 && Math.random() < 0.5;
     const doneCount = total - queue.length;
     $('#fc-count').textContent = t('cards.count', doneCount, total);
@@ -797,20 +807,45 @@ async function renderCards() {
       : `<div class="word">${esc(w.word)} ${say}</div><div class="ipa">${esc(w.ipa)} · ${esc(w.pos)}</div><div class="tap">${t('cards.tap')}</div>`;
     const back = `<div class="word sm">${esc(w.word)} ${say}</div><div class="ipa">${esc(w.ipa)} · ${esc(w.pos)}</div>
       <div class="meaning">${esc(w.vi)}</div><div class="ex">${markWord(w.example, w.word, false)}</div>`;
+    const dueGood = w.preview ? w.preview.good : 1, dueAgain = w.preview ? w.preview.again : 0;
     $('#fc').innerHTML = `
       <div class="flip" id="flip" tabindex="0" role="button" aria-label="${t('cards.tap')}">
-        <div class="inner"><div class="face front">${front}</div><div class="face back">${back}</div></div></div>
-      <div class="grades" id="grades">${GRADE_KEYS.map((g, i) =>
-        `<button class="grade ${g}" data-g="${g}"><kbd>${i + 1}</kbd>${t(`g.${g}`)}<small>${w.preview ? ivl(w.preview[g]) : t(`g.${g}Sub`)}</small></button>`).join('')}</div>`;
-    $('#flip').addEventListener('click', e => { if (!e.target.closest('[data-say]')) flip(); });
-    $('#fc').querySelectorAll('[data-say]').forEach(b => b.addEventListener('click', () => speak(w.word)));
-    $('#fc').querySelectorAll('[data-g]').forEach(b => b.addEventListener('click', () => grade(b.dataset.g)));
+        <div class="inner"><div class="face front">${front}</div><div class="face back">${back}</div></div>
+        <span class="swipe-tag no">${t('cards.hard')}</span><span class="swipe-tag yes">${t('cards.easy')}</span></div>
+      <div class="grades two" id="grades">
+        <button class="grade hard" data-g="again"><b>${icon('back')} ${t('cards.hard')}</b><small>${ivl(dueAgain)}</small></button>
+        <button class="grade good" data-g="good"><b>${t('cards.easy')} ${icon('fwd')}</b><small>${ivl(dueGood)}</small></button></div>`;
+    el = $('#flip');
+    el.addEventListener('click', () => { if (!moved) flip(); });
+    $('#fc').querySelectorAll('[data-say]').forEach(b => b.addEventListener('click', e => { e.stopPropagation(); speak(w.word); }));
+    $('#fc').querySelector('[data-g="again"]').addEventListener('click', () => grade('again', -1));
+    $('#fc').querySelector('[data-g="good"]').addEventListener('click', () => grade('good', 1));
+    el.addEventListener('pointerdown', e => {
+      if (!flipped || busy || e.target.closest('[data-say]')) return;
+      down = e.clientX; moved = false; el.setPointerCapture(e.pointerId);
+    });
+    el.addEventListener('pointermove', e => {
+      if (down == null) return;
+      const dx = e.clientX - down;
+      if (Math.abs(dx) > 4) moved = true;
+      setDrag(dx, false);
+    });
+    const end = e => {
+      if (down == null) return;
+      const dx = e.clientX - down; down = null;
+      if (dx > SWIPE_PX) grade('good', 1);
+      else if (dx < -SWIPE_PX) grade('again', -1);
+      else { setDrag(0, true); setTimeout(() => { moved = false; }, 60); }
+    };
+    el.addEventListener('pointerup', end);
+    el.addEventListener('pointercancel', end);
     $('#flip').focus({ preventScroll: true });
   };
   setKeys(e => {
     if (e.target.matches('input, textarea, select') || e.ctrlKey || e.metaKey || e.altKey) return;
     if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); flip(); }
-    else if (GRADE_KEYS[Number(e.key) - 1]) grade(GRADE_KEYS[Number(e.key) - 1]);
+    else if (flipped && e.key === 'ArrowRight') grade('good', 1);
+    else if (flipped && e.key === 'ArrowLeft') grade('again', -1);
   });
   draw();
 }
