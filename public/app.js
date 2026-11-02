@@ -512,55 +512,27 @@ let roadmapCache = null;
 async function getRoadmap() { return (roadmapCache = roadmapCache || await api('/api/roadmap')); }
 
 async function renderToday() {
-  const [d, rm] = await Promise.all([api('/api/dashboard'), getRoadmap()]);
+  const d = await api('/api/dashboard');
   const td = d.today;
   const p = d.profile;
-  const doneMin = () => td.tasks.filter(x => td.done.includes(x.id)).reduce((s, x) => s + x.minutes, 0);
   const h = new Date().getHours();
   const first = me ? me.full_name.trim().split(/\s+/).pop() : '';
   refreshLevel(p);
+  const doneN = td.done.length, totalN = td.tasks.length;
+  const nx = td.tasks.find(x => !td.done.includes(x.id));
   view.innerHTML = `
-    <div class="page-head"><h1>${t(h < 11 ? 'today.morning' : h < 18 ? 'today.afternoon' : 'today.evening')}${first ? `, ${esc(first)}` : ''}</h1>
-      <p>${t('today.sub', td.week, dayLabel(td.day_of_week), esc(L(d.phase, 'title')))}</p>
-      ${remind && !remind.enabled ? `<a class="set-remind" href="#/me">${icon('bell')} ${t('rem.setLink')}</a>` : ''}</div>
+    <div class="page-head"><h1>${t(h < 11 ? 'today.morning' : h < 18 ? 'today.afternoon' : 'today.evening')}${first ? `, ${esc(first)}` : ''}</h1></div>
     ${d.placement ? '' : `<div class="note info">${icon('info')}<div>${t('today.noPlacement')} <a href="#/exam/placement"><b>${t('today.takeNow')}</b></a></div></div>`}
-    <div class="stats">
-      ${stat('flame', '#e8590c', '#fff0e6', d.streak, t('stat.streak'))}
-      ${stat('zap', '#b45309', '#fff4e0', `${p.today_xp}/${p.daily_goal}`, t('stat.todayXp'))}
-      ${stat('cards', '#7c3aed', '#f3edff', d.cards_due, t('stat.cards'), '#/cards')}
-      ${stat('route', '#4f46e5', '#eef0ff', `${d.progress_pct}%`, t('stat.progress', d.days_finished, d.days_total), '#/roadmap')}
-    </div>
-    <div class="card hero-card ph${td.phase}">
-      <div class="hero">
-        <div id="ring">${ring(doneMin() / td.minutes * 100, doneMin(), t('today.ofMin', td.minutes))}</div>
-        <div>
-          <span class="chip primary">${t('today.dayOf', td.day)}</span>
-          <h2>${esc(L(td, 'week_title'))}</h2>
-          <div class="goal">${icon('checkCircle')}<span>${t('today.weekGoal')}: ${esc(L(td, 'can_do'))}</span></div>
-          ${journey(rm.phases, td.phase)}
-        </div>
-      </div>
-    </div>
-    ${d.cards_due ? `<a class="nudge" href="#/cards"><span class="nudge-ic">${icon('cards')}</span>
-      <div><b>${t('today.cardsNudge', d.cards_due)}</b><span>${t('today.cardsNudgeSub')}</span></div>
-      <span class="btn primary">${t('today.reviewNow')}</span></a>` : ''}
-    <div class="card">
-      <div class="card-head"><h3>${t('today.tasks')}</h3><span class="chip">${td.done.length}/${td.tasks.length}</span></div>
-      ${(() => { const nx = td.tasks.find(x => !td.done.includes(x.id));
-        return nx ? `<a class="btn primary big block start-cta" href="#/learn/${td.day}/${nx.id}">${icon('play')} ${t(td.done.length ? 'today.continue' : 'today.start')}</a>`
-          : `<div class="note ok" style="margin-bottom:.9rem">${icon('checkCircle')}<span>${t('today.allDone')}</span></div>`; })()}
+    <div class="card today-card ph${td.phase}">
+      <div class="today-top"><span class="chip primary">${t('today.dayOf', td.day)}</span><span class="muted small">${t('week.n', td.week)}</span></div>
+      <h2>${esc(L(td, 'week_title'))}</h2>
+      <div class="goal">${icon('target')}<span>${esc(L(td, 'can_do'))}</span></div>
+      <div class="today-prog"><div class="bar"><i style="width:${doneN / totalN * 100}%"></i></div><span>${t('today.progress', doneN, totalN)}</span></div>
+      ${nx ? `<a class="btn primary big block start-cta" href="#/learn/${td.day}/${nx.id}">${icon('play')} ${t(doneN ? 'today.continue' : 'today.start')}</a>`
+        : `<div class="note ok">${icon('checkCircle')}<span>${t('today.allDone')}</span></div>`}
       ${taskList(td.day, td.tasks, td.done)}
-    </div>
-    <div class="quick">
-      <a class="quick-card k-vocab" href="#/game/match">${icon('shuffle')}<div><b>${t('game.match')}</b><span>${t('game.matchShort')}</span></div></a>
-      <a class="quick-card k-listening" href="#/game/listen">${icon('listening')}<div><b>${t('game.listen')}</b><span>${t('game.listenShort')}</span></div></a>
-      <a class="quick-card k-test" href="#/me">${icon('trophy')}<div><b>${t('nav.me')}</b><span>${t('me.short', p.level, p.badges.filter(b => b.earned).length)}</span></div></a>
     </div>`;
-  bindTasks(r => {
-    td.done = r.done;
-    setRing($('#ring'), doneMin() / td.minutes * 100, doneMin());
-    if (r.complete) setTimeout(() => renderToday().then(enter), 1400);
-  });
+  bindTasks(r => { renderToday().then(enter); });
 }
 
 // ---------- Day detail ----------
@@ -645,47 +617,29 @@ async function renderRoadmap() {
   const currentPhase = r.weeks.find(w => w.week === currentWeek).phase;
   const weekDone = w => [1, 2, 3, 4, 5, 6, 7].every(i => done.has((w.week - 1) * 7 + i));
   view.innerHTML = `
-    <div class="page-head"><h1>${t('rm.title')}</h1><p>${t('rm.sub')}</p></div>
+    <div class="page-head"><h1>${t('rm.title')}</h1><p>${t('rm.subSimple')}</p></div>
     <div class="phases">${r.phases.map(p => `
       <div class="phase-card ph${p.phase} ${p.phase === currentPhase ? 'now' : ''}">
         <div class="num">${p.phase}</div>
         <h3>${esc(L(p, 'title'))}</h3><div class="wk">${t('weeks.range', p.weeks[0], p.weeks[1])}</div>
-        <p>${esc(L(p, 'goal'))}</p><span class="chip">${icon('target')} ${esc(L(p, 'milestone'))}</span>
       </div>`).join('')}</div>
-    <div class="card" style="margin-top:1rem">
-      <div class="card-head"><h3>${t('rm.formula')}</h3><span class="chip primary">${t('min', r.minutes_per_day)}</span></div>
-      <div class="formula">${r.daily_formula.map(f => `
-        <div class="fblock k-${f.kind}">${icon(KIND_ICON[f.kind])}<b>${esc(L(f, 'label'))}</b><span>${t('min', f.minutes)}</span></div>`).join('')}</div>
-      <div class="card-head tight" style="margin-top:1.3rem"><h3>${t('rm.rhythm')}</h3></div><p class="muted small" style="margin:0">${t('rm.rhythmSub')}</p>
-      <div class="rhythm">${[1, 2, 3, 4, 5, 6].map(i => `<div title="${t('day.n', i)}">${i}</div>`).join('')}<div class="rev" title="${t('day.review')}">${icon('review')}</div></div>
-    </div>
+    <div class="card" style="margin-top:1rem;padding:8px"><div class="week-list">
+      ${r.weeks.map(w => { const fd = (w.week - 1) * 7 + 1; const isDone = weekDone(w); const now = w.week === currentWeek;
+        return `<a class="wk-row ph${w.phase} ${isDone ? 'done' : ''} ${now ? 'now' : ''}" href="#/day/${fd}">
+          <span class="wk-badge">${isDone ? icon('check') : w.week}</span>
+          <span class="wk-info"><b>${esc(L(w, 'title'))}</b><span>${esc(L(w, 'can_do'))}</span></span>
+          ${now ? `<span class="chip primary">${t('rm.current')}</span>` : `<span class="wk-go">${icon('fwd')}</span>`}
+        </a>`; }).join('')}
+    </div></div>
     <div class="card" style="margin-top:1rem">
       <h3>${t('rm.start')}</h3><p class="muted small card-sub">${t('rm.startSub')}</p>
-        <select id="start-week">${r.weeks.map(w => `<option value="${w.week}" ${w.week === r.start_week ? 'selected' : ''}>${t('week.n', w.week)}: ${esc(L(w, 'title'))}</option>`).join('')}</select>
-    </div>
-    ${r.phases.map(p => `
-      <div class="phase-title ph${p.phase}"><span class="dot"></span><h2>${t('rm.phase', p.phase)}: ${esc(L(p, 'title'))}</h2><span>${t('weeks.range', p.weeks[0], p.weeks[1])}</span></div>
-      <div class="timeline ph${p.phase}">${r.weeks.filter(w => w.phase === p.phase).map(w => `
-        <details class="week ${w.week === currentWeek ? 'now' : weekDone(w) ? 'done' : ''}" ${w.week === currentWeek ? 'open' : ''}>
-          <summary>
-            <div><div class="wnum">${t('week.n', w.week)}</div><h4>${esc(L(w, 'title'))}</h4></div>
-            <div class="days">${[1, 2, 3, 4, 5, 6, 7].map(i => { const day = (w.week - 1) * 7 + i;
-              return `<a href="#/day/${day}" class="${done.has(day) ? 'done' : ''} ${day === r.current_day ? 'today' : ''}" title="${dayLabel(i)}">${i === 7 ? t('day.reviewShort') : i}</a>`; }).join('')}</div>
-            <div class="cando">${icon('checkCircle')}<span>${t('rm.after')}: ${esc(L(w, 'can_do'))}</span></div>
-          </summary>
-          <div class="week-body">
-            <ol class="topics">${(LANG === 'en' ? w.topics_en : w.topics).map(x => `<li>${esc(x)}</li>`).join('')}<li class="rev">${t('rm.reviewTest')}</li></ol>
-            <div class="week-meta k-vocab">${icon('vocab')}<span>${t('rm.words', w.words_per_day)} · ${esc(L(w, 'vocab_theme'))}</span></div>
-          </div>
-        </details>`).join('')}</div>`).join('')}
-    <p class="muted small" style="margin-top:1.5rem">${esc(L(r, 'note'))}</p>`;
+      <select id="start-week">${r.weeks.map(w => `<option value="${w.week}" ${w.week === r.start_week ? 'selected' : ''}>${t('week.n', w.week)}: ${esc(L(w, 'title'))}</option>`).join('')}</select>
+    </div>`;
   $('#start-week').addEventListener('change', async e => {
     await api('/api/learner/start-week', { method: 'PUT', body: { week: Number(e.target.value) } });
     toast(t('rm.startChanged'));
     renderRoadmap();
   });
-  // Day links sit inside <summary>: follow the link instead of toggling the week.
-  view.querySelectorAll('.days a').forEach(a => a.addEventListener('click', e => e.stopPropagation()));
 }
 
 // ---------- Practice hub ----------
