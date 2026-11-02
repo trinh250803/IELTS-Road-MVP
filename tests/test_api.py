@@ -193,11 +193,18 @@ def test_sm2_intervals_grow():
     assert intervals[:2] == [1, 3] and intervals[3] > intervals[2] > 3
 
 
-def test_writing_disabled_without_key(client):
+def test_writing_offline_without_key(client):
+    """With no ANTHROPIC_API_KEY, writing still works: a rule-based checklist, no band, no API call."""
     h = register(client, "tuan")
     assert client.get("/api/writing/status", headers=h).json()["enabled"] is False
+    short = client.post("/api/writing/grade", headers=h, json={"task_type": "task2", "prompt": "Some people think...", "essay": "too short"})
+    assert short.status_code == 400  # still enforces the minimum length
     r = client.post("/api/writing/grade", headers=h, json={"task_type": "task2", "prompt": "Some people think...", "essay": "word " * 100})
-    assert r.status_code == 503
+    assert r.status_code == 200, r.text
+    res = r.json()["result"]
+    assert res["offline"] is True and "band" not in res and res["checks"]
+    assert r.json()["model"] == "offline"
+    assert len(client.get("/api/writing/history", headers=h).json()) == 1
 
 
 def test_writing_validation_and_rounding(client, monkeypatch):
@@ -214,6 +221,21 @@ def test_writing_validation_and_rounding(client, monkeypatch):
     assert res["task_response"]["band"] == 6.0 and res["lexical_resource"]["band"] == 5.5
     assert res["overall"] == 5.5  # recomputed from criteria, not trusted from the model
     assert len(client.get("/api/writing/history", headers=h).json()) == 1
+
+
+def test_daily_activity(client):
+    """Listening/reading/speaking are generated from the day's vocabulary, no key needed."""
+    h = register(client, "activ")
+    for tid in ("listening", "reading"):  # day 1 has 12 words → auto-scorable quiz
+        a = client.get(f"/api/days/1/activity/{tid}", headers=h).json()
+        assert a["ready"] is True and len(a["items"]) == 6
+        for it in a["items"]:
+            assert 0 <= it["answer"] < len(it["options"])
+    s = client.get("/api/days/2/activity/speaking", headers=h).json()  # day 2 is a speaking day
+    assert s["ready"] is True and all(it["text"] for it in s["items"])
+    assert client.get("/api/days/8/activity/listening", headers=h).json()["ready"] is False  # week 2: no vocab yet
+    assert client.get("/api/days/1/activity/nope", headers=h).status_code == 404
+    assert client.put("/api/days/1/tasks/listening", headers=h, json={"done": True}).json()["done"] == ["listening"]
 
 
 def admin_headers(client):

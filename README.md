@@ -37,9 +37,10 @@ Mở http://localhost:8000, tạo tài khoản → làm bài kiểm tra đầu v
 | Cài như app (PWA): biểu tượng, "Thêm vào màn hình chính" | ✅ |
 | Giao diện động: hiệu ứng vào trang, số đếm lên, vòng/thanh tiến độ chạy, pháo giấy khi hoàn thành (tắt khi hệ điều hành bật giảm chuyển động) | ✅ |
 | Theo dõi tiến độ: chuỗi ngày học, số giờ 7 ngày, % lộ trình | ✅ |
-| Chấm Writing Task 1/2 bằng AI (Claude) theo 4 tiêu chí IELTS | ✅ cần `ANTHROPIC_API_KEY` |
-| Luyện Listening / Reading có audio và đề | ❌ chưa có — hiện chỉ là nhiệm vụ mô tả |
-| Luyện Speaking (ghi âm, chấm) | ❌ |
+| Học theo mạch dẫn dắt: mỗi ngày làm từng nhiệm vụ một, xong tự đánh dấu và tự chuyển sang phần tiếp theo (`#/learn/NGÀY/NHIỆMVỤ`) | ✅ |
+| Luyện Viết: ô nhập bài + nhận xét. Không cần key: tự kiểm tra cơ bản (độ dài, số câu, đoạn, lặp từ). Có `ANTHROPIC_API_KEY` thì chấm band + sửa lỗi bằng AI | ✅ |
+| Luyện Nghe / Đọc tự chấm: sinh từ kho từ trong ngày (nghe câu chọn nghĩa; đọc điền từ), chạy hoàn toàn trong trình duyệt, không cần key | ✅ mới có từ vựng tuần 1 |
+| Luyện Nói: nghe mẫu (phát âm trình duyệt) rồi đọc to, trình duyệt nghe và chấm độ khớp; trình duyệt không hỗ trợ thì tự xác nhận | ✅ mới có từ vựng tuần 1 |
 | Thanh toán, quản trị nội dung | ❌ |
 
 ## Bật nhắc học bằng thông báo đẩy (miễn phí)
@@ -61,14 +62,15 @@ Lưu ý:
 | Backend/API | Python FastAPI | [app/main.py](app/main.py) |
 | Nội dung khóa học | File JSON | [content/](content/) |
 | Lộ trình theo ngày | Sinh từ định nghĩa tuần | [app/content.py](app/content.py) |
+| Nghe / Đọc / Nói tự chấm | Sinh từ kho từ trong ngày, chạy trong trình duyệt | [app/activity.py](app/activity.py) |
 | Tiến độ, flashcard | SM-2 | [app/learner.py](app/learner.py) |
-| Chấm Writing | Claude API, structured output | [app/writing.py](app/writing.py) |
+| Chấm Writing | AI (Claude) khi có key, nếu không thì kiểm tra cơ bản theo luật | [app/writing.py](app/writing.py) |
 | Lưu trữ | PostgreSQL khi có `DATABASE_URL` (ví dụ Neon miễn phí), nếu không thì file JSON | [app/store.py](app/store.py) |
 | Giao diện | HTML/JS thuần | [public/](public/) |
 
 ## Việc cần quyết định / làm tiếp
 
-1. **Nguồn nội dung**: soạn tiếp bài ngữ pháp tuần 2–12 và kho từ (mục tiêu ~3.000 từ), hoặc mua/cấp phép giáo trình. Đề Listening/Reading cần bản quyền.
-2. **Speaking**: ghi âm trên trình duyệt + chấm bằng AI (cần chuyển giọng nói thành chữ).
-3. **Chi phí AI**: mỗi lần chấm Writing gọi Claude; mặc định giới hạn 5 bài/học viên/ngày (`WRITING_DAILY_LIMIT`).
+1. **Nguồn nội dung**: soạn tiếp bài ngữ pháp tuần 2–12 và kho từ (mục tiêu ~3.000 từ), hoặc mua/cấp phép giáo trình. Nghe/Đọc/Nói hiện sinh tự động từ kho từ nên chỉ có nội dung ở các ngày đã có từ vựng (tuần 1); các tuần sau cần thêm từ. Đề Listening/Reading thu âm riêng cần bản quyền.
+2. **Speaking**: hiện chấm bằng nhận dạng giọng nói của trình duyệt (miễn phí, khớp từ). Có thể nâng cấp chấm phát âm chi tiết hơn sau.
+3. **Chi phí AI**: Writing chạy miễn phí (kiểm tra cơ bản) khi không có key; khi có `ANTHROPIC_API_KEY` thì mỗi lần chấm band gọi Claude, giới hạn `WRITING_DAILY_LIMIT` bài/học viên/ngày.
 4. **Lưu trữ**: chưa đặt `DATABASE_URL` thì Render free xóa dữ liệu mỗi lần khởi động lại. Tạo database Neon miễn phí và dán connection string vào `DATABASE_URL` trên Render trước khi cho học viên thật vào học.

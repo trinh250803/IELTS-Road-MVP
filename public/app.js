@@ -77,6 +77,8 @@ const ICON_PATHS = {
   plus: '<path d="M12 5v14M5 12h14"/>',
   shuffle: '<path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>',
   bell: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
+  mic: '<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 17v4M8 21h8"/>',
+  play: '<path d="M7 4v16l13-8z"/>',
 };
 const icon = (name, cls = '') => `<svg class="i ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICON_PATHS[name] || ''}</svg>`;
 const KIND_ICON = { vocab: 'vocab', grammar: 'grammar', strategy: 'target', listening: 'listening', reading: 'reading', writing: 'writing', speaking: 'speaking', review: 'review', test: 'test' };
@@ -91,7 +93,7 @@ const NAV = {
   learner: [['today', 'home'], ['roadmap', 'route'], ['practice', 'gamepad'], ['test', 'clipboard'], ['me', 'trophy']],
   admin: [['admin', 'chart'], ['admin/learners', 'users'], ['admin/attempts', 'list']],
 };
-const NAV_OF = { day: 'roadmap', cards: 'practice', game: 'practice', writing: 'practice', exam: 'test', attempt: 'test',
+const NAV_OF = { day: 'roadmap', learn: 'today', cards: 'practice', game: 'practice', writing: 'practice', exam: 'test', attempt: 'test',
   'admin/learner': 'admin/learners' };
 function buildNav() {
   const items = NAV[me && me.role === 'admin' ? 'admin' : 'learner'];
@@ -296,13 +298,14 @@ async function start(route) {
 
 // ---------- Router ----------
 const ROUTES = {
-  today: renderToday, day: renderDay, roadmap: renderRoadmap, practice: renderPractice, cards: renderCards, game: renderGame,
+  today: renderToday, day: renderDay, learn: renderLearn, roadmap: renderRoadmap, practice: renderPractice, cards: renderCards, game: renderGame,
   writing: renderWriting, test: renderExamHub, exam: renderExam, attempt: renderAttempt, me: renderMe,
   admin: renderAdmin, 'admin/learners': renderAdminLearners, 'admin/learner': renderAdminLearner, 'admin/attempts': renderAdminAttempts,
 };
 async function render() {
   stopTimer();
   stopGame();
+  stopFlow();
   hideTip();
   setKeys(null);
   const parts = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
@@ -454,13 +457,13 @@ function taskItem(day, task, done) {
     ? (isDone ? `<span class="check" title="${t('task.passed')}">${icon('check')}</span>`
       : `<a class="btn primary" href="#/exam/week/${Math.ceil(day / 7)}">${t('exam.take')}</a>`)
     : `<button class="check" data-day="${day}" data-task="${task.id}" aria-pressed="${isDone}" aria-label="${t('task.mark')}">${icon('check')}</button>`;
+  const href = task.id === 'weekly_test' ? `#/exam/week/${Math.ceil(day / 7)}` : `#/learn/${day}/${task.id}`;
   return `<li class="task k-${task.kind} ${isDone ? 'done' : ''}">
-    <span class="kind">${icon(KIND_ICON[task.kind] || 'checkCircle')}</span>
-    <div class="body">
-      <div class="lbl">${esc(L(task, 'label'))}</div>
-      <div class="det">${esc(L(task, 'detail'))}</div>
-      ${task.lesson_id ? `<a class="lesson" href="#/day/${day}">${t('task.lesson')} →</a>` : ''}
-    </div>
+    <a class="body" href="${href}">
+      <span class="kind">${icon(KIND_ICON[task.kind] || 'checkCircle')}</span>
+      <div class="txt"><div class="lbl">${esc(L(task, 'label'))}</div><div class="det">${esc(L(task, 'detail'))}</div></div>
+      <span class="go"><b>${isDone ? t('task.review') : t('task.start')}</b>${icon('fwd')}</span>
+    </a>
     <span class="min">${task.minutes}′</span>
     ${action}
   </li>`;
@@ -542,7 +545,10 @@ async function renderToday() {
       <div><b>${t('today.cardsNudge', d.cards_due)}</b><span>${t('today.cardsNudgeSub')}</span></div>
       <span class="btn primary">${t('today.reviewNow')}</span></a>` : ''}
     <div class="card">
-      <div class="card-head"><h3>${t('today.tasks')}</h3><a class="btn" href="#/day/${td.day}">${icon('grammar')} ${t('today.openLesson')}</a></div>
+      <div class="card-head"><h3>${t('today.tasks')}</h3><span class="chip">${td.done.length}/${td.tasks.length}</span></div>
+      ${(() => { const nx = td.tasks.find(x => !td.done.includes(x.id));
+        return nx ? `<a class="btn primary big block start-cta" href="#/learn/${td.day}/${nx.id}">${icon('play')} ${t(td.done.length ? 'today.continue' : 'today.start')}</a>`
+          : `<div class="note ok" style="margin-bottom:.9rem">${icon('checkCircle')}<span>${t('today.allDone')}</span></div>`; })()}
       ${taskList(td.day, td.tasks, td.done)}
     </div>
     <div class="quick">
@@ -586,45 +592,47 @@ async function renderDay(n) {
         <div class="ipa">${esc(w.ipa)} · ${esc(w.pos)}</div><div class="vi">${esc(w.vi)}</div><div class="ex">${esc(w.example)}</div></div>`).join('')}</div></div>` : ''}`;
   bindTasks();
   view.querySelectorAll('[data-say]').forEach(b => b.addEventListener('click', () => speak(b.dataset.say)));
-  // Wrong answers can be retried with the options reshuffled: recalling again after feedback is what makes it stick.
-  view.querySelectorAll('.ex-list').forEach(list => {
-    const card = list.parentElement;
-    const score = card.querySelector('.score');
-    const retry = card.querySelector('.retry');
-    const qs = [...list.querySelectorAll('.q')];
-    const update = () => {
-      const answered = qs.filter(q => q.dataset.done).length;
-      const wrong = qs.filter(q => q.dataset.done === 'wrong').length;
-      const finished = answered === qs.length;
-      score.textContent = finished && !wrong ? t('day.allRight') : answered ? t('day.score', answered - wrong, answered) : '';
-      retry.classList.toggle('hidden', !finished || !wrong);
-      retry.querySelector('span').textContent = t('day.retry', wrong);
-      if (finished && !wrong) confetti(50);
-    };
-    qs.forEach(q => q.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
-      if (q.dataset.done) return;
-      const ok = Number(q.dataset.answer);
-      q.dataset.done = Number(b.dataset.j) === ok ? 'right' : 'wrong';
-      sfx[q.dataset.done]();
-      q.querySelectorAll('.opt').forEach(x => {
-        if (Number(x.dataset.j) === ok) x.classList.add('right');
-        else if (x === b) x.classList.add('wrong');
-      });
-      q.querySelector('.explain').classList.remove('hidden');
-      update();
-    })));
-    retry.addEventListener('click', () => {
-      const again = qs.filter(q => q.dataset.done === 'wrong');
-      again.forEach(q => {
-        delete q.dataset.done;
-        q.classList.add('retrying');
-        const opts = q.querySelector('.opts');
-        shuffle([...opts.children]).forEach(x => { x.classList.remove('right', 'wrong'); opts.appendChild(x); });
-        q.querySelector('.explain').classList.add('hidden');
-      });
-      update();
-      again[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  view.querySelectorAll('.ex-list').forEach(list => wireExerciseList(list));
+}
+// Wrong answers can be retried with the options reshuffled: recalling again after feedback is what makes it stick.
+// onChange({finished, wrong, qs}) lets the guided flow auto-advance once every question is right.
+function wireExerciseList(list, onChange) {
+  const card = list.closest('.card') || list.parentElement;
+  const score = card.querySelector('.score');
+  const retry = card.querySelector('.retry');
+  const qs = [...list.querySelectorAll('.q')];
+  const update = () => {
+    const answered = qs.filter(q => q.dataset.done).length;
+    const wrong = qs.filter(q => q.dataset.done === 'wrong').length;
+    const finished = answered === qs.length;
+    if (score) score.textContent = finished && !wrong ? t('day.allRight') : answered ? t('day.score', answered - wrong, answered) : '';
+    if (retry) { retry.classList.toggle('hidden', !finished || !wrong); retry.querySelector('span').textContent = t('day.retry', wrong); }
+    if (finished && !wrong && !onChange) confetti(50);
+    onChange && onChange({ finished, wrong, qs });
+  };
+  qs.forEach(q => q.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
+    if (q.dataset.done) return;
+    const ok = Number(q.dataset.answer);
+    q.dataset.done = Number(b.dataset.j) === ok ? 'right' : 'wrong';
+    sfx[q.dataset.done]();
+    q.querySelectorAll('.opt').forEach(x => {
+      if (Number(x.dataset.j) === ok) x.classList.add('right');
+      else if (x === b) x.classList.add('wrong');
     });
+    q.querySelector('.explain').classList.remove('hidden');
+    update();
+  })));
+  if (retry) retry.addEventListener('click', () => {
+    const again = qs.filter(q => q.dataset.done === 'wrong');
+    again.forEach(q => {
+      delete q.dataset.done;
+      q.classList.add('retrying');
+      const opts = q.querySelector('.opts');
+      shuffle([...opts.children]).forEach(x => { x.classList.remove('right', 'wrong'); opts.appendChild(x); });
+      q.querySelector('.explain').classList.add('hidden');
+    });
+    update();
+    again[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
   });
 }
 
@@ -735,11 +743,13 @@ function markWord(sentence, word, blank) {
   const hit = blank ? '<span class="blank">______</span>' : `<mark>${esc(m[0])}</mark>`;
   return esc(sentence.slice(0, m.index)) + hit + esc(sentence.slice(m.index + m[0].length));
 }
-async function renderCards() {
+async function renderCards(flow) {
+  flow = flow && typeof flow === 'object' ? flow : null;
   const queue = await api('/api/vocab/queue');
   const total = queue.length;
   let reviewed = 0, recalled = 0;
   const done = async () => {
+    if (flow) return flowComplete(flow);
     const mem = await api('/api/vocab/stats').catch(() => null);
     view.innerHTML = `<div class="flash-wrap"><div class="card result-hero"><span class="done-ic">${icon('checkCircle')}</span>
         <h2 style="margin:.5rem 0">${t('cards.done')}</h2><p class="muted">${t('cards.doneSub')}</p>
@@ -752,7 +762,8 @@ async function renderCards() {
   };
   if (!total) return done();
   view.innerHTML = `<div class="flash-wrap">
-    <a class="crumb" href="#/practice">${icon('back')} ${t('nav.practice')}</a>
+    <a class="crumb" href="${flow ? '#/today' : '#/practice'}">${icon('back')} ${t(flow ? 'nav.today' : 'nav.practice')}</a>
+    ${flow ? flowSteps(flow) : ''}
     <div class="page-head"><h1>${t('pr.cards')}</h1></div>
     <div class="flash-top"><span id="fc-count"></span><span class="chip" id="fc-kind"></span></div>
     <div class="bar" style="margin-bottom:14px"><i id="fc-bar" style="width:0"></i></div>
@@ -1014,6 +1025,11 @@ async function renderMe() {
 const CRITERIA = { task_response: 'Task Response', coherence_cohesion: 'Coherence & Cohesion', lexical_resource: 'Lexical Resource', grammatical_range_accuracy: 'Grammar' };
 function feedback(e) {
   const r = e.result;
+  if (r.offline) return `<div class="card fb">
+    <div class="card-head" style="margin:0"><h3>${t('wr.checklist')}</h3>
+      <span class="chip ${r.words >= r.target ? 'ok' : ''}">${t('wr.words', r.words)} / ${r.target}</span></div>
+    <ul class="checklist">${r.checks.map(c => `<li class="${c.ok ? 'ok' : 'no'}">${icon(c.ok ? 'checkCircle' : 'info')}<span>${esc(c.text)}</span></li>`).join('')}</ul>
+    <p class="muted small" style="margin-top:.8rem">${esc(r.note)}</p></div>`;
   return `<div class="card fb">
     <div class="card-head" style="margin:0"><div class="overall"><b>${r.overall.toFixed(1)}</b><div><h3>${t('wr.band')}</h3>
       <p class="muted small">${e.task_type === 'task1' ? 'Task 1' : 'Task 2'} · ${t('wr.words', e.words)} · ${when(e.created_at)}</p></div></div></div>
@@ -1029,13 +1045,13 @@ async function renderWriting() {
   view.innerHTML = `
     <a class="crumb" href="#/practice">${icon('back')} ${t('nav.practice')}</a>
     <div class="page-head"><h1>${t('nav.writing')}</h1><p>${t('wr.sub')}</p></div>
-    ${status.enabled ? '' : `<div class="note" style="margin-bottom:1rem">${icon('info')}<span>${t('wr.off')}</span></div>`}
+    ${status.enabled ? '' : `<div class="note info" style="margin-bottom:1rem">${icon('info')}<span>${t('wr.offline')}</span></div>`}
     <div class="two">
       <form class="card" id="wform">
         <label>${t('wr.type')}<select name="task_type"><option value="task2">${t('wr.task2')}</option><option value="task1">${t('wr.task1')}</option></select></label>
         <label>${t('wr.prompt')}<textarea name="prompt" style="min-height:90px" required placeholder="${t('wr.promptPh')}"></textarea></label>
         <label><span class="row" style="justify-content:space-between">${t('wr.essay')} <span class="chip" id="wc">${t('wr.words', 0)}</span></span><textarea name="essay" required placeholder="${t('wr.essayPh')}"></textarea></label>
-        <div class="row"><button class="btn primary" ${status.enabled ? '' : 'disabled'}>${icon('checkCircle')} ${t('wr.grade')}</button><span class="muted small">${t('wr.limit', status.daily_limit)}</span></div>
+        <div class="row"><button class="btn primary">${icon('checkCircle')} ${t(status.enabled ? 'wr.grade' : 'wr.check')}</button><span class="muted small">${t(status.enabled ? 'wr.limit' : 'wr.checkHint', status.daily_limit)}</span></div>
       </form>
       <div class="card"><h3>${t('wr.tips')}</h3><ul class="tips">${[1, 2, 3, 4, 5].map(i => `<li>${icon('check')}<span>${t(`wr.tip${i}`)}</span></li>`).join('')}</ul></div>
     </div>
@@ -1054,6 +1070,220 @@ async function renderWriting() {
       xpToast(30);
     } catch (err) { toast(err.message); }
     btn.disabled = false; btn.innerHTML = `${icon('checkCircle')} ${t('wr.grade')}`;
+  });
+}
+
+// ---------- Guided daily flow: one task at a time, auto-marked, auto-advancing ----------
+/* #/learn/DAY/TASKID opens a single task's real activity. Finishing it marks the task
+   done on the server and shows "Tiếp theo →" to the next unfinished task (auto-advancing
+   after a beat). Everything here runs in the browser — no API key needed. */
+let flowAdvTimer = null;
+function stopFlow() { clearTimeout(flowAdvTimer); flowAdvTimer = null; }
+
+const micSupported = () => 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+const normWords = s => (s.toLowerCase().match(/[a-z0-9']+/g) || []);
+function speechScore(said, target) {
+  const b = normWords(target);
+  if (!b.length) return 0;
+  const pool = normWords(said);
+  let hit = 0;
+  b.forEach(w => { const i = pool.indexOf(w); if (i >= 0) { hit++; pool.splice(i, 1); } });
+  return Math.round(hit / b.length * 100);
+}
+
+function flowSteps(ctx) {
+  return `<div class="flow-top"><div class="flow-steps">${ctx.tasks.map((x, i) =>
+      `<i class="k-${x.kind} ${ctx.done.includes(x.id) ? 'done' : ''} ${i === ctx.idx ? 'now' : ''}"></i>`).join('')}</div>
+    <span class="flow-count">${t('flow.step', ctx.idx + 1, ctx.tasks.length)}</span></div>`;
+}
+function flowHead(ctx, body) {
+  const task = ctx.task;
+  view.innerHTML = `
+    <a class="crumb" href="#/today">${icon('back')} ${t('nav.today')}</a>
+    ${flowSteps(ctx)}
+    <div class="page-head learn-head k-${task.kind}"><span class="kind">${icon(KIND_ICON[task.kind] || 'home')}</span>
+      <div><h1>${esc(L(task, 'label'))}</h1><p>${esc(L(task, 'detail'))}</p></div></div>
+    <div id="flow-body">${body}</div>
+    <div id="flow-foot"></div>`;
+}
+async function flowComplete(ctx, info = {}) {
+  if (ctx._done) return;
+  ctx._done = true;
+  let r = null;
+  if (!ctx.done.includes(ctx.task.id)) {
+    try { r = await api(`/api/days/${ctx.day}/tasks/${ctx.task.id}`, { method: 'PUT', body: { done: true } }); }
+    catch (e) { toast(e.message); ctx._done = false; return; }
+  }
+  const doneIds = r ? r.done : ctx.done.includes(ctx.task.id) ? ctx.done : [...ctx.done, ctx.task.id];
+  const next = ctx.tasks.find(x => !doneIds.includes(x.id));
+  const html = `<div class="card flow-ok">
+    <span class="done-ic">${icon('checkCircle')}</span>
+    <h2>${t('flow.taskDone')}</h2>
+    ${info.score != null ? `<p><span class="chip ${info.score === info.total ? 'ok' : ''}">${t('flow.score', info.score, info.total)}</span></p>` : ''}
+    ${next ? `<p class="muted">${t('flow.nextIs')}: <b>${esc(L(next, 'label'))}</b></p>
+        <a class="btn primary big" href="#/learn/${ctx.day}/${next.id}">${t('flow.next')} ${icon('fwd')}</a>`
+      : `<p>${t('flow.dayDone')}</p><a class="btn primary big" href="#/today">${t('flow.backToday')}</a>`}</div>`;
+  const foot = $('#flow-foot');
+  if (foot) { foot.innerHTML = html; foot.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  else { view.innerHTML = `<div class="flash-wrap">${html}</div>`; enter(); }
+  refreshLevel();
+  if (next) { xpToast(10); flowAdvTimer = setTimeout(() => { if (location.hash.startsWith('#/learn/')) location.hash = `#/learn/${ctx.day}/${next.id}`; }, 2800); }
+  else confetti();
+}
+
+async function renderLearn(arg) {
+  const [dayStr, taskId] = String(arg).split('/');
+  const day = Number(dayStr) || 1;
+  let d;
+  try { d = await api(`/api/days/${day}`); } catch (e) { view.innerHTML = `<div class="card error">${esc(e.message)}</div>`; return; }
+  const idx = d.tasks.findIndex(x => x.id === taskId);
+  if (idx < 0) { location.hash = `#/day/${day}`; return; }
+  const ctx = { day, idx, task: d.tasks[idx], tasks: d.tasks, done: d.done.slice(), d };
+  if (ctx.task.id === 'weekly_test') { location.hash = `#/exam/week/${Math.ceil(day / 7)}`; return; }
+  const k = ctx.task.kind;
+  if (k === 'vocab') return renderCards(ctx);
+  if (k === 'grammar' || k === 'strategy') return learnFocus(ctx);
+  if (k === 'listening' || k === 'reading') return learnQuiz(ctx);
+  if (k === 'speaking') return learnSpeaking(ctx);
+  if (k === 'writing') return learnWriting(ctx);
+  return learnGeneric(ctx);  // review-day reflect / fix-mistakes
+}
+
+function learnGeneric(ctx, notReady) {
+  flowHead(ctx, `<div class="card">
+    <p class="lesson-explain">${esc(L(ctx.task, 'detail'))}</p>
+    <div class="note info">${icon('info')}<span>${t(notReady ? 'flow.notReady' : 'flow.selfMark')}</span></div>
+    <button class="btn primary big block" id="done-it">${icon('checkCircle')} ${t('flow.markDone')}</button></div>`);
+  $('#done-it').addEventListener('click', () => { sfx.tick(); flowComplete(ctx); });
+}
+
+function learnFocus(ctx) {
+  const lessons = Object.values(ctx.d.lessons || {});
+  if (!lessons.length) return learnGeneric(ctx);
+  flowHead(ctx, lessons.map(l => `<div class="card">
+      <h2>${esc(L(l, 'title'))}</h2>
+      <p class="lesson-explain" style="margin-top:.6rem">${esc(L(l, 'explain'))}</p>
+      <div class="examples">${l.examples.map(x => `<div>${esc(x)}</div>`).join('')}</div>
+      <div class="card-head" style="margin:1.2rem 0 0"><h3>${t('day.exercises')}</h3>
+        <div class="row"><span class="score"></span><button class="btn retry hidden">${icon('review')} <span></span></button></div></div>
+      <div class="ex-list">${l.exercises.map(exercise).join('')}</div></div>`).join('')
+    + `<div class="note info">${icon('info')}<span>${t('flow.focusHint')}</span></div>`);
+  const allQ = [...view.querySelectorAll('.q')];
+  const check = () => { if (allQ.length && allQ.every(q => q.dataset.done === 'right')) flowComplete(ctx, { score: allQ.length, total: allQ.length }); };
+  view.querySelectorAll('.ex-list').forEach(list => wireExerciseList(list, check));
+}
+
+async function learnQuiz(ctx) {
+  let act;
+  try { act = await api(`/api/days/${ctx.day}/activity/${ctx.task.id}`); } catch (e) { return learnGeneric(ctx, true); }
+  if (!act.ready) return learnGeneric(ctx, true);
+  const listening = ctx.task.kind === 'listening';
+  flowHead(ctx, `<div class="card">
+    <p class="muted small card-sub">${t(listening ? 'act.listenHint' : 'act.readHint')}</p>
+    <div class="quiz">${act.items.map((it, i) => listening
+      ? `<div class="q quiz-q" data-answer="${it.answer}" data-i="${i}">
+          <button class="btn block play-say" data-say="${esc(it.say)}">${icon('volume')} ${t('act.playAgain')}</button>
+          <div class="qt">${t('act.whatMeaning')}</div>
+          <div class="opts">${it.options.map((o, j) => `<button class="opt" data-j="${j}">${esc(o)}</button>`).join('')}</div></div>`
+      : `<div class="q quiz-q" data-answer="${it.answer}" data-i="${i}">
+          <div class="qt reading"><span class="qn">${i + 1}</span>${it.sentence.replace('______', '<span class="blank">______</span>')}</div>
+          <div class="hint">${t('act.hint')}: <b>${esc(it.hint)}</b></div>
+          <div class="opts">${it.options.map((o, j) => `<button class="opt" data-j="${j}">${esc(o)}</button>`).join('')}</div></div>`
+    ).join('')}</div></div>`);
+  const qs = [...view.querySelectorAll('.quiz-q')];
+  view.querySelectorAll('.play-say').forEach(b => b.addEventListener('click', () => speak(b.dataset.say)));
+  if (listening) setTimeout(() => speak(act.items[0].say, true), 450);
+  qs.forEach(q => q.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
+    if (q.dataset.done) return;
+    const ok = Number(q.dataset.answer), right = Number(b.dataset.j) === ok;
+    q.dataset.done = right ? 'right' : 'wrong';
+    sfx[right ? 'right' : 'wrong']();
+    q.querySelectorAll('.opt').forEach(x => { if (Number(x.dataset.j) === ok) x.classList.add('right'); else if (x === b) x.classList.add('wrong'); });
+    const nx = qs.find(z => !z.dataset.done);
+    if (listening && nx) setTimeout(() => speak(act.items[Number(nx.dataset.i)].say, true), 550);
+    if (!nx) flowComplete(ctx, { score: qs.filter(z => z.dataset.done === 'right').length, total: qs.length });
+  })));
+}
+
+async function learnSpeaking(ctx) {
+  let act;
+  try { act = await api(`/api/days/${ctx.day}/activity/${ctx.task.id}`); } catch (e) { return learnGeneric(ctx, true); }
+  if (!act.ready) return learnGeneric(ctx, true);
+  const hasMic = micSupported();
+  flowHead(ctx, `<div class="card">
+    <p class="muted small card-sub">${t(hasMic ? 'act.speakHint' : 'act.speakHintNoMic')}</p>
+    <div class="speak-list">${act.items.map((it, i) => `<div class="speak-item" data-i="${i}">
+      <div class="s-top"><div><div class="s-text">${esc(it.text)}</div><div class="s-vi">${esc(it.ipa)} · ${esc(it.vi)}</div></div>
+        <button class="speak s-play" data-say="${esc(it.text)}" aria-label="${t('listen')}">${icon('volume')}</button></div>
+      <div class="s-actions">
+        ${hasMic ? `<button class="btn mic-btn">${icon('mic')} ${t('act.tapSpeak')}</button>`
+          : `<button class="btn self-ok">${icon('checkCircle')} ${t('act.saidIt')}</button>`}
+        <span class="s-result"></span></div></div>`).join('')}</div></div>`);
+  const items = [...view.querySelectorAll('.speak-item')];
+  view.querySelectorAll('.s-play').forEach(b => b.addEventListener('click', () => speak(b.dataset.say)));
+  const pass = el => {
+    el.classList.add('passed');
+    if (items.every(x => x.classList.contains('passed'))) flowComplete(ctx, { score: items.length, total: items.length });
+  };
+  const selfBtn = (el, btn) => btn.addEventListener('click', () => {
+    sfx.tick(); el.querySelector('.s-result').innerHTML = `<span class="chip ok">${icon('check')} ${t('act.good')}</span>`; pass(el);
+  });
+  items.forEach(el => {
+    if (hasMic) el.querySelector('.mic-btn').addEventListener('click', () => listenOnce(el, act.items[Number(el.dataset.i)].text, () => pass(el)));
+    else selfBtn(el, el.querySelector('.self-ok'));
+  });
+}
+// One-shot browser speech recognition: transcribe, score word overlap, pass at ≥60%.
+function listenOnce(el, target, onPass) {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return;
+  const btn = el.querySelector('.mic-btn'), result = el.querySelector('.s-result');
+  const rec = new SR();
+  rec.lang = 'en-US'; rec.interimResults = false; rec.maxAlternatives = 1;
+  let got = false;
+  btn.classList.add('live'); btn.innerHTML = `${icon('mic')} ${t('act.listening')}`;
+  result.textContent = '';
+  rec.onresult = e => {
+    got = true;
+    const said = e.results[0][0].transcript, score = speechScore(said, target), ok = score >= 60;
+    result.innerHTML = `<span class="chip ${ok ? 'ok' : 'bad'}">${score}%</span> <span class="said">“${esc(said)}”</span>`;
+    sfx[ok ? 'right' : 'wrong']();
+    if (ok) onPass();
+  };
+  rec.onerror = ev => {
+    if (ev.error === 'not-allowed' || ev.error === 'service-not-allowed') {
+      result.innerHTML = `<button class="btn small self-ok">${icon('checkCircle')} ${t('act.saidIt')}</button>`;
+      result.querySelector('.self-ok').addEventListener('click', () => { sfx.tick(); result.innerHTML = `<span class="chip ok">${icon('check')} ${t('act.good')}</span>`; onPass(); });
+    } else result.innerHTML = `<span class="muted small">${t('act.micRetry')}</span>`;
+  };
+  rec.onend = () => { btn.classList.remove('live'); btn.innerHTML = `${icon('mic')} ${got ? t('act.again') : t('act.tapSpeak')}`; };
+  try { rec.start(); } catch (e) { /* already running */ }
+}
+
+async function learnWriting(ctx) {
+  const status = await api('/api/writing/status').catch(() => ({ enabled: false, daily_limit: 5 }));
+  flowHead(ctx, `<div class="card">
+    <div class="note ${status.enabled ? 'ok' : 'info'}" style="margin-top:0">${icon('info')}<span>${t(status.enabled ? 'wr.aiOn' : 'wr.offline')}</span></div>
+    <form id="wform">
+      <input type="hidden" name="task_type" value="task1">
+      <label>${t('wr.prompt')}<textarea name="prompt" style="min-height:70px" required>${esc(L(ctx.task, 'detail'))}</textarea></label>
+      <label><span class="row" style="justify-content:space-between">${t('wr.essay')} <span class="chip" id="wc">${t('wr.words', 0)}</span></span>
+        <textarea name="essay" required placeholder="${t('wr.essayPh')}"></textarea></label>
+      <button class="btn primary big block">${icon('checkCircle')} ${t(status.enabled ? 'wr.grade' : 'wr.check')}</button>
+    </form>
+    <div id="result" style="margin-top:1rem"></div></div>`);
+  const essay = view.querySelector('[name=essay]'), label = t(status.enabled ? 'wr.grade' : 'wr.check');
+  essay.addEventListener('input', () => { $('#wc').textContent = t('wr.words', (essay.value.match(/[A-Za-z]+(?:['’-][A-Za-z]+)*/g) || []).length); });
+  $('#wform').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.disabled = true; btn.textContent = t('wr.grading');
+    try {
+      const r = await api('/api/writing/grade', { method: 'POST', body: Object.fromEntries(new FormData(e.target)) });
+      $('#result').innerHTML = feedback(r);
+      $('#result').scrollIntoView({ behavior: 'smooth' });
+      flowComplete(ctx);
+    } catch (err) { toast(err.message); btn.disabled = false; btn.innerHTML = `${icon('checkCircle')} ${label}`; }
   });
 }
 

@@ -9,7 +9,7 @@ from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import JSONResponse, Response
 from fastapi.staticfiles import StaticFiles
 
-from . import auth, content, exams, game, learner, reminders, reports, store, writing
+from . import activity, auth, content, exams, game, learner, reminders, reports, store, writing
 from .auth import ApiError
 from .i18n import lang_of, translate
 
@@ -157,6 +157,11 @@ def get_day(day: int, user=USER):
     lessons = {t["lesson_id"]: content.grammar()[t["lesson_id"]] for t in plan["tasks"] if t.get("lesson_id")}
     words = [w for w in content.vocab() if w["day"] == day]
     return {**plan, "done": learner_of(user)["done"].get(str(day), []), "lessons": lessons, "words": words}
+
+
+@app.get("/api/days/{day}/activity/{task_id}")
+def day_activity(day: int, task_id: str, user=USER):
+    return activity.build(day, task_id)
 
 
 @app.put("/api/days/{day}/tasks/{task_id}")

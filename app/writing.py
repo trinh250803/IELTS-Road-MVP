@@ -101,9 +101,42 @@ def _call_claude(task_type: str, prompt: str, essay: str, lang: str = "vi") -> d
         raise ApiError(502, "Kết quả chấm không hợp lệ, vui lòng thử lại")
 
 
-def grade(username: str, data: dict, lang: str = "vi") -> dict:
-    if not configured():
-        raise ApiError(503, "Chấm Writing bằng AI chưa được bật (thiếu ANTHROPIC_API_KEY trên máy chủ)")
+# Target length for each task in real IELTS; used by the offline checklist.
+TARGET_WORDS = {"task1": 150, "task2": 250}
+
+
+def offline_feedback(task_type: str, essay: str) -> dict:
+    """A rule-based checklist shown when AI grading is off — no key, no band, but
+    concrete, honest pointers on length, sentences, paragraphs and word variety."""
+    words_list = re.findall(r"[A-Za-z]+(?:['’-][A-Za-z]+)*", essay)
+    words = len(words_list)
+    sentences = [s for s in re.split(r"[.!?]+", essay) if s.strip()]
+    paragraphs = [p for p in re.split(r"\n\s*\n", essay.strip()) if p.strip()]
+    target = TARGET_WORDS[task_type]
+    min_sentences = 5 if task_type == "task1" else 8
+    avg_sentence = words / len(sentences) if sentences else 0
+    unique = len({w.lower() for w in words_list})
+    variety = unique / words if words else 0
+
+    def chk(ok, good, bad):
+        return {"ok": bool(ok), "text": good if ok else bad}
+
+    checks = [
+        chk(words >= target, f"Đủ độ dài: {words}/{target} từ.", f"Mới {words}/{target} từ — viết thêm cho đủ ý."),
+        chk(len(sentences) >= min_sentences, f"{len(sentences)} câu — tốt.",
+            f"Mới {len(sentences)} câu, nên có ít nhất {min_sentences} câu."),
+        chk(6 <= avg_sentence <= 24, f"Độ dài câu hợp lý (~{round(avg_sentence)} từ/câu).",
+            f"Câu trung bình ~{round(avg_sentence)} từ — {'quá ngắn, hãy nối ý' if avg_sentence < 6 else 'quá dài, hãy tách câu'}."),
+        chk(len(paragraphs) >= (1 if task_type == "task1" else 3), f"Chia {len(paragraphs)} đoạn.",
+            "Hãy chia bài thành nhiều đoạn (mở bài – thân bài – kết bài)."),
+        chk(variety >= 0.45, "Dùng từ đa dạng.", "Nhiều từ bị lặp — thử dùng từ đồng nghĩa."),
+    ]
+    return {"offline": True, "words": words, "target": target, "sentences": len(sentences),
+            "paragraphs": len(paragraphs), "checks": checks,
+            "note": "Đây là kiểm tra tự động cơ bản (không cần cài đặt gì). Bật chấm điểm AI để có band và nhận xét chi tiết."}
+
+
+def _validate(data: dict) -> tuple[str, str, str, int]:
     task_type = data.get("task_type")
     if task_type not in MIN_WORDS:
         raise ApiError(400, "Dạng bài phải là task1 hoặc task2")
@@ -113,22 +146,33 @@ def grade(username: str, data: dict, lang: str = "vi") -> dict:
         raise ApiError(400, "Hãy nhập đề bài")
     words = word_count(essay)
     if words < MIN_WORDS[task_type]:
-        raise ApiError(400, f"Bài viết cần ít nhất {MIN_WORDS[task_type]} từ để chấm (hiện có {words} từ)")
+        raise ApiError(400, f"Bài viết cần ít nhất {MIN_WORDS[task_type]} từ (hiện có {words} từ)")
     if words > MAX_WORDS:
         raise ApiError(400, f"Bài viết tối đa {MAX_WORDS} từ")
+    return task_type, prompt, essay, words
 
-    key =learner.today().isoformat()
-    used = sum(1 for e in learner.get(store.load(), username)["essays"] if e["created_at_local"] == key)
-    if used >= DAILY_LIMIT:
-        raise ApiError(429, f"Mỗi ngày được chấm tối đa {DAILY_LIMIT} bài. Hãy quay lại vào ngày mai.")
 
-    result = _call_claude(task_type, prompt, essay, lang)
-    for c in CRITERIA:
-        result[c]["band"] = _half(result[c]["band"])
-    # IELTS overall for one task: mean of the four criteria, rounded to the nearest 0.5.
-    result["overall"] = _half(sum(result[c]["band"] for c in CRITERIA) / 4)
+def grade(username: str, data: dict, lang: str = "vi") -> dict:
+    task_type, prompt, essay, words = _validate(data)
+    key = learner.today().isoformat()
+
+    if configured():
+        used = sum(1 for e in learner.get(store.load(), username)["essays"]
+                   if e["created_at_local"] == key and not e["result"].get("offline"))
+        if used >= DAILY_LIMIT:
+            raise ApiError(429, f"Mỗi ngày được chấm AI tối đa {DAILY_LIMIT} bài. Hãy quay lại vào ngày mai.")
+        result = _call_claude(task_type, prompt, essay, lang)
+        for c in CRITERIA:
+            result[c]["band"] = _half(result[c]["band"])
+        # IELTS overall for one task: mean of the four criteria, rounded to the nearest 0.5.
+        result["overall"] = _half(sum(result[c]["band"] for c in CRITERIA) / 4)
+        model = MODEL
+    else:
+        result = offline_feedback(task_type, essay)
+        model = "offline"
+
     entry = {"id": uuid.uuid4().hex[:12], "created_at": now_iso(), "created_at_local": key,
-             "task_type": task_type, "prompt": prompt, "essay": essay, "words": words, "model": MODEL, "result": result}
+             "task_type": task_type, "prompt": prompt, "essay": essay, "words": words, "model": model, "result": result}
 
     def m(lr):
         lr["essays"] = [entry, *lr["essays"]][:KEEP_ESSAYS]

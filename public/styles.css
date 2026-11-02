@@ -132,11 +132,14 @@ main { padding: 32px 36px 64px; max-width: 1080px; width: 100%; }
 .task { display: flex; gap: 14px; align-items: center; padding: 12px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); transition: .15s; }
 .task:hover { border-color: #cfd4e2; }
 .task .kind { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; flex: none; color: var(--k); background: var(--k-soft); }
-.task .body { flex: 1; min-width: 0; }
-.task .lbl { font-weight: 700; font-size: .93rem; }
-.task .det { color: var(--text-2); font-size: .88rem; }
+.task .body { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; }
+.task .txt { flex: 1; min-width: 0; }
+.task .lbl { font-weight: 700; font-size: .93rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.task .det { color: var(--text-2); font-size: .88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.task .go { flex: none; display: inline-flex; align-items: center; gap: 2px; font-size: .82rem; font-weight: 700; color: var(--k); white-space: nowrap; }
+.task .go svg { width: 18px; height: 18px; }
+.task.done .go { color: var(--muted); }
 .task .min { color: var(--muted); font-size: .82rem; font-weight: 600; white-space: nowrap; }
-.task .lesson { font-size: .84rem; font-weight: 600; }
 .check { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #c9cede; background: var(--surface); display: grid; place-items: center; cursor: pointer; flex: none; color: transparent; padding: 0; transition: .15s; }
 .check:hover { border-color: var(--ok); }
 .check svg { width: 16px; height: 16px; stroke-width: 3; }
@@ -793,3 +796,59 @@ html { text-size-adjust: 100%; }
   .toast { top: calc(12px + env(safe-area-inset-top)); bottom: auto; animation-name: toastDown; }
 }
 @keyframes toastDown { from { opacity: 0; transform: translate(-50%, -16px) scale(.95); } }
+
+/* ---------- Guided daily flow + self-contained skill activities ---------- */
+.btn.big { padding: .78rem 1.2rem; font-size: 1rem; font-weight: 700; }
+.btn.big svg { width: 20px; height: 20px; }
+.start-cta { margin-bottom: .9rem; }
+.note.ok { background: var(--ok-soft); color: var(--ok); }
+.flow-top { display: flex; align-items: center; gap: 12px; margin: .2rem 0 1rem; }
+.flow-steps { display: flex; gap: 6px; flex: 1; }
+.flow-steps i { flex: 1; height: 6px; border-radius: 3px; background: var(--line); transition: .25s; }
+.flow-steps i.done { background: var(--ok); }
+.flow-steps i.now { background: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+.flow-count { font-size: .8rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+.learn-head { display: flex; align-items: center; gap: 14px; }
+.learn-head .kind { width: 46px; height: 46px; border-radius: 13px; flex: none; display: grid; place-items: center; color: var(--k); background: var(--k-soft); }
+.learn-head h1 { margin: 0; }
+.flow-ok { text-align: center; padding: 26px 22px; animation: pop .4s var(--ease); }
+.flow-ok .done-ic { color: var(--ok); } .flow-ok .done-ic svg { width: 54px; height: 54px; }
+.flow-ok h2 { margin: .4rem 0; } .flow-ok .big { margin-top: 1rem; }
+
+/* Listening / Reading quiz */
+.quiz { display: grid; gap: 16px; }
+.quiz-q { border: 1px solid var(--line); border-radius: 14px; padding: 14px; }
+.quiz-q .play-say { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; }
+.quiz-q .play-say svg { width: 20px; height: 20px; }
+.quiz-q .qt { font-weight: 700; margin-bottom: 10px; }
+.quiz-q .qt.reading { font-weight: 600; line-height: 1.6; }
+.quiz-q .qt .blank { color: var(--primary); font-weight: 800; letter-spacing: .05em; }
+.quiz-q .hint { font-size: .85rem; color: var(--text-2); margin-bottom: 10px; }
+
+/* Speaking */
+.speak-list { display: grid; gap: 14px; }
+.speak-item { border: 1px solid var(--line); border-radius: 14px; padding: 14px; transition: .2s; }
+.speak-item.passed { border-color: var(--ok); background: var(--ok-soft); }
+.speak-item .s-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.speak-item .s-text { font-weight: 700; font-size: 1.02rem; }
+.speak-item .s-vi { color: var(--text-2); font-size: .86rem; margin-top: 2px; }
+.speak-item .s-play { flex: none; }
+.s-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.mic-btn.live { border-color: var(--bad); color: var(--bad); animation: micPulse 1s infinite; }
+@keyframes micPulse { 50% { background: var(--bad-soft); } }
+.s-result { display: inline-flex; align-items: center; gap: 8px; font-size: .86rem; min-width: 0; }
+.s-result .said { color: var(--text-2); font-style: italic; overflow: hidden; text-overflow: ellipsis; }
+.btn.small { padding: .35rem .7rem; font-size: .84rem; }
+
+/* Offline writing checklist */
+.checklist { list-style: none; padding: 0; margin: .6rem 0 0; display: grid; gap: 10px; }
+.checklist li { display: flex; gap: 10px; align-items: flex-start; font-size: .92rem; }
+.checklist li svg { width: 20px; height: 20px; flex: none; margin-top: 1px; }
+.checklist li.ok { color: var(--text); } .checklist li.ok svg { color: var(--ok); }
+.checklist li.no { color: var(--text); } .checklist li.no svg { color: var(--warn); }
+
+@media (max-width: 560px) {
+  .task .go b { display: none; }
+  .task .go { gap: 0; }
+  .learn-head .kind { width: 40px; height: 40px; }
+}
