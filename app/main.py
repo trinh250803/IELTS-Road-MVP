@@ -69,7 +69,7 @@ async def no_stale_web_app(request: Request, call_next):
 
 @app.get("/api/health")
 def health():
-    return {"ok": True, "writing_ai": writing.configured()}
+    return {"ok": True, "writing_ai": writing.configured(), "storage": store.backend()}
 
 
 # ---------- Accounts ----------
