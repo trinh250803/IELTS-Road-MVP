@@ -62,6 +62,22 @@ def test_weekly_test_files_valid():
             assert q["explain"], q["id"]
 
 
+def test_content_libraries(client):
+    h = register(client, "thuvien")
+    v = client.get("/api/library/vocab", headers=h).json()
+    assert v["total"] == sum(len(d["words"]) for d in v["days"]) > 0
+    days = [d["day"] for d in v["days"]]
+    assert days == sorted(days)  # in day order
+    first = v["days"][0]
+    assert first["week"] == 1 and {"word", "ipa", "pos", "vi"} <= set(first["words"][0])
+    g = client.get("/api/library/grammar", headers=h).json()
+    assert g["total"] == len(g["lessons"]) > 0
+    ids = [l["id"] for l in g["lessons"]]
+    assert len(ids) == len(set(ids))  # each lesson once
+    assert all(l["title"] and l["explain"] for l in g["lessons"])
+    assert g["lessons"][0]["id"] == "g_be"  # curriculum order
+
+
 def test_englishscore_sets_valid():
     """Every EnglishScore mock set is well-formed with all four sections."""
     data = content.englishscore()

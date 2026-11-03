@@ -90,7 +90,7 @@ const shuffle = a => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) 
 
 // ---------- Navigation ----------
 const NAV = {
-  learner: [['today', 'home'], ['roadmap', 'route'], ['practice', 'gamepad'], ['test', 'clipboard'], ['me', 'trophy']],
+  learner: [['today', 'home'], ['roadmap', 'route'], ['vocab', 'vocab'], ['grammar', 'grammar'], ['practice', 'gamepad'], ['test', 'clipboard'], ['me', 'trophy']],
   admin: [['admin', 'chart'], ['admin/learners', 'users'], ['admin/attempts', 'list']],
 };
 const NAV_OF = { day: 'roadmap', learn: 'today', cards: 'practice', game: 'practice', writing: 'practice', exam: 'test', attempt: 'test',
@@ -309,7 +309,7 @@ async function start(route) {
 
 // ---------- Router ----------
 const ROUTES = {
-  today: renderToday, day: renderDay, learn: renderLearn, roadmap: renderRoadmap, practice: renderPractice, cards: renderCards, game: renderGame,
+  today: renderToday, day: renderDay, learn: renderLearn, roadmap: renderRoadmap, vocab: renderLibVocab, grammar: renderLibGrammar, practice: renderPractice, cards: renderCards, game: renderGame,
   writing: renderWriting, test: renderExamHub, exam: renderExam, attempt: renderAttempt, me: renderMe,
   admin: renderAdmin, 'admin/learners': renderAdminLearners, 'admin/learner': renderAdminLearner, 'admin/attempts': renderAdminAttempts,
 };
@@ -651,6 +651,40 @@ async function renderRoadmap() {
     toast(t('rm.startChanged'));
     renderRoadmap();
   });
+}
+
+// ---------- Unlocked libraries: all vocabulary / all grammar, in order ----------
+async function renderLibVocab() {
+  const data = await api('/api/library/vocab');
+  view.innerHTML = `
+    <div class="page-head"><h1>${t('lib.vocabTitle')}</h1><p>${t('lib.vocabSub', data.total)}</p></div>
+    ${data.days.map(d => `
+      <div class="card lib-day">
+        <div class="lib-head"><span class="chip primary">${t('week.n', d.week)} · ${t('lib.day', d.day)}</span>
+          <span class="muted small one">${esc(L(d, 'theme'))}</span></div>
+        <div class="vocab-list">${d.words.map(w => `
+          <div class="vrow">
+            <button type="button" class="say-btn mini" data-say="${esc(w.word)}">${icon('volume')}</button>
+            <div class="vmain"><div class="vtop"><b>${esc(w.word)}</b><span class="muted small">${esc(w.ipa || '')}</span><span class="pos">${esc(w.pos || '')}</span></div>
+              <div class="vvi">${esc(w.vi)}</div>
+              ${w.example ? `<div class="vex">${esc(w.example)}</div>` : ''}</div>
+          </div>`).join('')}</div>
+      </div>`).join('')}
+    <p class="muted small" style="text-align:center;margin-top:1rem">${t('lib.more')}</p>`;
+  view.querySelectorAll('.say-btn').forEach(b => b.addEventListener('click', () => speak(b.dataset.say)));
+}
+
+async function renderLibGrammar() {
+  const data = await api('/api/library/grammar');
+  view.innerHTML = `
+    <div class="page-head"><h1>${t('lib.grammarTitle')}</h1><p>${t('lib.grammarSub', data.total)}</p></div>
+    ${data.lessons.map((l, i) => `
+      <div class="card lib-lesson">
+        <div class="lib-head"><h3 class="one">${i + 1}. ${esc(L(l, 'title'))}</h3><span class="chip">${t('week.n', l.week)}</span></div>
+        <p class="lib-explain">${esc(L(l, 'explain'))}</p>
+        ${(l.examples || []).length ? `<ul class="lib-ex">${l.examples.map(e => `<li>${esc(e)}</li>`).join('')}</ul>` : ''}
+      </div>`).join('')}
+    <p class="muted small" style="text-align:center;margin-top:1rem">${t('lib.more')}</p>`;
 }
 
 // ---------- Practice hub ----------

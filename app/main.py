@@ -139,6 +139,17 @@ async def submit_attempt(attempt_id: str, request: Request, user=USER):
     return exams.submit(user["username"], attempt_id, (await body_json(request)).get("answers"))
 
 
+# ---------- Unlocked content libraries (all vocabulary / all grammar, in order) ----------
+@app.get("/api/library/vocab")
+def library_vocab(user=USER):
+    return content.library_vocab()
+
+
+@app.get("/api/library/grammar")
+def library_grammar(user=USER):
+    return content.library_grammar()
+
+
 # ---------- Roadmap and daily plan ----------
 @app.get("/api/roadmap")
 def get_roadmap(user=USER):

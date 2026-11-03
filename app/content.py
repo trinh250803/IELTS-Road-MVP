@@ -121,6 +121,35 @@ def roadmap() -> dict:
                        "topics_en": [_focus_task(f, w["phase"], fe)["detail_en"] for f, fe in zip(w["focus"], w["focus_en"])]} for w in c["weeks"]]}
 
 
+def library_vocab() -> dict:
+    """Every vocabulary word, grouped by day in order (for the unlocked 'all vocabulary' tab)."""
+    by_day: dict[int, list] = {}
+    for w in vocab():
+        by_day.setdefault(w["day"], []).append(w)
+    days = []
+    for day in sorted(by_day):
+        week = (day - 1) // DAYS_PER_WEEK + 1
+        wk = week_def(week)
+        days.append({"day": day, "week": week, "week_title": wk["title"], "week_title_en": wk["title_en"],
+                     "theme": wk["vocab_theme"], "theme_en": wk["vocab_theme_en"], "words": by_day[day]})
+    return {"total": sum(len(d["words"]) for d in days), "weeks": WEEKS, "days": days}
+
+
+def library_grammar() -> dict:
+    """Every grammar lesson in curriculum order (for the unlocked 'all grammar' tab)."""
+    g = grammar()
+    seen: set[str] = set()
+    lessons = []
+    for w in curriculum()["weeks"]:
+        for focus in w["focus"]:
+            if focus in g and focus not in seen:
+                seen.add(focus)
+                lesson = g[focus]
+                lessons.append({"id": focus, "week": w["week"], "title": lesson["title"], "title_en": lesson.get("title_en"),
+                                "explain": lesson["explain"], "explain_en": lesson.get("explain_en"), "examples": lesson.get("examples", [])})
+    return {"total": len(lessons), "weeks": WEEKS, "lessons": lessons}
+
+
 def score_placement(answers: dict) -> dict:
     p = placement()
     by_level: dict[str, list[int]] = {}
