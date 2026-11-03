@@ -19,8 +19,8 @@
           "are"
         ],
         "answer": 1,
-        "explain": "My brother = he → is.",
-        "explain_en": "My brother = he → is."
+        "explain": "Đáp án: is — 'My brother' = he (số ít) → is. • am: chỉ đi với I. • are: đi với you/we/they/số nhiều.",
+        "explain_en": "Answer: is — 'My brother' = he (singular) → is. • am: only with I. • are: with you/we/they/plural."
       },
       {
         "q": "We ___ students.",
@@ -30,8 +30,8 @@
           "are"
         ],
         "answer": 2,
-        "explain": "We → are.",
-        "explain_en": "We → are."
+        "explain": "Đáp án: are — 'We' (số nhiều) → are. • am: chỉ với I. • is: với he/she/it/số ít.",
+        "explain_en": "Answer: are — 'We' (plural) → are. • am: only with I. • is: with he/she/it/singular."
       },
       {
         "q": "___ you tired?",
@@ -41,8 +41,8 @@
           "Are"
         ],
         "answer": 2,
-        "explain": "Câu hỏi với you → Are.",
-        "explain_en": "A question with you → Are."
+        "explain": "Đáp án: Are — câu hỏi với 'you' đảo 'are' lên đầu: Are you tired? • Am: chỉ với I (Am I…?). • Is: với he/she/it.",
+        "explain_en": "Answer: Are — a question with 'you' puts 'are' first: Are you tired? • Am: only with I (Am I…?). • Is: with he/she/it."
       },
       {
         "q": "I ___ not hungry.",
@@ -52,8 +52,8 @@
           "are"
         ],
         "answer": 0,
-        "explain": "I → am.",
-        "explain_en": "I → am."
+        "explain": "Đáp án: am — 'I' luôn đi với am: I am not hungry. • is: với he/she/it. • are: với you/we/they.",
+        "explain_en": "Answer: am — 'I' always takes am: I am not hungry. • is: with he/she/it. • are: with you/we/they."
       },
       {
         "q": "The books ___ on the table.",
@@ -63,8 +63,8 @@
           "am"
         ],
         "answer": 1,
-        "explain": "The books là số nhiều → are.",
-        "explain_en": "The books is plural → are."
+        "explain": "Đáp án: are — 'The books' số nhiều → are. • is: với số ít (The book is…). • am: chỉ với I.",
+        "explain_en": "Answer: are — 'The books' is plural → are. • is: with singular (The book is…). • am: only with I."
       }
     ]
   },
@@ -88,8 +88,8 @@
           "Hers"
         ],
         "answer": 1,
-        "explain": "Làm chủ ngữ → She.",
-        "explain_en": "It is the subject → She."
+        "explain": "Đáp án: She — làm chủ ngữ của câu → She. • Her: tính từ sở hữu (her friend) hoặc tân ngữ. • Hers: đại từ sở hữu đứng một mình (It's hers).",
+        "explain_en": "Answer: She — the subject of the sentence → She. • Her: a possessive adjective (her friend) or object. • Hers: a possessive pronoun that stands alone (It's hers)."
       },
       {
         "q": "I don't know ___.",
@@ -99,8 +99,8 @@
           "him"
         ],
         "answer": 2,
-        "explain": "Sau động từ dùng tân ngữ → him.",
-        "explain_en": "After a verb, use an object pronoun → him."
+        "explain": "Đáp án: him — sau động từ 'know' cần tân ngữ → him. • he: chủ ngữ (He knows). • his: sở hữu (his name).",
+        "explain_en": "Answer: him — after the verb 'know' we need an object → him. • he: subject (He knows). • his: possessive (his name)."
       },
       {
         "q": "They live with ___ parents.",
@@ -110,8 +110,8 @@
           "them"
         ],
         "answer": 1,
-        "explain": "Trước danh từ dùng tính từ sở hữu → their.",
-        "explain_en": "Before a noun, use a possessive adjective → their."
+        "explain": "Đáp án: their — trước danh từ 'parents' cần tính từ sở hữu → their. • they: chủ ngữ. • them: tân ngữ (with them).",
+        "explain_en": "Answer: their — before the noun 'parents' we need a possessive adjective → their. • they: subject. • them: object (with them)."
       },
       {
         "q": "Can you help ___?",
@@ -121,8 +121,8 @@
           "us"
         ],
         "answer": 2,
-        "explain": "Tân ngữ → us.",
-        "explain_en": "Object pronoun → us."
+        "explain": "Đáp án: us — sau động từ 'help' cần tân ngữ → us. • we: chủ ngữ (We can help). • our: sở hữu (our house).",
+        "explain_en": "Answer: us — after the verb 'help' we need an object → us. • we: subject (We can help). • our: possessive (our house)."
       },
       {
         "q": "The cat is eating ___ food.",
@@ -132,8 +132,8 @@
           "it"
         ],
         "answer": 0,
-        "explain": "Sở hữu của it → its (it's = it is).",
-        "explain_en": "The possessive of it → its (it's = it is)."
+        "explain": "Đáp án: its — sở hữu của 'it' → its food. • it's: viết tắt của 'it is' (nghĩa khác). • it: đại từ, không phải sở hữu.",
+        "explain_en": "Answer: its — the possessive of 'it' → its food. • it's: short for 'it is' (different meaning). • it: a pronoun, not possessive."
       }
     ]
   },
@@ -157,8 +157,8 @@
           "going"
         ],
         "answer": 1,
-        "explain": "She → goes (thêm -es sau o).",
-        "explain_en": "She → goes (add -es after o)."
+        "explain": "Đáp án: goes — 'She' (số ít) thêm -es (go→goes). • go: với I/you/we/they. • going: dạng V-ing, cần 'is going'.",
+        "explain_en": "Answer: goes — 'She' (singular) adds -es (go→goes). • go: with I/you/we/they. • going: an -ing form, needs 'is going'."
       },
       {
         "q": "They ___ English at school.",
@@ -168,8 +168,8 @@
           "studys"
         ],
         "answer": 0,
-        "explain": "They → giữ nguyên study.",
-        "explain_en": "They → keep the base form study."
+        "explain": "Đáp án: study — 'They' giữ nguyên động từ. • studies: dạng của he/she/it. • studys: sai chính tả (phụ âm + y → ies: studies).",
+        "explain_en": "Answer: study — 'They' keeps the base verb. • studies: the he/she/it form. • studys: misspelled (consonant + y → ies: studies)."
       },
       {
         "q": "He ___ like coffee.",
@@ -179,8 +179,8 @@
           "isn't"
         ],
         "answer": 1,
-        "explain": "He + doesn't + V.",
-        "explain_en": "He + doesn't + V."
+        "explain": "Đáp án: doesn't — 'He' phủ định dùng doesn't + động từ nguyên mẫu. • don't: với I/you/we/they. • isn't: của to be, không dùng với động từ thường.",
+        "explain_en": "Answer: doesn't — 'He' negates with doesn't + base verb. • don't: with I/you/we/they. • isn't: for 'to be', not with action verbs."
       },
       {
         "q": "___ your sister live in Da Nang?",
@@ -190,8 +190,8 @@
           "Is"
         ],
         "answer": 1,
-        "explain": "Your sister = she → Does.",
-        "explain_en": "Your sister = she → Does."
+        "explain": "Đáp án: Does — 'your sister' = she → Does … live? • Do: với I/you/we/they. • Is: của to be, không hợp với động từ 'live'.",
+        "explain_en": "Answer: Does — 'your sister' = she → Does … live? • Do: with I/you/we/they. • Is: 'to be', not with 'live'."
       },
       {
         "q": "The sun ___ in the east.",
@@ -201,8 +201,8 @@
           "is rise"
         ],
         "answer": 1,
-        "explain": "Sự thật, chủ ngữ số ít → rises.",
-        "explain_en": "A fact with a singular subject → rises."
+        "explain": "Đáp án: rises — sự thật, chủ ngữ số ít → rises. • rise: với số nhiều/I/you. • is rise: sai — không ghép 'is' với động từ nguyên mẫu.",
+        "explain_en": "Answer: rises — a fact, singular subject → rises. • rise: with plural/I/you. • is rise: wrong — never 'is' + base verb."
       }
     ]
   },
@@ -226,8 +226,8 @@
           "the"
         ],
         "answer": 1,
-        "explain": "elephant bắt đầu bằng nguyên âm → an.",
-        "explain_en": "elephant starts with a vowel sound → an."
+        "explain": "Đáp án: an — 'elephant' bắt đầu bằng âm nguyên âm → an. • a: trước âm phụ âm. • the: khi vật đã xác định (đây là lần nhắc đầu nên chưa dùng the).",
+        "explain_en": "Answer: an — 'elephant' starts with a vowel sound → an. • a: before a consonant sound. • the: for something specific (first mention, so not 'the')."
       },
       {
         "q": "He goes to ___ university in Hanoi.",
@@ -237,8 +237,8 @@
           "the"
         ],
         "answer": 0,
-        "explain": "university phát âm /juː/ (phụ âm) → a.",
-        "explain_en": "university is pronounced /juː/ (a consonant sound) → a."
+        "explain": "Đáp án: a — 'university' phát âm /juː/ (âm phụ âm) → a. • an: chỉ trước âm nguyên âm. • the: khi đã xác định trường cụ thể.",
+        "explain_en": "Answer: a — 'university' is pronounced /juː/ (a consonant sound) → a. • an: only before a vowel sound. • the: for a specific, known one."
       },
       {
         "q": "Please close ___ door.",
@@ -248,8 +248,8 @@
           "the"
         ],
         "answer": 2,
-        "explain": "Cánh cửa cả hai người đều biết → the.",
-        "explain_en": "Both people know which door → the."
+        "explain": "Đáp án: the — cánh cửa mà cả hai người đều biết là cái nào → the. • a/an: dùng khi nhắc lần đầu, chưa xác định.",
+        "explain_en": "Answer: the — both people know which door → the. • a/an: for a first, non-specific mention."
       },
       {
         "q": "I'll be back in ___ hour.",
@@ -259,8 +259,8 @@
           "the"
         ],
         "answer": 1,
-        "explain": "hour có h câm → an.",
-        "explain_en": "hour has a silent h → an."
+        "explain": "Đáp án: an — 'hour' có h câm, bắt đầu bằng âm nguyên âm → an. • a: trước âm phụ âm. • the: khi đã xác định.",
+        "explain_en": "Answer: an — 'hour' has a silent h (vowel sound) → an. • a: before a consonant sound. • the: for something specific."
       },
       {
         "q": "___ Earth goes around the Sun.",
@@ -270,8 +270,8 @@
           "The"
         ],
         "answer": 2,
-        "explain": "Vật duy nhất → The.",
-        "explain_en": "A unique thing → The."
+        "explain": "Đáp án: The — Trái Đất là vật duy nhất → The. • A/An: dùng cho một vật chưa xác định trong nhiều vật.",
+        "explain_en": "Answer: The — the Earth is unique → The. • A/An: for one unspecified thing among many."
       }
     ]
   },
@@ -295,8 +295,8 @@
           "children"
         ],
         "answer": 2,
-        "explain": "child → children (bất quy tắc).",
-        "explain_en": "child → children (irregular)."
+        "explain": "Đáp án: children — số nhiều bất quy tắc của child. • child: số ít. • childs: sai (từ này không thêm -s).",
+        "explain_en": "Answer: children — the irregular plural of child. • child: singular. • childs: wrong (this word doesn't add -s)."
       },
       {
         "q": "Can you give me some ___?",
@@ -306,8 +306,8 @@
           "an advice"
         ],
         "answer": 0,
-        "explain": "advice không đếm được.",
-        "explain_en": "advice is uncountable."
+        "explain": "Đáp án: advice — danh từ không đếm được, không có số nhiều. • advices: sai (không thêm -s). • an advice: sai (không dùng a/an với từ không đếm được).",
+        "explain_en": "Answer: advice — uncountable, no plural form. • advices: wrong (no -s). • an advice: wrong (no a/an with uncountables)."
       },
       {
         "q": "I visited many ___ last year.",
@@ -317,8 +317,8 @@
           "city"
         ],
         "answer": 1,
-        "explain": "phụ âm + y → ies.",
-        "explain_en": "consonant + y → ies."
+        "explain": "Đáp án: cities — phụ âm + y → ies. • citys: sai chính tả. • city: số ít, không hợp với 'many'.",
+        "explain_en": "Answer: cities — consonant + y → ies. • citys: misspelled. • city: singular, not with 'many'."
       },
       {
         "q": "How ___ water do you drink a day?",
@@ -328,8 +328,8 @@
           "a"
         ],
         "answer": 1,
-        "explain": "water không đếm được → much.",
-        "explain_en": "water is uncountable → much."
+        "explain": "Đáp án: much — 'water' không đếm được → much. • many: với danh từ đếm được số nhiều. • a: không dùng trong 'how … water'.",
+        "explain_en": "Answer: much — 'water' is uncountable → much. • many: with plural countable nouns. • a: not used in 'how … water'."
       },
       {
         "q": "Two ___ are waiting outside.",
@@ -339,8 +339,8 @@
           "people"
         ],
         "answer": 2,
-        "explain": "Số nhiều của person thường dùng people.",
-        "explain_en": "The usual plural of person is people."
+        "explain": "Đáp án: people — số nhiều thường dùng của person. • person: số ít, không hợp 'Two'. • persons: hiếm dùng, mang tính trang trọng/pháp lý.",
+        "explain_en": "Answer: people — the usual plural of person. • person: singular, not with 'Two'. • persons: rare, formal/legal."
       }
     ]
   },
@@ -364,8 +364,8 @@
           "be"
         ],
         "answer": 0,
-        "explain": "a cat số ít → is.",
-        "explain_en": "a cat is singular → is."
+        "explain": "Đáp án: is — 'a cat' số ít → There is. • are: với số nhiều. • be: dạng nguyên mẫu, phải chia (is/are).",
+        "explain_en": "Answer: is — 'a cat' is singular → There is. • are: with plural. • be: base form, must become is/are."
       },
       {
         "q": "There ___ many people here.",
@@ -375,8 +375,8 @@
           "has"
         ],
         "answer": 1,
-        "explain": "people số nhiều → are.",
-        "explain_en": "people is plural → are."
+        "explain": "Đáp án: are — 'many people' số nhiều → There are. • is: với số ít. • has: không dùng để nói tồn tại.",
+        "explain_en": "Answer: are — 'many people' is plural → There are. • is: with singular. • has: not used to say something exists."
       },
       {
         "q": "There ___ some water in the bottle.",
@@ -386,8 +386,8 @@
           "have"
         ],
         "answer": 0,
-        "explain": "water không đếm được → is.",
-        "explain_en": "water is uncountable → is."
+        "explain": "Đáp án: is — 'water' không đếm được → There is. • are: với số nhiều. • have: không dùng với There để nói tồn tại.",
+        "explain_en": "Answer: is — 'water' is uncountable → There is. • are: with plural. • have: not used with 'There' to say something exists."
       },
       {
         "q": "___ there any eggs in the fridge?",
@@ -397,8 +397,8 @@
           "Do"
         ],
         "answer": 1,
-        "explain": "eggs số nhiều → Are.",
-        "explain_en": "eggs is plural → Are."
+        "explain": "Đáp án: Are — 'eggs' số nhiều → Are there…? • Is: với số ít. • Do: không dùng trong cấu trúc There is/are.",
+        "explain_en": "Answer: Are — 'eggs' is plural → Are there…? • Is: with singular. • Do: not used in the There is/are structure."
       },
       {
         "q": "In Vietnamese 'Ở đây có một quán cà phê' → There ___ a coffee shop here.",
@@ -408,8 +408,8 @@
           "are"
         ],
         "answer": 1,
-        "explain": "Không dùng 'has' để nói 'có' tồn tại → There is.",
-        "explain_en": "Don't use 'has' to say something exists → There is."
+        "explain": "Đáp án: is — nói 'có' tồn tại dùng There is (số ít). • has: sai — tiếng Anh không dùng 'has' để nói tồn tại. • are: với số nhiều.",
+        "explain_en": "Answer: is — to say something exists use There is (singular). • has: wrong — English doesn't use 'has' for existence. • are: with plural."
       }
     ]
   }
