@@ -216,6 +216,20 @@ def reset_password(username: str) -> dict:
     return _update_learner(username, m)
 
 
+def set_full_name(username: str, full_name) -> dict:
+    name = str(full_name or "").strip()[:80]
+    if not name:
+        raise ApiError(400, "Tên hiển thị không được để trống")
+    with store.lock:
+        db = store.load()
+        u = next((x for x in db["users"] if x["username"] == username), None)
+        if not u:
+            raise ApiError(404, "Không tìm thấy tài khoản")
+        u["full_name"] = name
+        store.save(db)
+    return public_user(u)
+
+
 def _token(request: Request) -> str | None:
     h = request.headers.get("authorization", "")
     return h[7:] if h.lower().startswith("bearer ") else None

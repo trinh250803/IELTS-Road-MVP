@@ -284,10 +284,21 @@ async function logout() {
 $('#logout').addEventListener('click', logout);
 $('#logout-m').addEventListener('click', logout);
 
+// Tên hiển thị: ưu tiên tên lưu trên máy (còn giữ qua mọi lần deploy), nếu không thì lấy từ tài khoản.
+function displayName() {
+  try { const n = localStorage.getItem('ielts_name'); if (n && n.trim()) return n.trim(); } catch (e) {}
+  return (me && me.full_name) || '';
+}
+const firstName = () => displayName().trim().split(/\s+/).pop() || '';
+function refreshName() {
+  const n = displayName();
+  $('#me-name').textContent = n;
+  $('#me-avatar').textContent = (n.trim().split(/\s+/).pop() || '?')[0].toUpperCase();
+}
+
 async function start(route) {
   me = await api('/api/auth/me');
-  $('#me-name').textContent = me.full_name;
-  $('#me-avatar').textContent = (me.full_name.trim().split(/\s+/).pop() || '?')[0].toUpperCase();
+  refreshName();
   $('#auth').classList.add('hidden');
   $('#shell').classList.remove('hidden');
   applyStatic();
@@ -516,7 +527,7 @@ async function renderToday() {
   const td = d.today;
   const p = d.profile;
   const h = new Date().getHours();
-  const first = me ? me.full_name.trim().split(/\s+/).pop() : '';
+  const first = me ? firstName() : '';
   refreshLevel(p);
   const doneN = td.done.length, totalN = td.tasks.length;
   const nx = td.tasks.find(x => !td.done.includes(x.id));
@@ -617,7 +628,7 @@ async function renderRoadmap() {
   const currentPhase = r.weeks.find(w => w.week === currentWeek).phase;
   const weekDone = w => [1, 2, 3, 4, 5, 6, 7].every(i => done.has((w.week - 1) * 7 + i));
   view.innerHTML = `
-    <div class="page-head"><h1>${t('rm.title')}</h1><p>${t('rm.subSimple')}</p></div>
+    <div class="page-head"><p style="margin:0">${t('rm.subSimple')}</p></div>
     <div class="phases">${r.phases.map(p => `
       <div class="phase-card ph${p.phase} ${p.phase === currentPhase ? 'now' : ''}">
         <div class="num">${p.phase}</div>
@@ -646,7 +657,7 @@ async function renderRoadmap() {
 async function renderPractice() {
   const [queue, p, mem] = await Promise.all([api('/api/vocab/queue'), api('/api/me/profile'), api('/api/vocab/stats')]);
   view.innerHTML = `
-    <div class="page-head"><h1>${t('nav.practice')}</h1><p>${t('pr.sub')}</p></div>
+    <div class="page-head"><p style="margin:0">${t('pr.sub')}</p></div>
     <div class="goal-card card">
       ${ring(p.today_xp / p.daily_goal * 100, p.today_xp, `/ ${p.daily_goal} XP`, 96, '#e8590c')}
       <div><h3>${t(p.today_xp >= p.daily_goal ? 'pr.goalDone' : 'pr.goal')}</h3><p class="muted small">${t('pr.goalSub')}</p></div>
@@ -946,6 +957,11 @@ async function renderMe() {
   refreshLevel(p);
   view.innerHTML = `
     <div class="page-head"><h1>${t('nav.me')}</h1><p>${t('me.sub')}</p></div>
+    <div class="card name-card">
+      <label for="disp-name"><b>${t('me.displayName')}</b><span class="muted small">${t('me.displayNameHint')}</span></label>
+      <div class="row" style="gap:.5rem"><input id="disp-name" maxlength="80" value="${esc(displayName())}" placeholder="${t('me.displayName')}">
+        <button class="btn primary" id="disp-save">${t('me.save')}</button></div>
+    </div>
     <div class="me-grid">
       <div class="card level-card">
         <div class="lvl-badge" data-count>${p.level}</div>
@@ -972,6 +988,16 @@ async function renderMe() {
         <p class="muted small" style="margin-top:.8rem">${t('me.xpHow')}</p></div>
     </div>
     <div class="card reminders" id="reminders" style="margin-top:1rem"></div>`;
+  const saveName = async () => {
+    const name = $('#disp-name').value.trim();
+    if (!name) return toast(t('me.nameEmpty'));
+    try { localStorage.setItem('ielts_name', name); } catch (e) {}
+    refreshName();
+    try { await api('/api/auth/me', { method: 'PUT', body: { full_name: name } }); if (me) me.full_name = name; } catch (e) {}
+    toast(t('me.nameSaved'));
+  };
+  $('#disp-save').addEventListener('click', saveName);
+  $('#disp-name').addEventListener('keydown', e => { if (e.key === 'Enter') saveName(); });
   await reminderCard($('#reminders'));
 }
 

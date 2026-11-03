@@ -71,6 +71,10 @@ label input, label textarea, label select { margin-top: .35rem; }
 .side { position: sticky; top: 0; height: 100vh; background: var(--surface); border-right: 1px solid var(--line); display: flex; flex-direction: column; padding: 22px 14px; }
 .logo { display: flex; align-items: center; gap: .55rem; font-weight: 800; font-size: 1.08rem; color: var(--text); padding: 0 10px 22px; }
 .logo, .logo-lg { display: none; }  /* logo ẩn theo yêu cầu */
+.name-card { margin-bottom: 1rem; display: grid; gap: .5rem; }
+.name-card label { display: flex; flex-direction: column; gap: .15rem; }
+.name-card input { flex: 1; min-width: 0; }
+.name-card .btn { flex: none; }
 .mark { width: 30px; height: 30px; border-radius: 9px; background: linear-gradient(135deg, var(--ph1), var(--ph2) 55%, var(--ph3)); position: relative; flex: none; }
 .mark::after { content: ""; position: absolute; inset: 8px 7px; border: 2.5px solid #fff; border-top: 0; border-right: 0; transform: rotate(-45deg) translate(1px, -2px); width: 12px; height: 6px; }
 #nav { display: grid; gap: 2px; }

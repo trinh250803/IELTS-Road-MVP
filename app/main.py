@@ -102,6 +102,11 @@ def me(user=USER):
     return auth.public_user(user)
 
 
+@app.put("/api/auth/me")
+async def update_me(request: Request, user=USER):
+    return auth.set_full_name(user["username"], (await body_json(request)).get("full_name"))
+
+
 # ---------- Tests and attempt log ----------
 @app.get("/api/exams")
 def exam_hub(user=USER):
