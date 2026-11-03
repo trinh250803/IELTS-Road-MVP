@@ -62,6 +62,51 @@ def test_weekly_test_files_valid():
             assert q["explain"], q["id"]
 
 
+def test_englishscore_sets_valid():
+    """Every EnglishScore mock set is well-formed with all four sections."""
+    data = content.englishscore()
+    assert data["sets"] and data["bands"]
+    for s in data["sets"]:
+        t = exams.englishscore(s["set"])
+        assert t["pass_pct"] is None and t["time_limit_min"] > 0 and t["bands"]
+        ids = [q["id"] for q in t["questions"]]
+        assert len(ids) == len(set(ids)) >= 16
+        sections = {q["section"] for q in t["questions"]}
+        assert sections == {"grammar", "vocab", "listening", "reading"}
+        for q in t["questions"]:
+            assert len(q["options"]) in (3, 4) and 0 <= q["answer"] < len(q["options"]), q["id"]
+            assert q["explain"], q["id"]
+            if q["section"] == "listening":
+                assert q["say"], q["id"]
+    # listening "say" text is sent to the client; the answer key is not.
+    pub = exams.public(exams.englishscore(1))
+    assert "answer" not in pub[0]
+    assert any(item.get("say") for item in pub)
+    # bands cover every possible score 0..N with no gaps or overlaps.
+    total = len(data["sets"][0]["questions"])
+    for score in range(total + 1):
+        hit = [b for b in data["bands"] if b["min"] <= score <= b["max"]]
+        assert len(hit) == 1, score
+
+
+def test_englishscore_attempt(client):
+    h = register(client, "huong")
+    a = client.post("/api/exams/start", headers=h, json={"kind": "englishscore", "week": 1}).json()
+    assert "answer" not in a["questions"][0] and a["passage"]
+    qs = exams.englishscore(1)["questions"]
+    all_right = {q["id"]: q["answer"] for q in qs}
+    r = client.post(f'/api/attempts/{a["id"]}/submit', headers=h, json={"answers": all_right}).json()
+    assert r["score"] == len(qs) and r["passed"] is None
+    assert r["result"]["cefr"] == "B2" and r["xp"] > 0
+    assert set(r["sections"]) == {"grammar", "vocab", "listening", "reading"}
+    # the set shows up in the hub with the best level recorded.
+    hub = client.get("/api/exams", headers=h).json()
+    es1 = next(s for s in hub["englishscore"] if s["set"] == 1)
+    assert es1["attempts"] == 1 and es1["best_cefr"] == "B2"
+    # an unknown set is a 404.
+    assert client.post("/api/exams/start", headers=h, json={"kind": "englishscore", "week": 99}).status_code == 404
+
+
 FAKE_WEEK = {"week": 1, "title": "Kiểm tra tuần 1", "time_limit_min": 20, "pass_pct": 70, "passage": "Text.",
              "questions": [{"id": f"f{i}", "section": "grammar" if i < 6 else "vocab", "q": f"Q{i}", "options": ["a", "b", "c", "d"],
                             "answer": i % 4, "explain": "vì"} for i in range(10)]}

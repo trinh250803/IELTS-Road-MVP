@@ -35,6 +35,10 @@ def placement() -> dict:
     return _load("placement.json")
 
 
+def englishscore() -> dict:
+    return _load("englishscore.json")
+
+
 def week_def(week: int) -> dict:
     return next(w for w in curriculum()["weeks"] if w["week"] == week)
 

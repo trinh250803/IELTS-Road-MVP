@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "about": "Đề mô phỏng EnglishScore Core Skills: 4 phần Ngữ pháp, Từ vựng, Nghe, Đọc. Mỗi câu 1 đáp án đúng; chấm xong quy ra mốc CEFR (A1–B2). Không phải điểm chính thức.",
+  "about_en": "EnglishScore Core Skills mock: Grammar, Vocabulary, Listening, Reading. One correct answer each; score maps to a CEFR level (A1–B2). Not an official score.",
+  "bands": [
+    {"min": 0, "max": 7, "cefr": "A1", "level": "A1 – Sơ cấp", "level_en": "A1 – Beginner", "range": "≈ 100–299 điểm", "range_en": "≈ 100–299 pts",
+     "advice": "Bạn đang ở mức nền tảng. Học chắc ngữ pháp cơ bản và 500–1000 từ thông dụng trước khi thi thật.", "advice_en": "You are at a foundational level. Build basic grammar and 500–1000 common words before the real test."},
+    {"min": 8, "max": 11, "cefr": "A2", "level": "A2 – Cơ bản", "level_en": "A2 – Elementary", "range": "≈ 300–399 điểm", "range_en": "≈ 300–399 pts",
+     "advice": "Gần tới B1. Luyện thêm thì hiện tại/quá khứ, giới từ và nghe câu ngắn mỗi ngày.", "advice_en": "Close to B1. Practise present/past tenses, prepositions and short listening daily."},
+    {"min": 12, "max": 15, "cefr": "B1", "level": "B1 – Trung cấp", "level_en": "B1 – Intermediate", "range": "≈ 400–499 điểm", "range_en": "≈ 400–499 pts",
+     "advice": "Đạt mức B1 — đủ yêu cầu tối thiểu cho đa số vị trí. Giữ phong độ và luyện đọc nhanh để chắc điểm.", "advice_en": "You reached B1 — enough for most roles' minimum. Keep it up and practise faster reading to secure it."},
+    {"min": 16, "max": 20, "cefr": "B2", "level": "B2 – Trung cao cấp", "level_en": "B2 – Upper-intermediate", "range": "≈ 500–599 điểm", "range_en": "≈ 500–599 pts",
+     "advice": "Rất tốt — mức B2 dành cho quản lý và người làm việc với đối tác nước ngoài. Bạn đã sẵn sàng thi thật.", "advice_en": "Excellent — B2 is for managers and those working with foreign partners. You are ready for the real test."}
+  ],
+  "sets": [
+    {
+      "set": 1,
+      "title": "Đề luyện EnglishScore 1",
+      "title_en": "EnglishScore Practice 1",
+      "time_limit_min": 30,
+      "passage": "Mai works for a travel company in Da Nang. Every morning she answers emails from customers who want to book tours. Most of them come from Korea and Australia. Last year the company was small, with only five staff, but it has grown quickly and now there are more than twenty people. Mai enjoys her job because she meets people from many countries, but she says the busiest time is summer, when almost everyone wants to travel at once.",
+      "questions": [
+        {"id": "es1g1", "section": "grammar", "q": "My brother and I ___ students at the same school.", "options": ["is", "am", "are", "be"], "answer": 2, "explain": "Chủ ngữ số nhiều → are.", "explain_en": "Plural subject → are."},
+        {"id": "es1g2", "section": "grammar", "q": "She ___ to work by bus every day.", "options": ["go", "goes", "going", "is go"], "answer": 1, "explain": "Hiện tại đơn, chủ ngữ số ít thêm -es → goes.", "explain_en": "Present simple, singular subject adds -es → goes."},
+        {"id": "es1g3", "section": "grammar", "q": "We ___ the film last night. It was great.", "options": ["watch", "watched", "watching", "are watching"], "answer": 1, "explain": "'last night' → quá khứ đơn → watched.", "explain_en": "'last night' → past simple → watched."},
+        {"id": "es1g4", "section": "grammar", "q": "There isn't ___ milk in the fridge.", "options": ["some", "many", "any", "a"], "answer": 2, "explain": "Câu phủ định với danh từ không đếm được → any.", "explain_en": "Negative with an uncountable noun → any."},
+        {"id": "es1g5", "section": "grammar", "q": "If it rains tomorrow, we ___ at home.", "options": ["stay", "will stay", "stayed", "staying"], "answer": 1, "explain": "Câu điều kiện loại 1: if + hiện tại, will + V.", "explain_en": "First conditional: if + present, will + verb."},
+        {"id": "es1v1", "section": "vocab", "q": "'Giá rẻ' trong tiếng Anh là:", "options": ["expensive", "cheap", "quick", "heavy"], "answer": 1, "explain": "cheap = rẻ.", "explain_en": "cheap = low price."},
+        {"id": "es1v2", "section": "vocab", "q": "Choose the word closest in meaning to 'begin':", "options": ["start", "stop", "finish", "close"], "answer": 0, "explain": "begin ≈ start (bắt đầu).", "explain_en": "begin ≈ start."},
+        {"id": "es1v3", "section": "vocab", "q": "I need to ___ a doctor's appointment for Monday.", "options": ["take", "make", "do", "give"], "answer": 1, "explain": "Cụm cố định 'make an appointment'.", "explain_en": "Fixed phrase 'make an appointment'."},
+        {"id": "es1v4", "section": "vocab", "q": "The opposite of 'difficult' is:", "options": ["hard", "easy", "busy", "slow"], "answer": 1, "explain": "difficult ↔ easy.", "explain_en": "difficult ↔ easy."},
+        {"id": "es1v5", "section": "vocab", "q": "At the hotel, the person at the front desk who helps guests is the ___.", "options": ["receptionist", "pilot", "farmer", "nurse"], "answer": 0, "explain": "receptionist = lễ tân.", "explain_en": "receptionist = front-desk staff."},
+        {"id": "es1l1", "section": "listening", "say": "The meeting starts at a quarter past nine.", "q": "Nghe và chọn câu đúng nghĩa:", "options": ["Cuộc họp bắt đầu lúc 9 giờ 15.", "Cuộc họp bắt đầu lúc 9 giờ 45.", "Cuộc họp bắt đầu lúc 8 giờ 15.", "Cuộc họp kết thúc lúc 9 giờ."], "answer": 0, "explain": "a quarter past nine = 9 giờ 15.", "explain_en": "a quarter past nine = 9:15."},
+        {"id": "es1l2", "section": "listening", "say": "Could you turn off the lights before you leave, please?", "q": "Nghe. Người nói muốn bạn làm gì?", "options": ["Bật đèn lên", "Tắt đèn trước khi đi", "Đóng cửa sổ", "Ở lại phòng"], "answer": 1, "explain": "turn off the lights = tắt đèn.", "explain_en": "turn off the lights before leaving."},
+        {"id": "es1l3", "section": "listening", "say": "I'd like a return ticket to Hue, please.", "q": "Nghe. Người nói đang làm gì?", "options": ["Đặt phòng khách sạn", "Mua vé khứ hồi đi Huế", "Gọi món ăn", "Hỏi đường"], "answer": 1, "explain": "a return ticket = vé khứ hồi.", "explain_en": "a return ticket to Hue."},
+        {"id": "es1l4", "section": "listening", "say": "The shop is closed on Sundays.", "q": "Nghe và chọn câu đúng:", "options": ["Cửa hàng mở cửa Chủ nhật.", "Cửa hàng đóng cửa vào Chủ nhật.", "Cửa hàng mở cả tuần.", "Cửa hàng đóng cửa thứ Bảy."], "answer": 1, "explain": "closed on Sundays = đóng cửa Chủ nhật.", "explain_en": "closed on Sundays."},
+        {"id": "es1l5", "section": "listening", "say": "It's cheaper if you book online.", "q": "Nghe. Làm thế nào để rẻ hơn?", "options": ["Đặt trực tuyến", "Đặt qua điện thoại", "Trả bằng tiền mặt", "Đi vào buổi tối"], "answer": 0, "explain": "book online = đặt trực tuyến thì rẻ hơn.", "explain_en": "cheaper if you book online."},
+        {"id": "es1r1", "section": "reading", "q": "Where does Mai work?", "options": ["At a hospital", "At a travel company", "At a school", "At a bank"], "answer": 1, "explain": "'Mai works for a travel company'.", "explain_en": "Mai works for a travel company."},
+        {"id": "es1r2", "section": "reading", "q": "What does Mai do every morning?", "options": ["She drives tours", "She answers customer emails", "She cooks for staff", "She teaches Korean"], "answer": 1, "explain": "'she answers emails from customers'.", "explain_en": "She answers emails from customers."},
+        {"id": "es1r3", "section": "reading", "q": "How many people work there now?", "options": ["Five", "More than twenty", "Exactly ten", "Over a hundred"], "answer": 1, "explain": "'now there are more than twenty people'.", "explain_en": "More than twenty people now."},
+        {"id": "es1r4", "section": "reading", "q": "Most customers come from:", "options": ["Korea and Australia", "Japan and France", "China and India", "Thailand and Laos"], "answer": 0, "explain": "'Most of them come from Korea and Australia'.", "explain_en": "Korea and Australia."},
+        {"id": "es1r5", "section": "reading", "q": "When is the company busiest?", "options": ["In winter", "In summer", "At the weekend", "Every morning"], "answer": 1, "explain": "'the busiest time is summer'.", "explain_en": "The busiest time is summer."}
+      ]
+    },
+    {
+      "set": 2,
+      "title": "Đề luyện EnglishScore 2",
+      "title_en": "EnglishScore Practice 2",
+      "time_limit_min": 30,
+      "passage": "Tom started learning to cook two years ago. At first he could only make simple meals like fried rice, and he often burned the food. He watched videos online every weekend and tried a new recipe each time. Now he can cook dishes from several countries, and last month he even taught a short class for his neighbours. He says the most important thing is not to give up when something goes wrong, because every mistake teaches you something.",
+      "questions": [
+        {"id": "es2g1", "section": "grammar", "q": "There ___ a lot of people at the party yesterday.", "options": ["was", "were", "is", "are"], "answer": 1, "explain": "'people' số nhiều + 'yesterday' → were.", "explain_en": "Plural 'people' + past → were."},
+        {"id": "es2g2", "section": "grammar", "q": "She is taller ___ her sister.", "options": ["then", "than", "that", "as"], "answer": 1, "explain": "So sánh hơn dùng 'than'.", "explain_en": "Comparative uses 'than'."},
+        {"id": "es2g3", "section": "grammar", "q": "I have lived here ___ 2019.", "options": ["for", "since", "from", "in"], "answer": 1, "explain": "'since' + mốc thời gian (2019).", "explain_en": "'since' + a point in time."},
+        {"id": "es2g4", "section": "grammar", "q": "You ___ smoke in the hospital. It's not allowed.", "options": ["mustn't", "must", "should", "can"], "answer": 0, "explain": "Cấm → mustn't.", "explain_en": "Prohibition → mustn't."},
+        {"id": "es2g5", "section": "grammar", "q": "This is the book ___ I told you about.", "options": ["who", "which", "where", "whose"], "answer": 1, "explain": "Vật → which.", "explain_en": "Thing → which."},
+        {"id": "es2v1", "section": "vocab", "q": "'Mệt mỏi' trong tiếng Anh là:", "options": ["tired", "hungry", "angry", "lucky"], "answer": 0, "explain": "tired = mệt.", "explain_en": "tired."},
+        {"id": "es2v2", "section": "vocab", "q": "Choose the word closest in meaning to 'buy':", "options": ["sell", "purchase", "borrow", "lose"], "answer": 1, "explain": "buy ≈ purchase (mua).", "explain_en": "buy ≈ purchase."},
+        {"id": "es2v3", "section": "vocab", "q": "Please ___ a photo of us.", "options": ["make", "do", "take", "get"], "answer": 2, "explain": "Cụm cố định 'take a photo'.", "explain_en": "Fixed phrase 'take a photo'."},
+        {"id": "es2v4", "section": "vocab", "q": "The opposite of 'empty' is:", "options": ["full", "clean", "open", "small"], "answer": 0, "explain": "empty ↔ full.", "explain_en": "empty ↔ full."},
+        {"id": "es2v5", "section": "vocab", "q": "A person who fixes cars is a ___.", "options": ["mechanic", "dentist", "teacher", "waiter"], "answer": 0, "explain": "mechanic = thợ sửa xe.", "explain_en": "mechanic fixes cars."},
+        {"id": "es2l1", "section": "listening", "say": "The train to Hanoi leaves from platform three.", "q": "Nghe. Tàu đi Hà Nội rời bến ở đâu?", "options": ["Sân ga số 2", "Sân ga số 3", "Sân ga số 5", "Sân ga số 13"], "answer": 1, "explain": "platform three = sân ga số 3.", "explain_en": "platform three."},
+        {"id": "es2l2", "section": "listening", "say": "Can I pay by card?", "q": "Nghe. Người nói muốn hỏi gì?", "options": ["Trả bằng thẻ được không", "Giá bao nhiêu", "Mở cửa lúc mấy giờ", "Có giảm giá không"], "answer": 0, "explain": "pay by card = trả bằng thẻ.", "explain_en": "pay by card."},
+        {"id": "es2l3", "section": "listening", "say": "We're sorry, the room is fully booked tonight.", "q": "Nghe và chọn câu đúng:", "options": ["Còn phòng trống tối nay.", "Hết phòng tối nay.", "Phòng miễn phí tối nay.", "Phòng mở cửa muộn."], "answer": 1, "explain": "fully booked = hết phòng.", "explain_en": "fully booked = no rooms left."},
+        {"id": "es2l4", "section": "listening", "say": "Turn left at the second traffic light.", "q": "Nghe. Bạn nên làm gì?", "options": ["Rẽ phải ở đèn đầu tiên", "Rẽ trái ở đèn giao thông thứ hai", "Đi thẳng qua hai đèn", "Quay đầu lại"], "answer": 1, "explain": "Turn left at the second traffic light.", "explain_en": "Turn left at the second light."},
+        {"id": "es2l5", "section": "listening", "say": "The museum is free for children under twelve.", "q": "Nghe. Ai được vào miễn phí?", "options": ["Trẻ dưới 12 tuổi", "Người lớn", "Người trên 60 tuổi", "Tất cả mọi người"], "answer": 0, "explain": "free for children under twelve.", "explain_en": "free for children under twelve."},
+        {"id": "es2r1", "section": "reading", "q": "When did Tom start learning to cook?", "options": ["Last month", "Two years ago", "Last weekend", "When he was a child"], "answer": 1, "explain": "'Tom started learning to cook two years ago'.", "explain_en": "Two years ago."},
+        {"id": "es2r2", "section": "reading", "q": "What could Tom make at first?", "options": ["Dishes from many countries", "Only simple meals like fried rice", "Nothing at all", "Desserts"], "answer": 1, "explain": "'he could only make simple meals like fried rice'.", "explain_en": "Only simple meals like fried rice."},
+        {"id": "es2r3", "section": "reading", "q": "How did Tom learn?", "options": ["At a cooking school", "From videos online every weekend", "From a book", "From his mother"], "answer": 1, "explain": "'He watched videos online every weekend'.", "explain_en": "From online videos each weekend."},
+        {"id": "es2r4", "section": "reading", "q": "What did Tom do last month?", "options": ["Opened a restaurant", "Taught a short class for his neighbours", "Moved to another country", "Stopped cooking"], "answer": 1, "explain": "'he even taught a short class for his neighbours'.", "explain_en": "He taught a short class for neighbours."},
+        {"id": "es2r5", "section": "reading", "q": "What does Tom think is most important?", "options": ["Buying good tools", "Not giving up when something goes wrong", "Cooking fast", "Following one recipe only"], "answer": 1, "explain": "'the most important thing is not to give up'.", "explain_en": "Not giving up."}
+      ]
+    }
+  ]
+}

@@ -33,15 +33,38 @@ def placement() -> dict:
             "questions": [{**q, "section": q["level"]} for q in p["questions"]]}
 
 
+def es_sets() -> list[dict]:
+    return content.englishscore()["sets"]
+
+
+def englishscore(set_no: int) -> dict | None:
+    """A mock EnglishScore set (set_no) shaped like a test: 4 sections scored to a CEFR level."""
+    s = next((x for x in es_sets() if x["set"] == set_no), None)
+    if not s:
+        return None
+    return {**s, "pass_pct": None, "bands": content.englishscore()["bands"]}
+
+
+def es_result(t: dict, score: int) -> dict:
+    band = next(b for b in t["bands"] if b["min"] <= score <= b["max"])
+    return {k: band[k] for k in ("cefr", "level", "level_en", "range", "range_en", "advice", "advice_en")} | {
+        "note": "Ước lượng CEFR từ 20 câu Ngữ pháp, Từ vựng, Nghe, Đọc — mô phỏng EnglishScore, không phải điểm chính thức.",
+        "note_en": "A CEFR estimate from 20 Grammar, Vocabulary, Listening and Reading questions — an EnglishScore mock, not an official score."}
+
+
 def definition(kind: str, week: int | None) -> dict:
-    t = placement() if kind == "placement" else weekly(week) if kind == "weekly" and isinstance(week, int) else None
+    t = (placement() if kind == "placement"
+         else weekly(week) if kind == "weekly" and isinstance(week, int)
+         else englishscore(week) if kind == "englishscore" and isinstance(week, int)
+         else None)
     if not t:
         raise ApiError(404, "Không có bài thi này")
     return t
 
 
 def public(t: dict) -> list[dict]:
-    return [{k: q[k] for k in ("id", "section", "q", "options")} | ({"q_en": q["q_en"]} if q.get("q_en") else {}) for q in t["questions"]]
+    return [{k: q[k] for k in ("id", "section", "q", "options")} | ({"q_en": q["q_en"]} if q.get("q_en") else {})
+            | ({"say": q["say"]} if q.get("say") else {}) for q in t["questions"]]
 
 
 def current_week(lr: dict) -> int:
@@ -76,7 +99,17 @@ def hub(lr: dict) -> dict:
             "available": bool(t) and w <= cw, "attempts": len(done),
             "best_pct": max((a["pct"] for a in done), default=None), "passed": any(a["passed"] for a in done),
         })
-    return {"current_week": cw, "placement": lr["placement"], "weeks": weeks,
+    es = []
+    for s in es_sets():
+        done = [a for a in attempts if a["kind"] == "englishscore" and a.get("week") == s["set"] and a["status"] == "submitted"]
+        best = max(done, key=lambda a: a["pct"], default=None)
+        es.append({"set": s["set"], "title": s["title"], "title_en": s["title_en"],
+                   "questions": len(s["questions"]), "time_limit_min": s["time_limit_min"], "attempts": len(done),
+                   "best_pct": best and best["pct"],
+                   "best_level": best and (best.get("result") or {}).get("level"),
+                   "best_level_en": best and (best.get("result") or {}).get("level_en"),
+                   "best_cefr": best and (best.get("result") or {}).get("cefr")})
+    return {"current_week": cw, "placement": lr["placement"], "weeks": weeks, "englishscore": es,
             "placement_attempts": sum(1 for a in attempts if a["kind"] == "placement" and a["status"] == "submitted")}
 
 
@@ -86,10 +119,11 @@ def start(username: str, kind: str, week) -> dict:
     def m(lr):
         if kind == "weekly" and week > current_week(lr):
             raise ApiError(403, f"Bài kiểm tra tuần {week} mở khi bạn học tới tuần {week}")
+        slot = None if kind == "placement" else week  # weekly: week no.; englishscore: set no.
         for a in lr["attempts"]:
-            if a["kind"] == kind and a.get("week") == (week if kind == "weekly" else None) and a["status"] == "in_progress":
+            if a["kind"] == kind and a.get("week") == slot and a["status"] == "in_progress":
                 a["status"] = "abandoned"
-        a = {"id": uuid.uuid4().hex[:12], "kind": kind, "week": week if kind == "weekly" else None, "title": t["title"], "title_en": t.get("title_en"),
+        a = {"id": uuid.uuid4().hex[:12], "kind": kind, "week": slot, "title": t["title"], "title_en": t.get("title_en"),
              "status": "in_progress", "started_at": now_iso(), "time_limit_s": t["time_limit_min"] * 60,
              "pass_pct": t["pass_pct"], "question_ids": [q["id"] for q in t["questions"]]}
         lr["attempts"] = [a, *lr["attempts"]][:MAX_ATTEMPTS]
@@ -142,6 +176,14 @@ def submit(username: str, attempt_id: str, answers) -> dict:
             lr["start_week"] = res["start_week"]
             a["passed"] = None
             a["xp"] = 0 if same else learner.XP["placement"]
+        elif a["kind"] == "englishscore":
+            res = es_result(t, score)
+            a["result"] = res
+            a["passed"] = None
+            reached = res["cefr"] in ("B1", "B2")
+            prior_reached = any((x.get("result") or {}).get("cefr") in ("B1", "B2")
+                                for x in lr["attempts"] if x["kind"] == "englishscore" and x["status"] == "submitted" and x is not a)
+            a["xp"] = learner.XP["test_attempt"] + (learner.XP["test_pass"] if reached and not prior_reached else 0)
         else:
             a["passed"] = a["pct"] >= a["pass_pct"]
             first_pass = a["passed"] and not any(x["passed"] for x in same)

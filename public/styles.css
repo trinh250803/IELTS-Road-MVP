@@ -296,6 +296,14 @@ main { padding: 32px 36px 64px; max-width: 1080px; width: 100%; }
 .exam-card h4 { font-size: .97rem; min-height: 2.6em; }
 .exam-card .btn { margin-top: auto; }
 .exam-card span.btn { color: var(--muted); cursor: default; background: var(--surface-2); border-color: transparent; }
+.exam-card.es .wnum { color: var(--primary); display: inline-flex; align-items: center; gap: .3rem; }
+.exam-card.es .wnum svg { width: 15px; height: 15px; }
+.say-btn { display: inline-flex; align-items: center; gap: .35rem; margin: .1rem 0 .5rem; padding: .4rem .8rem; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--surface-2); color: var(--text); font: inherit; font-size: .85rem; cursor: pointer; max-width: 100%; }
+.say-btn svg { width: 15px; height: 15px; flex: none; }
+.q .say-btn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cefr-box { display: flex; align-items: center; justify-content: center; gap: .6rem; flex-wrap: wrap; margin-top: .4rem; }
+.chip.big { font-size: 1rem; font-weight: 800; padding: .4rem .9rem; }
 .table-wrap { overflow-x: auto; }
 .log { width: 100%; border-collapse: collapse; font-size: .88rem; min-width: 640px; }
 .log th { text-align: left; color: var(--muted); font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .03em; padding: .4rem .6rem; }

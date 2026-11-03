@@ -1243,7 +1243,7 @@ async function learnWriting(ctx) {
 
 // ---------- Tests: hub, taking a test, attempt review ----------
 const LEVEL_NAME = { A1: 'lv.A1', A2: 'lv.A2', B1: 'lv.B1', B2: 'lv.B2' };
-const SECTION_KEY = { grammar: 'sec.grammar', vocab: 'sec.vocab', reading: 'sec.reading', strategy: 'sec.strategy' };
+const SECTION_KEY = { grammar: 'sec.grammar', vocab: 'sec.vocab', reading: 'sec.reading', strategy: 'sec.strategy', listening: 'sec.listening' };
 const secName = k => (SECTION_KEY[k] ? t(SECTION_KEY[k]) : k);
 const STATUS = { submitted: ['st.submitted', 'ok'], in_progress: ['st.in_progress', 'primary'], abandoned: ['st.abandoned', ''], expired: ['st.expired', ''] };
 let timer = null;
@@ -1290,12 +1290,24 @@ async function renderExamHub() {
           : `<span class="btn block" aria-disabled="true">${icon('lock')} ${t('ex.opensAt', w.week)}</span>`}
       </div>`;
     }).join('')}</div>
+    <h2 style="margin:1.8rem 0 .8rem">${t('es.title')}</h2>
+    <p class="muted small" style="margin:-.4rem 0 .8rem">${t('es.sub')}</p>
+    <div class="exam-grid">${(hub.englishscore || []).map(s => {
+      const state = s.attempts ? [esc(L(s, 'best_level')) || `${s.best_pct}%`, s.best_cefr === 'B2' ? 'ok' : s.best_cefr === 'B1' ? 'ok' : 'bad'] : [t('es.todo'), 'primary'];
+      return `<div class="exam-card es">
+        <div class="row" style="justify-content:space-between"><span class="wnum">${icon('mic')} ${t('es.set', s.set)}</span><span class="chip ${state[1]}">${state[0]}</span></div>
+        <h4>${esc(L(s, 'title'))}</h4>
+        <p class="muted small">${t('es.meta', s.questions, s.time_limit_min)}${s.attempts ? ` · ${t('ex.attempts', s.attempts)}` : ''}</p>
+        <a class="btn ${s.attempts ? '' : 'primary'} block" href="#/exam/es/${s.set}">${t(s.attempts ? 'ex.retake' : 'exam.take')}</a>
+      </div>`;
+    }).join('')}</div>
     <h2 style="margin:1.8rem 0 .8rem">${t('ex.history')}</h2>
     <div class="card">${attemptRows(log)}</div>`;
 }
 
 async function renderExam(arg) {
-  const [kind, week] = arg.startsWith('week/') ? ['weekly', Number(arg.split('/')[1])] : ['placement', null];
+  const [kind, week] = arg.startsWith('week/') ? ['weekly', Number(arg.split('/')[1])]
+    : arg.startsWith('es/') ? ['englishscore', Number(arg.split('/')[1])] : ['placement', null];
   const a = await api('/api/exams/start', { method: 'POST', body: { kind, week } });
   const answers = {};
   let lastSection = null;
@@ -1312,11 +1324,13 @@ async function renderExam(arg) {
           <h3>${level ? t(level) : ''}</h3></div>
           ${q.section === (kind === 'placement' ? 'B1' : 'reading') && a.passage ? `<p class="passage" style="margin:.6rem 0">${esc(a.passage)}</p>` : ''}` : '';
         lastSection = q.section;
-        return `${head}<div class="q" data-id="${q.id}"><div class="qt"><span class="qn">${i + 1}</span>${esc(L(q, 'q'))}</div>
+        const play = q.say ? `<button type="button" class="say-btn" data-say="${esc(q.say)}">${icon('play')} ${t('act.playAgain')}</button>` : '';
+        return `${head}<div class="q" data-id="${q.id}"><div class="qt"><span class="qn">${i + 1}</span>${esc(L(q, 'q'))}</div>${play}
           <div class="opts">${q.options.map((o, j) => `<button class="opt" data-j="${j}">${esc(o)}</button>`).join('')}</div></div>`;
       }).join('')}
       <div class="row" style="margin-top:1.2rem"><button class="btn primary" id="submit-test">${t('ex.submit')}</button><span class="muted small">${t('ex.blankWrong')}</span></div>
     </div>`;
+  view.querySelectorAll('.say-btn').forEach(b => b.addEventListener('click', () => speak(b.dataset.say)));
   view.querySelectorAll('.q').forEach(q => q.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
     q.querySelectorAll('.opt').forEach(x => x.classList.toggle('sel', x === b));
     answers[q.dataset.id] = Number(b.dataset.j);
@@ -1334,7 +1348,7 @@ async function renderExam(arg) {
     try {
       const r = await api(`/api/attempts/${a.id}/submit`, { method: 'POST', body: { answers } });
       roadmapCache = null;
-      celebrate = r.passed === true;
+      celebrate = r.passed === true || ['B1', 'B2'].includes((r.result || {}).cefr);
       if (auto) toast(t('ex.autoSubmitted'));
       else xpToast(r.xp);
       location.hash = `#/attempt/${r.id}`;
@@ -1371,10 +1385,13 @@ async function renderAttempt(id) {
       <div class="sections">${Object.entries(a.sections).map(([k, s]) => `
         <div><div class="row" style="justify-content:space-between"><span>${esc(LEVEL_NAME[k] ? `${k} · ${t(LEVEL_NAME[k])}` : secName(k))}</span><b>${s.correct}/${s.total}</b></div>
         <div class="bar"><i style="width:${s.correct / s.total * 100}%"></i></div></div>`).join('')}</div>
-      ${r ? `<p style="max-width:560px;margin:1rem auto"><b>${esc(L(r, 'level'))}</b> · ${t('ex.ielts', esc(L(r, 'ielts_estimate')))}. ${esc(L(r, 'advice'))}</p>
+      ${r && a.kind === 'englishscore' ? `<div class="cefr-box"><span class="chip ok big">${esc(L(r, 'level'))}</span><span class="muted">${esc(L(r, 'range'))}</span></div>
+        <p style="max-width:560px;margin:.7rem auto">${esc(L(r, 'advice'))}</p><p class="muted small">${esc(L(r, 'note'))}</p>`
+        : r ? `<p style="max-width:560px;margin:1rem auto"><b>${esc(L(r, 'level'))}</b> · ${t('ex.ielts', esc(L(r, 'ielts_estimate')))}. ${esc(L(r, 'advice'))}</p>
         <p class="muted small">${esc(L(r, 'note'))}</p>` : ''}
       <div class="row" style="justify-content:center;margin-top:1rem">
-        ${r ? `<a class="btn primary" href="#/today">${t('ex.startFrom', r.start_week)}</a>` : a.passed ? `<a class="btn primary" href="#/today">${t('ex.continue')}</a>`
+        ${a.kind === 'englishscore' ? `<a class="btn" href="#/exam/es/${a.week}">${t('ex.retake')}</a><a class="btn primary" href="#/today">${t('ex.continue')}</a>`
+          : r ? `<a class="btn primary" href="#/today">${t('ex.startFrom', r.start_week)}</a>` : a.passed ? `<a class="btn primary" href="#/today">${t('ex.continue')}</a>`
           : `<a class="btn primary" href="#/exam/week/${a.week}">${t('ex.retake')}</a>`}
       </div>
     </div>
@@ -1382,9 +1399,11 @@ async function renderAttempt(id) {
       ${a.passage ? `<details style="margin-bottom:.6rem"><summary class="muted small">${t('ex.showPassage')}</summary><p class="passage" style="margin-top:.5rem">${esc(a.passage)}</p></details>` : ''}
       ${a.review.map((q, i) => `<div class="q"><div class="qt"><span class="qn">${i + 1}</span>${esc(L(q, 'q'))}
           ${q.correct ? `<span class="chip ok">${icon('check')}</span>` : `<span class="chip bad">${icon('x')}</span>`}</div>
+        ${q.say ? `<button type="button" class="say-btn" data-say="${esc(q.say)}">${icon('play')} “${esc(q.say)}”</button>` : ''}
         <div class="opts">${q.options.map((o, j) => `<span class="opt ${j === q.answer ? 'right' : j === q.given ? 'wrong' : ''}">${esc(o)}</span>`).join('')}</div>
         ${q.given == null ? `<div class="explain">${t('ex.unanswered')}</div>` : ''}${L(q, 'explain') ? `<div class="explain">${esc(L(q, 'explain'))}</div>` : ''}</div>`).join('')}
     </div>`;
+  view.querySelectorAll('.say-btn').forEach(b => b.addEventListener('click', () => speak(b.dataset.say)));
 }
 
 // ---------- Admin: charts ----------
