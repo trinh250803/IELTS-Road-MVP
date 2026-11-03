@@ -107,6 +107,27 @@ def test_englishscore_attempt(client):
     assert client.post("/api/exams/start", headers=h, json={"kind": "englishscore", "week": 99}).status_code == 404
 
 
+def test_exam_resume_keeps_answers(client):
+    h = register(client, "resume")
+    a = client.post("/api/exams/start", headers=h, json={"kind": "englishscore", "week": 1}).json()
+    qs = exams.englishscore(1)["questions"]
+    # answer the first two questions and save.
+    partial = {qs[0]["id"]: 0, qs[1]["id"]: 1}
+    assert client.put(f'/api/attempts/{a["id"]}/answers', headers=h, json={"answers": partial}).json()["saved"] == 2
+    # reopening the same test resumes the SAME attempt with those answers, not a fresh one.
+    again = client.post("/api/exams/start", headers=h, json={"kind": "englishscore", "week": 1}).json()
+    assert again["id"] == a["id"]
+    assert again["draft"] == {qs[0]["id"]: 0, qs[1]["id"]: 1}
+    assert again["remaining_s"] <= a["remaining_s"]  # the clock kept running, it did not reset
+    # junk ids and non-int values are dropped.
+    client.put(f'/api/attempts/{a["id"]}/answers', headers=h, json={"answers": {"nope": 3, qs[0]["id"]: "x", qs[2]["id"]: 2}})
+    assert client.post("/api/exams/start", headers=h, json={"kind": "englishscore", "week": 1}).json()["draft"] == {qs[2]["id"]: 2}
+    # after submitting, saving a draft is rejected and a new start opens a fresh attempt.
+    assert client.post(f'/api/attempts/{a["id"]}/submit', headers=h, json={"answers": {qs[0]["id"]: qs[0]["answer"]}}).status_code == 200
+    assert client.put(f'/api/attempts/{a["id"]}/answers', headers=h, json={"answers": {qs[0]["id"]: 0}}).status_code == 409
+    assert client.post("/api/exams/start", headers=h, json={"kind": "englishscore", "week": 1}).json()["id"] != a["id"]
+
+
 FAKE_WEEK = {"week": 1, "title": "Kiểm tra tuần 1", "time_limit_min": 20, "pass_pct": 70, "passage": "Text.",
              "questions": [{"id": f"f{i}", "section": "grammar" if i < 6 else "vocab", "q": f"Q{i}", "options": ["a", "b", "c", "d"],
                             "answer": i % 4, "explain": "vì"} for i in range(10)]}
@@ -171,32 +192,35 @@ def test_attempt_log(client, fake_weekly):
     assert client.post("/api/exams/start", headers=h, json={"kind": "weekly", "week": 2}).status_code == 403
     assert client.post("/api/exams/start", headers=h, json={"kind": "weekly", "week": 99}).status_code == 404
 
-    # 1st attempt is abandoned by starting a 2nd; 2nd fails; 3rd passes. All three stay in the log.
+    # Reopening while one is open resumes the SAME attempt (so leaving mid-test keeps your place);
+    # a new attempt only starts once the previous one is submitted. 1st fails; 2nd passes.
     first = client.post("/api/exams/start", headers=h, json={"kind": "weekly", "week": 1}).json()
     assert first["status"] == "in_progress" and first["remaining_s"] > 0 and "answer" not in first["questions"][0]
-    second = client.post("/api/exams/start", headers=h, json={"kind": "weekly", "week": 1}).json()
-    r = client.post(f'/api/attempts/{second["id"]}/submit', headers=h, json={"answers": {"f0": 0, "f1": 1, "f2": 3}}).json()
+    reopened = client.post("/api/exams/start", headers=h, json={"kind": "weekly", "week": 1}).json()
+    assert reopened["id"] == first["id"]  # resumed, not a second attempt
+    r = client.post(f'/api/attempts/{first["id"]}/submit', headers=h, json={"answers": {"f0": 0, "f1": 1, "f2": 3}}).json()
     assert (r["score"], r["total"], r["pct"], r["passed"]) == (2, 10, 20, False)
     assert r["sections"]["grammar"] == {"correct": 2, "total": 6}
     assert r["review"][2]["given"] == 3 and r["review"][2]["correct"] is False and r["review"][2]["answer"] == 2
-    assert client.post(f'/api/attempts/{second["id"]}/submit', headers=h, json={"answers": {}}).status_code == 409
+    assert client.post(f'/api/attempts/{first["id"]}/submit', headers=h, json={"answers": {}}).status_code == 409
     assert client.get("/api/days/7", headers=h).json()["done"] == []
 
-    third = client.post("/api/exams/start", headers=h, json={"kind": "weekly", "week": 1}).json()
+    second = client.post("/api/exams/start", headers=h, json={"kind": "weekly", "week": 1}).json()
+    assert second["id"] != first["id"]  # previous one submitted, so this is a fresh attempt
     all_right = {f"f{i}": i % 4 for i in range(10)}
-    r = client.post(f'/api/attempts/{third["id"]}/submit', headers=h, json={"answers": all_right}).json()
+    r = client.post(f'/api/attempts/{second["id"]}/submit', headers=h, json={"answers": all_right}).json()
     assert r["passed"] and r["pct"] == 100 and r["duration_s"] >= 0 and not r["overtime"]
     assert client.get("/api/days/7", headers=h).json()["done"] == ["weekly_test"]  # passing ticks the review-day task
 
     log = client.get("/api/attempts", headers=h).json()
-    assert [a["status"] for a in log] == ["submitted", "submitted", "abandoned"]
-    assert log[0]["id"] == third["id"] and all(a["started_at"] for a in log)
+    assert [a["status"] for a in log] == ["submitted", "submitted"]
+    assert log[0]["id"] == second["id"] and all(a["started_at"] for a in log)
     w1 = client.get("/api/exams", headers=h).json()["weeks"][0]
     assert (w1["attempts"], w1["best_pct"], w1["passed"]) == (2, 100, True)
-    assert client.get(f'/api/attempts/{first["id"]}', headers=h).json()["status"] == "abandoned"
+    assert client.get(f'/api/attempts/{first["id"]}', headers=h).json()["status"] == "submitted"
     # Another learner cannot read this log.
     other = register(client, "binh")
-    assert client.get(f'/api/attempts/{third["id"]}', headers=other).status_code == 404
+    assert client.get(f'/api/attempts/{second["id"]}', headers=other).status_code == 404
 
 
 def test_overtime_flag(client, fake_weekly, monkeypatch):

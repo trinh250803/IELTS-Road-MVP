@@ -124,6 +124,11 @@ def get_attempt(attempt_id: str, user=USER):
     return exams.get(learner_of(user), attempt_id)
 
 
+@app.put("/api/attempts/{attempt_id}/answers")
+async def save_attempt_answers(attempt_id: str, request: Request, user=USER):
+    return exams.save_draft(user["username"], attempt_id, (await body_json(request)).get("answers"))
+
+
 @app.post("/api/attempts/{attempt_id}/submit")
 async def submit_attempt(attempt_id: str, request: Request, user=USER):
     return exams.submit(user["username"], attempt_id, (await body_json(request)).get("answers"))

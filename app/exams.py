@@ -120,22 +120,44 @@ def start(username: str, kind: str, week) -> dict:
         if kind == "weekly" and week > current_week(lr):
             raise ApiError(403, f"Bài kiểm tra tuần {week} mở khi bạn học tới tuần {week}")
         slot = None if kind == "placement" else week  # weekly: week no.; englishscore: set no.
-        for a in lr["attempts"]:
+        # Reopening a test still within its time: resume it with the saved answers (same clock).
+        live = next((a for a in lr["attempts"] if a["kind"] == kind and a.get("week") == slot
+                     and a["status"] == "in_progress" and _status(a) == "in_progress"), None)
+        if live:
+            return live
+        for a in lr["attempts"]:  # drop any stale/expired open attempt of the same test
             if a["kind"] == kind and a.get("week") == slot and a["status"] == "in_progress":
                 a["status"] = "abandoned"
         a = {"id": uuid.uuid4().hex[:12], "kind": kind, "week": slot, "title": t["title"], "title_en": t.get("title_en"),
              "status": "in_progress", "started_at": now_iso(), "time_limit_s": t["time_limit_min"] * 60,
-             "pass_pct": t["pass_pct"], "question_ids": [q["id"] for q in t["questions"]]}
+             "pass_pct": t["pass_pct"], "question_ids": [q["id"] for q in t["questions"]], "draft": {}}
         lr["attempts"] = [a, *lr["attempts"]][:MAX_ATTEMPTS]
         return a
     a = learner._save(username, m)
-    log.info("exam_start user=%s attempt=%s kind=%s week=%s", username, a["id"], kind, a["week"])
+    log.info("exam_start user=%s attempt=%s kind=%s week=%s resumed=%s", username, a["id"], kind, a["week"], bool(a.get("draft")))
     return in_progress_view(a, t)
+
+
+def save_draft(username: str, attempt_id: str, answers) -> dict:
+    """Store the answers chosen so far on an open attempt, so leaving and returning keeps them."""
+    if not isinstance(answers, dict):
+        raise ApiError(400, "Thiếu câu trả lời")
+
+    def m(lr):
+        a = next((x for x in lr["attempts"] if x["id"] == attempt_id), None)
+        if not a:
+            raise ApiError(404, "Không tìm thấy lượt thi")
+        if a["status"] != "in_progress":
+            raise ApiError(409, "Lượt thi này đã kết thúc")
+        ids = set(a.get("question_ids") or [])
+        a["draft"] = {k: v for k, v in answers.items() if k in ids and isinstance(v, int)}
+        return {"saved": len(a["draft"])}
+    return learner._save(username, m)
 
 
 def in_progress_view(a: dict, t: dict) -> dict:
     return {**summary(a), "passage": t.get("passage"), "questions": public(t),
-            "remaining_s": max(0, a["time_limit_s"] - _elapsed_s(a))}
+            "draft": a.get("draft") or {}, "remaining_s": max(0, a["time_limit_s"] - _elapsed_s(a))}
 
 
 def _grade(t: dict, answers: dict) -> tuple[dict, list[dict]]:

@@ -1309,14 +1309,15 @@ async function renderExam(arg) {
   const [kind, week] = arg.startsWith('week/') ? ['weekly', Number(arg.split('/')[1])]
     : arg.startsWith('es/') ? ['englishscore', Number(arg.split('/')[1])] : ['placement', null];
   const a = await api('/api/exams/start', { method: 'POST', body: { kind, week } });
-  const answers = {};
+  const answers = { ...(a.draft || {}) };  // restore answers picked before leaving
   let lastSection = null;
   const total = a.questions.length;
+  const answeredN = () => Object.keys(answers).length;
   view.innerHTML = `
     <a class="crumb" href="#/test">${icon('back')} ${t('nav.test')}</a>
     <div class="page-head"><h1>${esc(L(a, 'title'))}</h1><p>${t('ex.runSub', total, Math.round(a.time_limit_s / 60))}${kind === 'placement' ? ` ${t('ex.noGuess')}` : ''}</p></div>
     <div class="test-bar"><span class="chip" id="clock">${icon('clock')} ${mmss(a.remaining_s)}</span>
-      <div class="bar"><i id="tbar" style="width:0"></i></div><span class="chip primary" id="answered">0/${total}</span></div>
+      <div class="bar"><i id="tbar" style="width:${answeredN() / total * 100}%"></i></div><span class="chip primary" id="answered">${answeredN()}/${total}</span></div>
     <div class="card">
       ${a.questions.map((q, i) => {
         const level = LEVEL_NAME[q.section];
@@ -1326,17 +1327,22 @@ async function renderExam(arg) {
         lastSection = q.section;
         const play = q.say ? `<button type="button" class="say-btn" data-say="${esc(q.say)}">${icon('play')} ${t('act.playAgain')}</button>` : '';
         return `${head}<div class="q" data-id="${q.id}"><div class="qt"><span class="qn">${i + 1}</span>${esc(L(q, 'q'))}</div>${play}
-          <div class="opts">${q.options.map((o, j) => `<button class="opt" data-j="${j}">${esc(o)}</button>`).join('')}</div></div>`;
+          <div class="opts">${q.options.map((o, j) => `<button class="opt ${answers[q.id] === j ? 'sel' : ''}" data-j="${j}">${esc(o)}</button>`).join('')}</div></div>`;
       }).join('')}
       <div class="row" style="margin-top:1.2rem"><button class="btn primary" id="submit-test">${t('ex.submit')}</button><span class="muted small">${t('ex.blankWrong')}</span></div>
     </div>`;
   view.querySelectorAll('.say-btn').forEach(b => b.addEventListener('click', () => speak(b.dataset.say)));
+  let saveTimer = null;
+  const saveDraft = () => {  // debounced autosave so leaving and returning keeps the answers
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => { api(`/api/attempts/${a.id}/answers`, { method: 'PUT', body: { answers } }).catch(() => {}); }, 600);
+  };
   view.querySelectorAll('.q').forEach(q => q.querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => {
     q.querySelectorAll('.opt').forEach(x => x.classList.toggle('sel', x === b));
     answers[q.dataset.id] = Number(b.dataset.j);
-    const n = Object.keys(answers).length;
-    $('#answered').textContent = `${n}/${total}`;
-    $('#tbar').style.width = `${n / total * 100}%`;
+    $('#answered').textContent = `${answeredN()}/${total}`;
+    $('#tbar').style.width = `${answeredN() / total * 100}%`;
+    saveDraft();
   })));
   let sent = false;
   const send = async auto => {
