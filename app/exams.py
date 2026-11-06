@@ -103,7 +103,7 @@ def hub(lr: dict) -> dict:
     for s in es_sets():
         done = [a for a in attempts if a["kind"] == "englishscore" and a.get("week") == s["set"] and a["status"] == "submitted"]
         best = max(done, key=lambda a: a["pct"], default=None)
-        es.append({"set": s["set"], "title": s["title"], "title_en": s["title_en"],
+        es.append({"set": s["set"], "level": s.get("level", "A2–B1"), "title": s["title"], "title_en": s["title_en"],
                    "questions": len(s["questions"]), "time_limit_min": s["time_limit_min"], "attempts": len(done),
                    "best_pct": best and best["pct"],
                    "best_level": best and (best.get("result") or {}).get("level"),

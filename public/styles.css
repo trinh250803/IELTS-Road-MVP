@@ -322,6 +322,8 @@ main { padding: 32px 36px 64px; max-width: 1080px; width: 100%; }
 .exam-card span.btn { color: var(--muted); cursor: default; background: var(--surface-2); border-color: transparent; }
 .exam-card.es .wnum { color: var(--primary); display: inline-flex; align-items: center; gap: .3rem; }
 .exam-card.es .wnum svg { width: 15px; height: 15px; }
+.exam-card.es .wnum { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.es-group { display: flex; align-items: center; gap: .5rem; font-size: 1rem; margin: 1.1rem 0 .6rem; }
 .say-btn { display: inline-flex; align-items: center; gap: .35rem; margin: .1rem 0 .5rem; padding: .4rem .8rem; border: 1px solid var(--line);
   border-radius: 999px; background: var(--surface-2); color: var(--text); font: inherit; font-size: .85rem; cursor: pointer; max-width: 100%; }
 .say-btn svg { width: 15px; height: 15px; flex: none; }

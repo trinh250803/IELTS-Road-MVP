@@ -26,7 +26,7 @@ Mở http://localhost:8000, tạo tài khoản → làm bài kiểm tra đầu v
 | Động lực: XP, cấp độ, 15 huy hiệu, mục tiêu XP/ngày, bảng xếp hạng tuần; trò chơi Ghép cặp và Nghe & chọn | ✅ |
 | Kiểm tra đầu vào 20 câu (A1–B2) → gợi ý tuần bắt đầu | ✅ |
 | Kiểm tra hằng tuần: 12 bài × 15 câu (ngữ pháp/chiến lược, từ vựng, đọc hiểu), có giờ, đạt ≥ 70% mới hoàn thành tuần | ✅ |
-| Luyện thi EnglishScore: đề mô phỏng 4 phần (Ngữ pháp, Từ vựng, Nghe đọc bằng giọng trình duyệt, Đọc), có giờ, chấm xong quy ra mốc CEFR (A1–B2) kèm lời khuyên; chạy không cần key | ✅ 2 đề mẫu |
+| Luyện thi EnglishScore: đề mô phỏng 4 phần (Ngữ pháp, Từ vựng, Nghe đọc bằng giọng trình duyệt, Đọc), có giờ, chấm xong quy ra mốc CEFR (A1–B2) kèm lời khuyên; chạy không cần key; mỗi câu giải thích đáp án đúng và vì sao từng lựa chọn sai | ✅ 14 đề: 4 đề cơ bản (A2–B1) + 10 đề B1 |
 | Tab "Mở khóa từ vựng" / "Mở khóa ngữ pháp": xem toàn bộ từ vựng (theo ngày) và bài ngữ pháp (theo thứ tự) của mọi tuần, không khóa theo tiến độ | ✅ hiện có nội dung tuần 1 |
 | Nhật ký lượt thi: mọi lượt (kể cả bỏ dở) lưu giờ bắt đầu/nộp, thời lượng, từng câu trả lời, điểm theo phần, đạt/chưa đạt; ghi cả vào log máy chủ | ✅ ⚠ mất khi Render free khởi động lại |
 | Lộ trình 12 tuần × 7 ngày (6 ngày học + 1 ngày ôn/kiểm tra), ~180 phút/ngày | ✅ khung đủ 84 ngày |

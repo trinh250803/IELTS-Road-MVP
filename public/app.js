@@ -1352,15 +1352,19 @@ async function renderExamHub() {
     }).join('')}</div>
     <h2 style="margin:1.8rem 0 .8rem">${t('es.title')}</h2>
     <p class="muted small" style="margin:-.4rem 0 .8rem">${t('es.sub')}</p>
-    <div class="exam-grid">${(hub.englishscore || []).map(s => {
-      const state = s.attempts ? [esc(L(s, 'best_level')) || `${s.best_pct}%`, s.best_cefr === 'B2' ? 'ok' : s.best_cefr === 'B1' ? 'ok' : 'bad'] : [t('es.todo'), 'primary'];
+    ${[['A2–B1', 'es.groupBasic'], ['B1', 'es.groupB1']].map(([lv, key]) => {
+      const sets = (hub.englishscore || []).filter(s => s.level === lv);
+      return sets.length ? `<h3 class="es-group">${t(key)} <span class="chip">${sets.length}</span></h3>
+    <div class="exam-grid">${sets.map(s => {
+      const state = s.attempts ? [esc(L(s, 'best_level')) || `${s.best_pct}%`, ['B1', 'B2'].includes(s.best_cefr) ? 'ok' : 'bad'] : [t('es.todo'), 'primary'];
       return `<div class="exam-card es">
-        <div class="row" style="justify-content:space-between"><span class="wnum">${icon('mic')} ${t('es.set', s.set)}</span><span class="chip ${state[1]}">${state[0]}</span></div>
+        <div class="row" style="justify-content:space-between"><span class="wnum">${icon('mic')} ${t('es.set', s.set)} · ${esc(s.level)}</span><span class="chip ${state[1]}">${state[0]}</span></div>
         <h4>${esc(L(s, 'title'))}</h4>
         <p class="muted small">${t('es.meta', s.questions, s.time_limit_min)}${s.attempts ? ` · ${t('ex.attempts', s.attempts)}` : ''}</p>
         <a class="btn ${s.attempts ? '' : 'primary'} block" href="#/exam/es/${s.set}">${t(s.attempts ? 'ex.retake' : 'exam.take')}</a>
       </div>`;
-    }).join('')}</div>
+    }).join('')}</div>` : '';
+    }).join('')}
     <h2 style="margin:1.8rem 0 .8rem">${t('ex.history')}</h2>
     <div class="card">${attemptRows(log)}</div>`;
 }
